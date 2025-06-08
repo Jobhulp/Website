@@ -3,6 +3,7 @@ import JobSearchTabs from '@/components/employers/job-lists/JobSearchTabs';
 import JobListResults from '@/components/employers/job-lists/JobListResults';
 import Testimonial from "@/components/common/testimonial/Testimonial";
 import SignupCta from '@/components/signup-cta/SignupCta';
+import Footer from '@/components/common/footer/Footer';
 
 export default function JobLists() {
   return (
@@ -12,6 +13,7 @@ export default function JobLists() {
       <JobListResults />
       <Testimonial />
       <SignupCta />
+      <Footer />
     </main>
   );
 }

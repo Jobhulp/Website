@@ -1,6 +1,13 @@
 import React from "react";
-import Image from "next/image";
+import { jobs, featured } from './jobListData';
 import client2 from '@/assets/img/client2.png';
+import client3 from '@/assets/img/client3.png';
+import client4 from '@/assets/img/client4.png';
+import client5 from '@/assets/img/client5.png';
+import client6 from '@/assets/img/client6.png';
+import client7 from '@/assets/img/client7.png';
+import client8 from '@/assets/img/client8.png';
+import company1 from '@/assets/img/company1.jpg';
 import iphone1 from '@/assets/img/iphone1.png';
 
 const JobListResults: React.FC = () => (
@@ -9,33 +16,69 @@ const JobListResults: React.FC = () => (
       <div className="row mb40">
         <div className="col-lg-8">
           <h3 className="mb40 mt-0">Search Result:</h3>
-          {/* Job cards would be mapped here as a prop in a real app */}
-          <div className="ui-card featured-vacancies mb-4">
-            <div className="ui-card-content">
-              <div className="vacancies-title-location">
-                <a href="#" className="vacancies-title h6">Data Center Support Specialist Engineer</a>
-                <div className="vacancies-location">
-                  <time className="published">6 hours ago</time>
-                  London, United Kingdom
+          {jobs.map((job, idx) => (
+            <div className="ui-card featured-vacancies mb-4" key={idx}>
+              <div className="ui-card-content">
+                <div className="vacancies-title-location">
+                  <a href="#" className="vacancies-title h6">{job.title}</a>
+                  <div className="vacancies-location">
+                    <time className="published">{job.time}</time>
+                    {job.location}
+                  </div>
                 </div>
+                <a href="#" className="logo-company">
+                  <img className="logo" src={job.logo.src} alt="company" />
+                </a>
               </div>
-              <a href="#" className="logo-company">
-                <img className="logo" src={client2.src} alt="company" />
-              </a>
+              <div className="ui-card-footer">
+                <a href="#" className="link--uppercase-wide fs-12">{job.category}</a>
+                <button type="button" className={`crumina-button ${job.typeClass} button--xxs button--uppercase-wide`}>{job.type}</button>
+              </div>
             </div>
-            <div className="ui-card-footer">
-              <a href="#" className="link--uppercase-wide fs-12">IT Contractor</a>
-              <button type="button" className="crumina-button button--blue-dark button--xxs button--uppercase-wide">Part Time</button>
-            </div>
-          </div>
-          {/* Repeat for other job cards as needed */}
+          ))}
         </div>
         <div className="col-lg-4 mt-4 mt-lg-0">
           <aside aria-label="sidebar" className="sidebar sidebar-right">
-            {/* Sidebar widgets would go here */}
             <div className="widget w-featured-vacancies widget-sidebar">
               <h3 className="widget-title">Featured</h3>
-              {/* Featured jobs slider placeholder */}
+              <div className="crumina-module crumina-module-slider navigation-top-right">
+                <div className="swiper-btn-wrap">
+                  <div className="swiper-btn-prev">
+                    <i className="puzzle-icon fal fa-long-arrow-left"></i>
+                  </div>
+                  <div className="swiper-btn-next">
+                    <i className="puzzle-icon fal fa-long-arrow-right"></i>
+                  </div>
+                </div>
+                <div className="swiper-container" data-show-items="1" data-prev-next="1">
+                  <div className="swiper-wrapper">
+                    {featured.map((item, idx) => (
+                      <div className="swiper-slide" key={idx}>
+                        <div className="ui-card featured-vacancies">
+                          <div className="ui-card-content">
+                            <div className="vacancies-title-location">
+                              <a href="#" className="vacancies-title h6">{item.title}</a>
+                              <div className="vacancies-location">
+                                <time className="published">{item.time}</time>
+                                {item.location}
+                              </div>
+                            </div>
+                            <a href="#" className="logo-company logo-company--thumb">
+                              <img className="logo" src={item.logo.src} alt="company" />
+                              <img src={item.company.src} alt="company" />
+                              <div className="overlay"></div>
+                            </a>
+                          </div>
+                          <div className="ui-card-footer">
+                            <a href="#" className="link--uppercase-wide fs-12">{item.category}</a>
+                            <button type="button" className={`crumina-button ${item.typeClass} button--xxs button--uppercase-wide`}>{item.type}</button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="widget w-banner widget-sidebar mt-4">
               <div className="banner-header">Advertising</div>
