@@ -1,0 +1,42 @@
+/*------------- #COUNTDOWN --------------*/
+
+
+.crumina-countdown-item {
+  text-align: left;
+
+  & + .btn {
+    margin-left: 40px;
+  }
+}
+
+.crumina-countdown,
+.crumina-countdown-number {
+  min-height: 100px !important;
+  width: 100% !important;
+  max-width: 400px !important;
+  margin: 0 auto;
+  display: inline-flex;
+  z-index: 10;
+  position: relative;
+}
+
+.crumina-countdown-number {
+  .time_circles > div > span {
+    color: var(--primary-accent-color);
+    display: inline-block;
+    width: auto;
+  }
+
+  .time_circles > div > h4 {
+    bottom: -25px;
+	color: var(--white-color);
+	text-transform: none;
+	font-weight: 400;
+	left: 0;
+    transform: none;
+  }
+
+  .time_circles > div {
+    text-align: left;
+  }
+}

@@ -1,0 +1,143 @@
+/*------------- #NAVIGATION --------------*/
+
+
+.navigation {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.page-numbers {
+  position: relative;
+  background-color: var(--white-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 12px 0 0;
+  min-width: 40px;
+  min-height: 40px;
+  max-width: 40px;
+  max-height: 40px;
+  font-size: 14px;
+  border-radius: 3px;
+  color: var(--grey-color);
+  fill: var(--grey-color);
+
+  .puzzle-icon {
+	font-size: 24px;
+	width: 24px;
+	height: 24px;
+	position: relative;
+  }
+
+  &:hover {
+	box-shadow: 0 4px 10px 2px rgba(0, 0, 0, 0.2);
+	color: var(--dark-themes);
+	fill: var(--dark-themes);
+	font-weight: 700;
+  }
+
+  &:active {
+	color: var(--primary-accent-color);
+  }
+
+  &.current {
+	background-color: var(--primary-accent-color);
+	color: var(--dark-themes);
+	fill: var(--dark-themes);
+	font-weight: 700;
+  }
+
+  span {
+	position: relative;
+  }
+
+  &.btn--next {
+	margin-left: 35px;
+  }
+
+  &.btn--prev {
+	margin-right: 35px;
+  }
+
+  &.all-pages {
+	min-width: unset;
+	min-height: unset;
+	max-width: unset;
+	max-height: unset;
+	background-color: transparent;
+	margin-left: 30px;
+
+	&:hover {
+	  box-shadow: none;
+	  color: var(--grey-color);
+	  font-weight: 400;
+	}
+  }
+
+  &:last-child {
+	margin-right: 0;
+  }
+}
+
+
+/*================= Responsive Mode ============*/
+
+
+@media (max-width: 768px) {
+
+  .page-numbers {
+	margin: 0 10px 0 0;
+	min-width: 30px;
+	min-height: 30px;
+	max-width: 30px;
+	max-height: 30px;
+	font-size: 14px;
+
+	&.btn--next {
+	  margin-left: 10px;
+	}
+
+	&.btn--prev {
+	  margin-right: 10px;
+	}
+  }
+
+  .page-numbers .puzzle-icon {
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+  }
+}
+
+@media (max-width: 560px) {
+
+  .page-numbers {
+	margin: 0 8px 0 0;
+	min-width: 20px;
+	min-height: 20px;
+	max-width: 20px;
+	max-height: 20px;
+	font-size: 12px;
+
+	&.btn--next {
+	  margin-left: 8px;
+	}
+
+	&.btn--prev {
+	  margin-right: 8px;
+	}
+
+	&.all-pages {
+	  display: none;
+	}
+  }
+
+  .page-numbers .puzzle-icon {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+  }
+}
+

@@ -1,0 +1,251 @@
+
+/*------------- #TYPOGRAPHY --------------*/
+
+
+h1, .h1 {
+  margin:  var(--h-margin);
+  font-size: var(--h1-font-size);
+  font-weight: var(--h-font-weight);
+  color: var(--heading-color);
+  line-height: 1.15em;
+  font-family: var(--heading-font-family);
+
+  a {
+    color: inherit;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 2em;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 1.8em;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 1.5em;
+  }
+}
+
+h2, .h2 {
+  margin:  var(--h-margin);
+  font-size: var(--h2-font-size);
+  line-height: 1.3em;
+  font-weight: var(--h-font-weight);
+  color: var(--heading-color);
+  font-family: var(--heading-font-family);
+
+   a {
+    color: inherit;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 1.9em;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 1.7em;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.5em;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 1.3em;
+  }
+}
+
+h3, .h3 {
+  margin:  var(--h-margin);
+  font-size: var(--h3-font-size);
+  line-height: 1.3em;
+  font-weight: var(--h-font-weight);
+  color: var(--heading-color);
+  font-family: var(--heading-font-family);
+
+  a {
+    color: inherit;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 1.8em;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 1.6em;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.4em;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 1.2em;
+  }
+}
+
+h4, .h4 {
+  margin:  var(--h-margin);
+  font-size: var(--h4-font-size);
+  line-height: 1.3em;
+  font-weight: var(--h-font-weight);
+  color: var(--heading-color);
+  font-family: var(--heading-font-family);
+
+  a {
+    color: inherit;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 1.7em;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 1.5em;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.3em;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 1.1em;
+  }
+}
+
+h5, .h5 {
+  margin:  var(--h-margin);
+  font-size: var(--h5-font-size);
+  line-height: 1.3em;
+  font-weight: var(--h-font-weight);
+  color: var(--heading-color);
+  font-family: var(--heading-font-family);
+
+  a {
+    color: inherit;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 1.6em;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 1.4em;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.2em;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 1em;
+  }
+}
+
+h6, .h6 {
+  margin:  var(--h-margin);
+  font-size: var(--h6-font-size);
+  line-height: 1.3em;
+  font-weight: var(--h-font-weight);
+  color: var(--heading-color);
+  font-family: var(--heading-font-family);
+
+  a {
+    color: inherit;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 1.4em;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 1.2em;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1em;
+  }
+
+  @media (max-width: 360px) {
+    font-size: .9em;
+  }
+
+}
+
+
+/*------------- #Styles for First-Letter --------------*/
+
+.first-letter span:first-of-type {
+  display: block;
+  position: relative;
+  float: left;
+  line-height: 1;
+  font-family: 'Playfair Display', serif;
+  z-index: -1;
+  font-weight: 900;
+}
+
+.first-letter--under-text span:first-of-type {
+  margin-right: -80px;
+  margin-top: -50px;
+  font-size: 160px;
+
+  @media (max-width: 768px) {
+    font-size: 80px;
+    margin-top: 0;
+  }
+}
+
+.first-letter--before-text span:first-of-type {
+  margin-right: 35px;
+  margin-bottom: 30px;
+  margin-top: -15px;
+  font-size: 106px;
+
+  @media (max-width: 768px) {
+    font-size: 60px;
+    margin-top: 0;
+  }
+}
+
+/*------------- #Styles for Text Selection --------------*/
+
+/*Selection dark*/
+
+.selection--dark::-moz-selection{background: var(--heading-color); color: var(--white-color);}
+.selection--dark::selection{background: var(--heading-color); color: var(--white-color);}
+
+/*Selection primary*/
+
+.selection--primary::-moz-selection{background: var(--primary-accent-color); color: var(--body-font-color);}
+.selection--primary::selection{background: var(--primary-accent-color); color: var(--body-font-color);}
+
+
+dl {
+  margin-bottom: 24px;
+}
+
+dl dt {
+  margin-bottom: 5px;
+  color: #777;
+  font-weight: bold;
+}
+
+dl dd {
+  margin-bottom: 5px;
+  margin-left: 20px;
+}
+
+abbr {
+  cursor: help;
+  border-color: $body-font-color;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 10px;
+  margin: 0 auto;
+}

@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>Puzzler - Company Lists Alphabet</title>
+
+
+	<link rel="stylesheet" type="text/css" href="css/vendors/Bootstrap/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+
+	<!--<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">-->
+
+
+	<!--Styles for RTL-->
+
+	<!--<link rel="stylesheet" type="text/css" href="css/rtl.css">-->
+
+</head>
+
+<body class="crumina-grid">
+
+<!-- Preloader -->
+
+
+<!--<div id="hellopreloader">
+	<div class="preloader">
+		<svg width="135" height="135" fill="#fff">
+			<path d="M67.447 58c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm9.448 9.447c0 5.523 4.477 10 10 10 5.522 0 10-4.477 10-10s-4.478-10-10-10c-5.523 0-10 4.477-10 10zm-9.448 9.448c-5.523 0-10 4.477-10 10 0 5.522 4.477 10 10 10s10-4.478 10-10c0-5.523-4.477-10-10-10zM58 67.447c0-5.523-4.477-10-10-10s-10 4.477-10 10 4.477 10 10 10 10-4.477 10-10z">
+				<animateTransform attributeName="transform" dur="2.5s" from="0 67 67" repeatCount="indefinite" to="-360 67 67" type="rotate" />
+			</path>
+			<path d="M28.19 40.31c6.627 0 12-5.374 12-12 0-6.628-5.373-12-12-12-6.628 0-12 5.372-12 12 0 6.626 5.372 12 12 12zm30.72-19.825c4.686 4.687 12.284 4.687 16.97 0 4.686-4.686 4.686-12.284 0-16.97-4.686-4.687-12.284-4.687-16.97 0-4.687 4.686-4.687 12.284 0 16.97zm35.74 7.705c0 6.627 5.37 12 12 12 6.626 0 12-5.373 12-12 0-6.628-5.374-12-12-12-6.63 0-12 5.372-12 12zm19.822 30.72c-4.686 4.686-4.686 12.284 0 16.97 4.687 4.686 12.285 4.686 16.97 0 4.687-4.686 4.687-12.284 0-16.97-4.685-4.687-12.283-4.687-16.97 0zm-7.704 35.74c-6.627 0-12 5.37-12 12 0 6.626 5.373 12 12 12s12-5.374 12-12c0-6.63-5.373-12-12-12zm-30.72 19.822c-4.686-4.686-12.284-4.686-16.97 0-4.686 4.687-4.686 12.285 0 16.97 4.686 4.687 12.284 4.687 16.97 0 4.687-4.685 4.687-12.283 0-16.97zm-35.74-7.704c0-6.627-5.372-12-12-12-6.626 0-12 5.373-12 12s5.374 12 12 12c6.628 0 12-5.373 12-12zm-19.823-30.72c4.687-4.686 4.687-12.284 0-16.97-4.686-4.686-12.284-4.686-16.97 0-4.687 4.686-4.687 12.284 0 16.97 4.686 4.687 12.284 4.687 16.97 0z">
+				<animateTransform attributeName="transform" dur="8s" from="0 67 67" repeatCount="indefinite" to="360 67 67" type="rotate" />
+			</path>
+		</svg>
+	</div>
+</div>-->
+
+<!-- ... end Preloader -->
+
+
+<!-- Header -->
+
+<header class="header header--absolute header--transparent" id="site-header">
+	<div class="container">
+		<div class="header-content-wrapper">
+			<a href="index.html" class="site-logo">
+				<img class="puzzle-icon" src="img/svg/01_logo_white.svg" alt="logo" width="120">
+			</a>
+
+			<nav id="primary-menu" class="primary-menu">
+
+				<!-- menu-icon-wrapper -->
+
+				<a href='javascript:void(0)' id="menu-icon-trigger" class="menu-icon-trigger showhide">
+					<span class="mob-menu--title">Menu</span>
+					<span id="menu-icon-wrapper" class="menu-icon-wrapper">
+						<svg width="1000px" height="1000px">
+							<path id="pathD" d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800"></path>
+							<path id="pathE" d="M 300 500 L 700 500"></path>
+							<path id="pathF" d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200"></path>
+						</svg>
+					</span>
+				</a>
+
+				<ul class="primary-menu-menu">
+					<li>
+						<a href="index.html">Home</a>
+					</li>
+
+					<li class="">
+						<a href="02_how_it_works.html">How it Works</a>
+					</li>
+
+					<li class="menu-item-has-children">
+						<a href="#">Employers
+							<span class="show indicator">
+<i class="puzzle-icon far fa-angle-down"></i>
+</span>
+						</a>
+
+						<ul class="sub-menu">
+
+							<li>
+								<a href="03_job_lists_row_map.html">Job lists</a>
+							</li>
+
+							<li>
+								<a href="04_job_lists_grid.html">Job lists grid</a>
+							</li>
+
+							<li>
+								<a href="05_job_details.html">Job details</a>
+							</li>
+
+							<li>
+								<a href="06_company_profile.html">Company profile</a>
+							</li>
+
+							<li>
+								<a href="07_company_lists_alphabet.html">Company lists</a>
+							</li>
+
+						</ul>
+					</li>
+
+					<li class="menu-item-has-children">
+						<a href="#">Candidates
+							<span class="show indicator">
+<i class="puzzle-icon far fa-angle-down"></i>
+</span>
+						</a>
+						<ul class="sub-menu">
+
+							<li>
+								<a href="08_candidate_lists_row_map.html">Candidate lists</a>
+							</li>
+
+							<li>
+								<a href="09_candidate_lists_grid.html">Candidate lists grid</a>
+							</li>
+
+							<li>
+								<a href="10_candidate_details.html">Candidate details</a>
+							</li>
+
+							<li>
+								<a href="11_submit_resume.html">Submit resume</a>
+							</li>
+
+							<li>
+								<a href="12_resume_preview.html">Resume preview</a>
+							</li>
+
+							<li>
+								<a href="13_resume_added.html">Resume added</a>
+							</li>
+
+						</ul>
+					</li>
+
+					<li class="menu-item-has-children">
+						<a href="#">News
+							<span class="show indicator">
+<i class="puzzle-icon far fa-angle-down"></i>
+</span>
+						</a>
+						<ul class="sub-menu">
+
+							<li>
+								<a href="15_news_grid.html">News page</a>
+							</li>
+
+							<li>
+								<a href="16_standard_news_with_sidebar.html">Standard news with sidebar</a>
+							</li>
+
+							<li>
+								<a href="17_news_details_standard.html">News details standard</a>
+							</li>
+
+							<li>
+								<a href="18_news_details_gallery.html">News details gallery</a>
+							</li>
+
+							<li>
+								<a href="19_news_details_with_video.html">News details with video</a>
+							</li>
+
+						</ul>
+					</li>
+
+					<li class="menu-item-has-mega-menu menu-item-has-children">
+						<a href="#">Pages
+							<span class="show indicator">
+<i class="puzzle-icon far fa-angle-down"></i>
+</span>
+						</a>
+						<div class="megamenu">
+							<div class="megamenu-row">
+
+								<div class="col3">
+									<ul>
+										<li class="megamenu-item-info">
+											<h6 class="megamenu-item-info-title">Pages</h6>
+										</li>
+										<li>
+											<a href="14_pricing_plan.html"><i class="puzzle-icon fas fa-caret-right"></i>Pricing plans</a>
+										</li>
+										<li>
+											<a href="20_contacts.html"><i class="puzzle-icon fas fa-caret-right"></i>Contacts</a>
+										</li>
+										<li>
+											<a target="_blank" href="21_send_message.html"><i class="puzzle-icon fas fa-caret-right"></i>Send message</a>
+										</li>
+										<li>
+											<a href="23_coming_soon.html"><i class="puzzle-icon fas fa-caret-right"></i>Coming Soon Page</a>
+										</li>
+										<li>
+											<a href="22_404.html"><i class="puzzle-icon fas fa-caret-right"></i>Error 404</a>
+										</li>
+										<li>
+											<a target="_blank" href="41_sign_up.html"><i class="puzzle-icon fas fa-caret-right"></i>Sign Up</a>
+										</li>
+										<li>
+											<a target="_blank" href="40_login.html"><i class="puzzle-icon fas fa-caret-right"></i>Login</a>
+										</li>
+									</ul>
+								</div>
+
+								<div class="col3">
+									<ul>
+										<li class="megamenu-item-info">
+											<h6 class="megamenu-item-info-title">Classic Styles</h6>
+										</li>
+										<li>
+											<a href="33_classic_accordions.html"><i class="puzzle-icon fas fa-caret-right"></i>Accordions</a>
+										</li>
+										<li>
+											<a href="34_classic_button_styles.html"><i class="puzzle-icon fas fa-caret-right"></i>Button Styles</a>
+										</li>
+										<li>
+											<a href="35_classic_forms.html"><i class="puzzle-icon fas fa-caret-right"></i>Forms</a>
+										</li>
+										<li>
+											<a href="36_classic_icon_with_text.html"><i class="puzzle-icon fas fa-caret-right"></i>Icon with Text</a>
+										</li>
+										<li>
+											<a href="38_classic_link_styles.html"><i class="puzzle-icon fas fa-caret-right"></i>Link Styles</a>
+										</li>
+										<li>
+											<a href="37_classic_tab_styles.html"><i class="puzzle-icon fas fa-caret-right"></i>Tab Styles</a>
+										</li>
+									</ul>
+								</div>
+
+								<div class="col3">
+									<ul>
+										<li class="megamenu-item-info">
+											<h6 class="megamenu-item-info-title">Typography</h6>
+										</li>
+										<li>
+											<a href="29_typography_heading_styles.html"><i class="puzzle-icon fas fa-caret-right"></i>Heading Styles</a>
+										</li>
+										<li>
+											<a href="30_typography_highlights.html"><i class="puzzle-icon fas fa-caret-right"></i>Highlights</a>
+										</li>
+										<li>
+											<a href="32_typography_blockquotes.html"><i class="puzzle-icon fas fa-caret-right"></i>Blockquotes</a>
+										</li>
+										<li>
+											<a href="28_typography_columns.html"><i class="puzzle-icon fas fa-caret-right"></i>Columns</a>
+										</li>
+										<li>
+											<a href="31_typography_lists.html"><i class="puzzle-icon fas fa-caret-right"></i>Lists</a>
+										</li>
+										<li>
+											<a href="43_typography-icons.html"><i class="puzzle-icon fas fa-caret-right"></i>Icons</a>
+										</li>
+									</ul>
+								</div>
+
+							</div>
+						</div>
+					</li>
+				</ul>
+
+			</nav>
+
+			<nav class="login-menu">
+				<ul>
+					<li>
+						<a href="#" data-toggle="modal" data-target="#signupModal">Sign Up</a>
+					</li>
+					<li>
+						<button type="button" class="crumina-button button--primary button--s button--hover-primary" data-toggle="modal" data-target="#loginModal">Login</button>
+					</li>
+				</ul>
+			</nav>
+
+			<select class="puzzle--select language-switcher" data-minimum-results-for-search="Infinity" data-dropdown-css-class="language-switcher-dropdown">
+				<option value="Ua" data-href="">Ua</option>
+				<option value="En" data-href="">En</option>
+				<option value="Fr" data-href="">Fr</option>
+				<option value="De" data-href="">De</option>
+				<option value="It" data-href="">It</option>
+			</select>
+
+		</div>
+	</div>
+</header>
+
+<!-- ... end Header -->
+
+
+<div class="main-content-wrapper">
+
+	<section class="stunning-header bg-dark-themes pt200">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-5 col-md-6 col-sm-12 col-xs-12 mb-5 mb-md-0">
+
+					<ul class="breadcrumbs">
+						<li class="breadcrumbs-item">
+							<a href="index.html">Home<i class="puzzle-icon fal fa-angle-double-right"></i></a>
+						</li>
+						<li class="breadcrumbs-item">
+							<a href="09_candidate_lists_grid.html">Candidates<i class="puzzle-icon fal fa-angle-double-right"></i></a>
+						</li>
+						<li class="breadcrumbs-item active">
+							<span>Company Lists</span>
+						</li>
+					</ul>
+
+					<h1 class="page-title text-white">Find your dream company</h1>
+
+					<p class="text-white fs-20 my-3 my-sm-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+
+					<a href="03_job_lists_row_map.html" class="crumina-button button--yellow button--xl button--hover-primary">Get Started Now</a>
+
+				</div>
+
+				<div class="col-lg-7 col-md-6 col-sm-12 col-xs-12 mt-auto">
+
+					<img src="img/svg/05_companies.svg" alt="company">
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="medium-padding120 bg-light-grey">
+		<div class="container">
+			<div class="row mb60">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<header class="crumina-module crumina-heading heading--h2 heading--with-decoration heading--inline mb-0">
+						<h2 class="heading-title">We have 368 great companies special for you!</h2>
+						<div class="heading-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+					</header>
+				</div>
+
+			</div>
+
+			<div class="row">
+
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+					<div class="crumina-module crumina-alphabeta-search">
+
+						<div class="alphabeta-letters">
+							<a class="has-result" data-scroll href="#A">A</a>
+							<a class="has-result" data-scroll href="#B">B</a>
+							<a class="has-result" data-scroll href="#C">C</a>
+							<a href="#">D</a>
+							<a href="#">E</a>
+							<a class="has-result" data-scroll href="#F">F</a>
+							<a href="#">G</a>
+							<a href="#">H</a>
+							<a href="#">I</a>
+							<a href="#">J</a>
+							<a href="#">K</a>
+							<a href="#">L</a>
+							<a class="has-result" data-scroll href="#M">M</a>
+							<a href="#">N</a>
+							<a href="#">O</a>
+							<a href="#">P</a>
+							<a href="#">Q</a>
+							<a href="#">R</a>
+							<a class="has-result" data-scroll href="#S">S</a>
+							<a href="#">T</a>
+							<a href="#">U</a>
+							<a href="#">V</a>
+							<a href="#">W</a>
+							<a class="has-result" data-scroll href="#X">X</a>
+							<a href="#">Y</a>
+							<a href="#">Z</a>
+						</div>
+
+						<ul class="alphabeta-list-result">
+							<li class="alphabeta-letter-item">
+								<div id="A" class="company-letter">A</div>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">Acer (8)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Adidas (32)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Adobe Systems (10)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Aldi (6)</a>
+									</li>
+								</ul>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">Alfa Romeo (209)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Amazon (67)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Apache (20)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Apple (4)</a>
+									</li>
+								</ul>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">Arcelor (38)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Arm & Hammer (5)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">ARM Limited (11)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Asda (3)</a>
+									</li>
+								</ul>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">ASICS (8)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Aston Martin (10)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Audi (6)</a>
+									</li>
+								</ul>
+							</li>
+							<li class="alphabeta-letter-item">
+								<div id="B" class="company-letter">B</div>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">B&Q (8)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Beko (32)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Berkska (10)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Bosh (6)</a>
+									</li>
+								</ul>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">Boeing (209)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Bose Corporation (67)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">BlackBerry (20)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Bull (4)</a>
+									</li>
+								</ul>
+								<ul>
+									<li>
+										<a href="#">Bultaco (38)</a>
+									</li>
+								</ul>
+							</li>
+							<li class="alphabeta-letter-item">
+								<div id="C" class="company-letter">C</div>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">Cadillac (8)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Coca-Cola (32)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Corel (10)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Cray (6)</a>
+									</li>
+								</ul>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">Cromemco (209)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Cutco (67)</a>
+									</li>
+								</ul>
+							</li>
+							<li class="alphabeta-letter-item">
+								<div id="F" class="company-letter">F</div>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">Facebook (8)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Ferrari (32)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Fiat (10)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Fonterra (6)</a>
+									</li>
+								</ul>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">FranklinCovey (209)</a>
+									</li>
+								</ul>
+							</li>
+							<li class="alphabeta-letter-item">
+								<div id="M" class="company-letter">M</div>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">MAN (8)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Manulife Finance (32)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">McDonald’s (10)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Mercedes-Benz (6)</a>
+									</li>
+								</ul>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">MFI (209)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Microlins (67)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Micron Tech (20)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Microsift (4)</a>
+									</li>
+								</ul>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">Miele (38)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Minolta (5)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Motorola (11)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Musco Lighting (3)</a>
+									</li>
+								</ul>
+							</li>
+							<li class="alphabeta-letter-item">
+								<div id="S" class="company-letter">S</div>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">Skoda Auto (8)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Skype (32)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Smart (10)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Starbucks (6)</a>
+									</li>
+								</ul>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">Stellent (209)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Subaru (4)</a>
+									</li>
+								</ul>
+							</li>
+							<li class="alphabeta-letter-item">
+								<div id="X" class="company-letter">X</div>
+								<ul>
+									<li>
+										<a href="06_company_profile.html">Xerox (8)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Xobni (32)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">Xstrata (10)</a>
+									</li>
+									<li>
+										<a href="06_company_profile.html">XTO Energy (6)</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+	<section class="medium-padding120">
+		<div class="container">
+			<div class="row mb60">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<header class="crumina-module crumina-heading heading--h2 heading--with-decoration heading--inline mb-0">
+						<h2 class="heading-title">Companies We've Helped</h2>
+						<div class="heading-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+					</header>
+				</div>
+			</div>
+
+			<div class="row">
+
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="crumina-module crumina-module-slider pagination-bottom-center slider--item-with-shadow">
+
+						<div class="swiper-container auto-height" data-show-items="4" data-prev-next="1" data-space-between="40">
+							<div class="swiper-wrapper">
+								<div class="swiper-slide">
+									<div class="ui-card h-100">
+										<div class="ui-card-content h-100">
+											<a href="05_job_details.html" class="my-auto">
+												<img class="logo" src="./img/client9.png" title="company">
+											</a>
+										</div>
+										<div class="ui-card-footer">
+											<a href="05_job_details.html" class="link--bold link--with-icon link--icon-right">View profile<i class="puzzle-icon far fa-angle-right"></i></a>
+										</div>
+									</div>
+								</div>
+								<div class="swiper-slide">
+									<div class="ui-card h-100">
+										<div class="ui-card-content h-100">
+											<a href="05_job_details.html" class="my-auto">
+												<img class="logo" src="./img/client12.png" title="company">
+											</a>
+										</div>
+										<div class="ui-card-footer">
+											<a href="05_job_details.html" class="link--bold link--with-icon link--icon-right">View profile<i class="puzzle-icon far fa-angle-right"></i></a>
+										</div>
+									</div>
+								</div>
+								<div class="swiper-slide">
+									<div class="ui-card h-100">
+										<div class="ui-card-content h-100">
+											<a href="05_job_details.html" class="my-auto">
+												<img class="logo" src="./img/client13.png" title="company">
+											</a>
+										</div>
+										<div class="ui-card-footer">
+											<a href="05_job_details.html" class="link--bold link--with-icon link--icon-right">View profile<i class="puzzle-icon far fa-angle-right"></i></a>
+										</div>
+									</div>
+								</div>
+								<div class="swiper-slide">
+									<div class="ui-card h-100">
+										<div class="ui-card-content h-100">
+											<a href="05_job_details.html" class="my-auto">
+												<img class="logo" src="./img/client10.png" title="company">
+											</a>
+										</div>
+										<div class="ui-card-footer">
+											<a href="05_job_details.html" class="link--bold link--with-icon link--icon-right">View profile<i class="puzzle-icon far fa-angle-right"></i></a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- If we need pagination -->
+						<div class="swiper-pagination"></div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+
+	<section class="medium-padding120 bg-accent-primary">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 mb-4 mb-lg-0">
+					<header class="crumina-module crumina-heading heading--h2 heading--with-decoration heading--inline decoration--dark-theme mb-0">
+						<h2 class="heading-title">Get to start the Puzzler right now!</h2>
+						<div class="heading-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+					</header>
+				</div>
+
+				<div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+					<button type="button" class="crumina-button button--dark button--l button--with-icon button--icon-left" data-toggle="modal" data-target="#signupModal">						<i class="puzzle-icon fas fa-user-tie"></i>Sign Up					</button>
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+</div>
+
+
+<!-- Footer -->
+
+<footer id="site-footer" class="footer bg-dark-themes">
+
+	<div class="footer-content">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-4 mb-lg-0">
+					<div class="widget w-info">
+						<a href="index.html" class="site-logo">
+							<img class="puzzle-icon" src="img/svg/01_logo_white.svg" alt="logo" width="120">
+						</a>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+						<div class="contact-item">
+							<svg class="puzzle-icon" width="11" height="16">
+								<path fill="" fill-rule="evenodd" d="M5.5 13.089c-.756 0-1.375.654-1.375 1.454 0 .801.619 1.455 1.375 1.455s1.375-.654 1.375-1.455c0-.8-.619-1.454-1.375-1.454zM1.375-.003C.619-.003 0 .653 0 1.452c0 .801.619 1.455 1.375 1.455S2.75 2.253 2.75 1.452c0-.799-.619-1.455-1.375-1.455zm0 4.364C.619 4.361 0 5.016 0 5.816 0 6.617.619 7.27 1.375 7.27S2.75 6.617 2.75 5.816c0-.8-.619-1.455-1.375-1.455zm0 4.364C.619 8.725 0 9.379 0 10.18c0 .8.619 1.455 1.375 1.455S2.75 10.98 2.75 10.18c0-.801-.619-1.455-1.375-1.455zm8.25-5.818c.756 0 1.375-.654 1.375-1.455 0-.799-.619-1.455-1.375-1.455S8.25.653 8.25 1.452c0 .801.619 1.455 1.375 1.455zM5.5 8.725c-.756 0-1.375.654-1.375 1.455 0 .8.619 1.455 1.375 1.455s1.375-.655 1.375-1.455c0-.801-.619-1.455-1.375-1.455zm4.125 0c-.756 0-1.375.654-1.375 1.455 0 .8.619 1.455 1.375 1.455S11 10.98 11 10.18c0-.801-.619-1.455-1.375-1.455zm0-4.364c-.756 0-1.375.655-1.375 1.455 0 .801.619 1.454 1.375 1.454S11 6.617 11 5.816c0-.8-.619-1.455-1.375-1.455zm-4.125 0c-.756 0-1.375.655-1.375 1.455 0 .801.619 1.454 1.375 1.454s1.375-.653 1.375-1.454c0-.8-.619-1.455-1.375-1.455zm0-4.364c-.756 0-1.375.656-1.375 1.455 0 .801.619 1.455 1.375 1.455s1.375-.654 1.375-1.455c0-.799-.619-1.455-1.375-1.455z" />
+							</svg>
+							<a href="#">8 800 567.890.00</a> Mon-Fri 9am-6pm
+						</div>
+
+						<div class="contact-item">
+							<i class="puzzle-icon far fa-at"></i>
+							<a href="mailto:info@sample.com">support@jobook.com</a>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mb-4 mb-lg-0">
+					<div class="widget widget_links">
+						<h5 class="widget-title">
+							Candidates
+						</h5>
+
+						<ul>
+							<li>
+								<a href="08_candidate_lists_row_map.html">Browse Jobs</a>
+							</li>
+
+							<li>
+								<a href="03_job_lists_row_map.html">Browse Companies</a>
+							</li>
+
+							<li>
+								<a href="07_company_lists_alphabet.html">Categories</a>
+							</li>
+
+							<li>
+								<a href="11_submit_resume.html">Submit Resume</a>
+							</li>
+
+							<li>
+								<a href="12_resume_preview.html">Dashboard</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="col-lg-2 col-md-6 col-sm-12 col-xs-12 mb-4 mb-lg-0">
+					<div class="widget widget_links">
+						<h5 class="widget-title">
+							Employers
+						</h5>
+
+						<ul>
+							<li>
+								<a href="09_candidate_lists_grid.html">Browse Candidates</a>
+							</li>
+
+							<li>
+								<a href="16_standard_news_with_sidebar.html">Post a Job</a>
+							</li>
+
+							<li>
+								<a href="12_resume_preview.html">Dashboard</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-0 mb-lg-0">
+					<div class="widget w-contacts">
+						<h5 class="widget-title">
+							Sign Up for Weekly Newsletter
+						</h5>
+						<p>Subscribe to our newsletter and always be aware of all the latest updates.</p>
+
+						<div class="input--border-bottom">
+							<input name="mail" placeholder="Email Address" type="email">
+							<i class="puzzle-icon far fa-envelope"></i>
+						</div>
+
+						<ul class="socials">
+							<li>
+								<a href="#">
+									<i class="puzzle-icon fab fa-facebook-square"></i>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="puzzle-icon fab fa-twitter"></i>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="puzzle-icon fab fa-linkedin-in"></i>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="puzzle-icon fas fa-rss"></i>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="sub-footer">
+		<div class="container">
+			<div class="row align-items-center">
+
+				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 text-center text-lg-left mb-4 mb-lg-0">
+					<ul class="footer-main-menu">
+						<li>
+							<a href="index.html">Home</a>
+						</li>
+						<li>
+							<a href="02_how_it_works.html">How it Works</a>
+						</li>
+						<li>
+							<a href="03_job_lists_row_map.html">Employers</a>
+						</li>
+						<li>
+							<a href="08_candidate_lists_row_map.html">Candidates</a>
+						</li>
+						<li>
+							<a href="15_news_grid.html">News</a>
+						</li>
+						<li>
+							<a href="index.html">Pages</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 text-center text-lg-right">
+					<div class="copyright">
+						<span>© 2019 </span>
+						<span><a href="index.html">Puzzler.</a></span>
+						<span>designed by <a href="https://themeforest.net/user/themefire/portfolio" class="logo-title">themefire.</a></span>
+						<span>Developed by <a href="https://crumina.net/" class="logo-title">Crumina</a></span>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<a class="back-to-top" href="#">
+		<svg class="puzzle-icon" width="24" height="28">
+			<path fill="" fill-rule="evenodd" d="M23.027 1.966H.973A.98.98 0 0 1 0 .983C0 .44.432 0 .973 0h22.054A.98.98 0 0 1 24 .983a.983.983 0 0 1-.973.983zM11.306 6.105a.975.975 0 0 1 1.382 0l6.083 6.111a.988.988 0 0 1 0 1.39.974.974 0 0 1-1.377 0l-4.415-4.437v17.853A.98.98 0 0 1 12 28a.975.975 0 0 1-.973-.978V9.169l-4.415 4.437a.976.976 0 0 1-1.383 0 .988.988 0 0 1 0-1.39l6.077-6.111z" />
+		</svg>
+		Go to top
+	</a>
+</footer>
+
+<!-- ... end Footer -->
+
+
+<div class="modal fade window-popup" id="loginModal" tabindex="-1" role="dialog"  aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form class="form-login">
+					<h2>My Account</h2>
+					<div class="mb-4">For fast login use your social account.</div>
+					<button type="button" class="crumina-button button--blue-dark button--l button--with-icon button--icon-left w-100 mb-2">
+						<i class="puzzle-icon fab fa-facebook-square"></i>Login with the Facebook
+					</button>
+					<button type="button" class="crumina-button button--blue button--l button--with-icon button--icon-left w-100 mb-4">
+						<i class="puzzle-icon fab fa-twitter"></i>Login with the Twitter
+					</button>
+					<label for="name">Username or Email Address *</label>
+					<input id="name" name="name" placeholder="" type="text">
+					<div class="d-flex align-items-center justify-content-between mb-3">
+						<label class="mb-0" for="password">Password *</label>
+						<a href="#">Lost your password?</a>
+					</div>
+					<input id="password" name="password" placeholder="" type="password">
+					<div class="checkbox checkbox--transparent mt-2 mb-4">
+						<label>
+							<input type="checkbox" name="optionsCheckboxes4">
+							<span class="checkbox-material"><span class="check"></span></span>
+							Remember Me
+						</label>
+					</div>
+					<button type="button" class="crumina-button button--green button--l w-100">Log In</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade window-popup" id="signupModal" tabindex="-1" role="dialog"  aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form class="form-login">
+					<h2 class="mb-4">Register</h2>
+					<label for="first_name">First Name *</label>
+					<input id="first_name" name="name" placeholder="" type="text">
+					<label for="last_name">Last Name *</label>
+					<input id="last_name" name="name" placeholder="" type="text">
+					<label for="password1">Password *</label>
+					<input id="password1" name="name" placeholder="" type="password">
+					<button type="button" class="crumina-button button--green button--l w-100 my-3">Create an Account</button>
+					<button type="button" class="crumina-button button--white button--l w-100">Log In</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- jQuery first, then Other JS. -->
+
+<script src="js/jquery.js"></script>
+
+<script src="js/Bootstrap/bootstrap.bundle.js"></script>
+
+<script src="js/js-plugins/crum-mega-menu.js"></script>
+
+
+<script src="js/js-plugins/froala_editor.min.js"></script>
+<script src="js/js-plugins/imagesLoaded.js"></script>
+<script src="js/js-plugins/isotope.pkgd.min.js"></script>
+<script src="js/js-plugins/jquery.magnific-popup.js"></script>
+<script src="js/js-plugins/jquery.matchHeight.js"></script>
+<script src="js/js-plugins/leaflet.js"></script>
+<script src="js/js-plugins/MarkerClusterGroup.js"></script>
+<script src="js/js-plugins/select2.js"></script>
+<script src="js/js-plugins/smooth-scroll.js"></script>
+<script src="js/js-plugins/swiper.min.js"></script>
+<script src="js/js-plugins/TimeCircles.js"></script>
+ <script src="js/js-plugins/ajax-pagination.js"></script>
+<script src="js/js-plugins/segment.js"></script>
+<script src="js/js-plugins/sticky-sidebar.js"></script>
+
+<script src="js/main.js"></script>
+
+<!-- FontAwesome 5.x.x JS -->
+
+<script defer src="fonts/fontawesome-all.js"></script>
+
+</body>
+</html>

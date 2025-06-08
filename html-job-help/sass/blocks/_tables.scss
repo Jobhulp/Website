@@ -1,0 +1,115 @@
+/*------------- #TABLES --------------*/
+
+table {
+  width: 100%;
+}
+
+.table--standard {
+  width: 100%;
+  border-radius: 5px;
+  background-color: var(--white-color);
+  box-shadow: 0 4px 10px 2px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+
+  thead {
+	background-color: var(--dark-themes);
+
+	th {
+	  padding: 19px 25px;
+	  color: var(--white-color);
+	  font-weight: 700;
+	}
+  }
+
+  tbody {
+	tr {
+	  border-bottom: 1px solid var(--border-grey-color);
+	  position: relative;
+
+	  &:after {
+		content: '';
+		display: block;
+		height: 100%;
+		width: 6px;
+		background-color: var(--primary-accent-color);
+		position: absolute;
+		left: 0;
+		top: 0;
+		opacity: 0;
+		transition: opacity .3s ease-in-out;
+	  }
+
+	  &:hover {
+		&:after {
+		  opacity: 1;
+		}
+
+		.action {
+		  .edit {
+			.puzzle-icon {
+			  color: var(--blue-themes);
+			}
+
+		  }
+
+		  .remove {
+			.puzzle-icon {
+			  color: var(--secondary-accent-color);
+			}
+		  }
+		}
+	  }
+
+	  &:last-child {
+		border-bottom: none;
+	  }
+	}
+
+	td {
+	  padding: 36px 40px;
+	}
+  }
+
+  .action {
+	display: flex;
+	align-items: center;
+
+	.puzzle-icon {
+	  color: var(--grey-color);
+	}
+
+	a + a {
+	  margin-left: 15px;
+	}
+  }
+}
+
+
+/*------------- Responsive Mode --------------*/
+
+
+@media (max-width: 768px) {
+  .table--standard tbody td {
+	padding: 10px 15px;
+  }
+
+  .table--standard thead th {
+	padding: 10px 15px;
+  }
+
+  .table--standard .action a + a {
+	margin-left: 5px;
+  }
+}
+
+@media (max-width: 580px) {
+  .table--standard tbody td {
+	padding: 5px;
+	font-size: 10px;
+  }
+
+  .table--standard thead th {
+	padding: 5px;
+	font-size: 10px;
+  }
+}

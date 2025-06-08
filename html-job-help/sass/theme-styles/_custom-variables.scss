@@ -1,0 +1,115 @@
+/*------------- #VARIABLES --------------*/
+
+
+// We use these as default colors throughout
+
+$primary-accent-color: #00E5B0 !default;
+$secondary-accent-color: #FB4219 !default;
+
+$white-color: #fff !default;
+$border-grey-color: #d6dce5 !default;
+$link-color: #121214 !default;
+$heading-color: #121214 !default;
+
+$button-dark: #121214 !default;
+$button-white: #ffffff !default;
+$button-yellow: #f9bc35 !default;
+$button-green: #01bb86 !default;
+$button-grey: #d6dce5 !default;
+$button-red: #fd4e26 !default;
+$button-primary: $primary-accent-color !default;
+$button-grey-dark: #c0c8d3 !default;
+$button-blue: #159ce4 !default;
+$button-blue-dark: #08469c !default;
+
+$h1-fontsize: 60px !default;
+$h2-fontsize: 36px !default;
+$h3-fontsize: 30px !default;
+$h4-fontsize: 24px !default;
+$h5-fontsize: 18px !default;
+$h6-fontsize: 16px !default;
+$h-font-weight: 700 !default;
+$h-margin: .53em 0 !default;
+$heading-font-family: 'IBM Plex Sans', sans-serif !default;
+
+$p-font-size: 16px !default;
+
+
+// We use these to control various global styles
+
+$body-bg-color: #fff !default;
+$body-font-size: 16px !default;
+$body-font-color: #121214 !default;
+$body-font-family: 'IBM Plex Sans', sans-serif !default;
+$body-font-weight: 400 !default;
+$body-letter-spacing: -.001em !default;
+$base-line-height: 1.39 !default;
+
+$logo-font-family: 'Condition Regular', sans-serif !default;
+
+$icon-color: #9095a0 !default;
+$grey: #898e9a !default;
+$light-grey: #eff2f7 !default;
+$red-themes: #fd4e26 !default;
+$dark-themes: #121214 !default;
+$blue-themes: #159ce4 !default;
+$grey-dark-theme: #c0c8d3 !default;
+$yellow-themes: #f9bc35 !default;
+
+//Forms
+
+$placeholder-color: #4d525b !default;
+$placeholder-active-color: #c0c8d3 !default;
+$input-dark-bg: #232427 !default;
+
+$checkbox-blue-dark: #08469c !default;
+$checkbox-green: #01bb86 !default;
+$checkbox-red: #fd4e26 !default;
+$checkbox-yellow: #f9bc35 !default;
+$checkbox-blue: #159ce4 !default;
+
+
+//socials colors
+
+$c-rss: #f4b459 !default;
+$c-mail: #996DD1 !default;
+$c-pinterest: #cc2127 !default;
+$c-googleplus: #dd4b39 !default;
+$c-google: #dd4b39 !default;
+$c-facebook: #2f5b9d !default;
+$c-twitter: #38bff1 !default;
+$c-amazone: #F69B06 !default;
+$c-behance: #2D2D2D !default;
+$c-bing: #FFA616 !default;
+$c-creative-market: #8DA741 !default;
+$c-deviantart: #1B1B1B !default;
+$c-dribbble: #f74881 !default;
+$c-dropbox: #0BA4E0 !default;
+$c-envato: #6D9C3E !default;
+$c-flickr: #26A9E1 !default;
+$c-instagram: #E75351 !default;
+$c-kickstarter: #14E06E !default;
+$c-linkedin: #4A8F9E !default;
+$c-medium: #00E56B !default;
+$c-periscope: #3FA4C4 !default;
+$c-quora: #F85F62 !default;
+$c-reddit: #F05825 !default;
+$c-shutterstock: #008EC0 !default;
+$c-skype: #00AAF1 !default;
+$c-snapchat: #FFED45 !default;
+$c-soundcloud: #FF3300 !default;
+$c-spotify: #1ED760 !default;
+$c-trello: #0079BF !default;
+$c-tumblr: #36465D !default;
+$c-vimeo: #1AB7EA !default;
+$c-vk: #6383A8 !default;
+$c-whatsapp: #25D366 !default;
+$c-wikipedia: #000000 !default;
+$c-wordpress: #21759B !default;
+$c-youtube: #CD201F !default;
+$c-messanger: #3b84f6 !default;
+$c-telegram: #3d87c4 !default;
+$c-email: #fd4e26 !default;
+
+$bg-secondary: $secondary-accent-color;
+$bg-primary: $primary-accent-color;

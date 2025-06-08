@@ -1,0 +1,35 @@
+/*------------- #W-COMPANY --------------*/
+
+
+.w-company {
+  overflow: hidden;
+
+  .logo-company {
+	padding: 60px 50px;
+  }
+
+  .summary-items {
+	margin: 40px 0;
+  }
+
+  .socials {
+	margin: 0;
+	text-align: center;
+  }
+
+  &.widget-sidebar {
+	border-radius: 5px;
+	background-color: var(--white-color);
+	padding: 40px;
+  }
+}
+
+
+/*------------- Responsive Mode --------------*/
+
+
+@media (max-width: 768px) {
+  .w-company.widget-sidebar {
+	padding: 20px;
+  }
+}

@@ -1,0 +1,436 @@
+/*------------- #BLOGS --------------*/
+
+.post {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-radius: 5px;
+  background-color: var(--white-color);
+  box-shadow: 0 4px 10px 2px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  margin-bottom: 40px;
+  transition: all .3s ease;
+  justify-content: space-between;
+
+  &:hover {
+	box-shadow: 0 16px 30px 2px rgba(0, 0, 0, 0.26);
+  }
+}
+
+.post-header {
+  line-height: 1;
+  padding: 17px 40px;
+  border-bottom: 1px solid var(--border-grey-color);
+}
+
+.post-category {
+  font-size: 12px;
+  color: var(--grey-color);
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+}
+
+.post__content {
+  padding: 20px 40px;
+}
+
+.post-additional-info {
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.post-content-wrap {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.content-inline {
+  .post-content-wrap {
+
+	& > * {
+	  flex: 1 1 45%;
+
+	  & + * {
+		margin-left: 20px;
+	  }
+	}
+  }
+}
+
+.post-thumb {
+  position: relative;
+  overflow: hidden;
+  margin-top: 20px;
+  border-radius: 5px;
+
+  img {
+	display: block;
+	margin: 0 auto;
+	border-radius: 5px;
+  }
+
+  iframe {
+	width: 100%;
+  }
+}
+
+.post-title {
+  display: block;
+  min-height: 50px;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.post__date {
+  font-size: 12px;
+  color: var(--grey-color);
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+}
+
+.post__comments {
+  font-size: 12px;
+  color: var(--grey-color);
+  display: flex;
+  align-items: center;
+
+  .puzzle-icon {
+	margin-left: 10px;
+  }
+}
+
+/*------------- #VIDEO YOUTUBE POST --------------*/
+
+.post.video-youtube {
+
+  .video-control {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+  }
+}
+
+/*------------- #VIDEO STANDARD POST --------------*/
+
+.post.video-standard {
+
+  .video-control {
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+  }
+}
+
+/*------------- #QUOTE POST --------------*/
+
+.post.quote {
+
+  .post__content {
+	margin: auto 0;
+	padding: 60px;
+  }
+
+  blockquote {
+	margin: 0;
+	padding: 0 0 0 40px;
+  }
+
+  &.content-inline {
+	.post__content {
+	  padding: 100px;
+	}
+  }
+}
+
+/*------------- #Link POST --------------*/
+
+.post.link {
+  .post__content {
+	margin: auto 0;
+	padding: 60px;
+  }
+
+  img {
+	min-height: 40px;
+	min-width: 40px;
+  }
+
+  .post-title {
+	margin: 35px 0;
+  }
+
+  &.content-inline {
+
+	.post__content {
+	  padding: 100px;
+	  display: flex;
+	  align-items: flex-start;
+	}
+
+	img {
+	  margin-right: 40px;
+	}
+
+	.post-title {
+	  margin-top: 0;
+	}
+  }
+}
+
+/*================= Post Details ============*/
+
+.post-info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.info-item {
+  margin-right: 35px;
+
+  &:last-child {
+	margin-right: 0;
+  }
+
+  .avatar {
+	margin-right: 20px;
+  }
+
+  .description {
+	color: var(--grey-color);
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 1.3px;
+  }
+}
+
+.post-standard-details {
+  box-shadow: none;
+  background-color: transparent;
+  border-radius: 0;
+
+  &:hover {
+	box-shadow: none;
+  }
+
+  blockquote {
+	margin: 0;
+	padding: 60px 80px;
+	position: relative;
+	overflow: hidden;
+  }
+
+  .content {
+	padding-left: 40px;
+  }
+
+  &.slider {
+	.post-thumb {
+	  border-radius: 0;
+	  margin-top: 0;
+
+	  img {
+		border-radius: 0;
+	  }
+	}
+  }
+
+  .socials--blog {
+	margin-top: 25px;
+  }
+
+  &.video-youtube {
+	border-radius: 5px;
+	background-color: var(--white-color);
+	box-shadow: 0 4px 10px 2px rgba(0, 0, 0, 0.2);
+
+	.post-thumb {
+	  margin: 40px 0;
+	}
+  }
+}
+
+/* =WordPress Core
+-------------------------------------------------------------- */
+
+.align-center,
+.aligncenter {
+  text-align: center;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+}
+
+img.aligncenter {
+  display: block;
+  margin: 20px auto;
+}
+
+.alignnone {
+  margin: 5px 20px 20px 0;
+}
+
+.alignright {
+  float: right;
+  margin: 5px 0 20px 20px;
+}
+
+.alignleft {
+  float: left;
+  margin: 5px 40px 20px 0;
+}
+
+a img.alignright {
+  float: right;
+  margin: 5px 0 20px 20px;
+}
+
+a img.alignnone {
+  margin: 5px 20px 20px 0;
+}
+
+a img.alignleft {
+  float: left;
+  margin: 5px 20px 20px 0;
+}
+
+a img.aligncenter {
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+
+.wp-caption {
+  margin-bottom: 20px;
+
+  img {
+	margin: 0 auto 15px;
+	border-radius: 5px;
+	display: block;
+  }
+
+  .wp-caption-text {
+	margin-bottom: 0;
+	padding: 0 40px;
+  }
+}
+
+.wp-caption-text {
+  font-size: 14px;
+  color: var(--grey-color);
+}
+
+.wp-caption.alignnone {
+  margin: 5px 20px 20px 0;
+}
+
+.wp-caption.alignleft {
+  margin: 5px 20px 20px 0;
+}
+
+.wp-caption.alignright {
+  margin: 5px 0 20px 20px;
+}
+
+.wp-caption p.wp-caption-text {
+  font-size: 14px;
+  line-height: 17px;
+  margin: 0;
+  padding: 0 4px 5px;
+}
+
+/*------------- Responsive Mode --------------*/
+
+@media (max-width: 1024px) {
+
+  .post-header {
+	padding: 15px 20px;
+  }
+
+  .post__content {
+	padding: 15px 20px;
+  }
+
+  .post-additional-info {
+	padding: 15px 20px;
+  }
+
+  .post.quote .post__content {
+	padding: 20px;
+  }
+
+  .post.link .post__content {
+	padding: 20px;
+  }
+
+  .post.quote.content-inline .post__content {
+	padding: 30px;
+  }
+
+  .post.link.content-inline .post__content {
+	padding: 30px;
+	flex-direction: column;
+  }
+
+  .post.link.content-inline img {
+	margin-right: 0;
+	margin-bottom: 20px;
+  }
+
+  .post.link .post-title {
+	margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 991px) {
+  .content-inline .post-content-wrap > * {
+	flex: 1 1 100%;
+  }
+
+  .content-inline .post-content-wrap > * + * {
+	margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .post {
+	margin-bottom: 20px;
+  }
+
+  .post-info {
+	.info-item {
+	  width: 100%;
+
+	  &.author-block {
+		flex-direction: column;
+		align-items: flex-start;
+
+		.avatar {
+		  margin-right: 0;
+		  margin-bottom: 15px;
+		}
+	  }
+	}
+  }
+
+  .post-standard-details blockquote {
+	padding: 20px 40px;
+  }
+
+  .wp-caption .wp-caption-text {
+	padding: 0 20px;
+  }
+}

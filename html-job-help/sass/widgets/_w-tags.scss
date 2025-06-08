@@ -1,0 +1,58 @@
+/*------------- #W-SOCIALS --------------*/
+
+
+.w-tags {
+  .widget-title {
+	margin-bottom: 40px;
+  }
+
+  &.widget-sidebar {
+	border-radius: 5px;
+	background-color: var(--white-color);
+	padding: 40px;
+  }
+}
+
+.tags-list {
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+
+  li {
+	display: inline-block;
+	margin-right: 8px;
+	margin-bottom: 10px;
+
+	&:last-child {
+	  margin-right: 0;
+	}
+  }
+
+  a {
+	border-radius: 3px;
+	border: 2px solid var(--border-grey-color);
+	line-height: 1;
+	padding: 5px 15px;
+	text-decoration: none;
+
+	&:hover {
+	  background-color: var(--dark-themes);
+	  border-color: var(--dark-themes);
+	  color: var(--white-color);
+	}
+  }
+}
+
+
+/*------------- Responsive Mode --------------*/
+
+
+@media (max-width: 768px) {
+  .w-tags.widget-sidebar {
+	padding: 20px;
+  }
+
+  .w-tags .widget-title {
+	margin-bottom: 20px;
+  }
+}

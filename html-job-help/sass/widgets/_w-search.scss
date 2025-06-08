@@ -1,0 +1,29 @@
+/*------------- #W-SEARCH --------------*/
+
+
+.w-search {
+	.widget-title {
+	  margin-bottom: 40px;
+	}
+
+  &.widget-sidebar {
+	background-color: var(--white-color);
+	padding: 40px;
+	border-radius: 5px;
+  }
+}
+
+
+
+/*------------- Responsive Mode --------------*/
+
+
+@media (max-width: 768px) {
+  .w-search.widget-sidebar {
+	padding: 20px;
+  }
+
+  .w-search .widget-title {
+	margin-bottom: 20px;
+  }
+}

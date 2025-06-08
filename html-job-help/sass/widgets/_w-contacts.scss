@@ -1,0 +1,20 @@
+/*------------- #W-CONTACTS --------------*/
+
+
+.w-contacts {
+  p {
+	margin-bottom: 30px;
+  }
+
+  .socials {
+	margin-top: 40px;
+  }
+}
+
+/*================= Responsive Mode ============*/
+
+@media (max-width: 768px) {
+  .w-contacts .socials {
+	margin-top: 20px;
+  }
+}

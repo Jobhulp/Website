@@ -1,0 +1,60 @@
+/*------------- #ROOT --------------*/
+
+
+:root {
+  //Font Family
+  --font-family-body: #{inspect($body-font-family)};
+  --font-family-logo: #{inspect($logo-font-family)};
+
+  //Colors
+  --primary-accent-color: #{inspect($primary-accent-color)};
+  --secondary-accent-color: #{inspect($secondary-accent-color)};
+  --body-font-color: #{inspect($body-font-color)};
+  --white-color: #{inspect($white-color)};
+  --border-grey-color: #{inspect($border-grey-color)};
+  --heading-color: #{inspect($heading-color)};
+  --icon-color: #{inspect($icon-color)};
+  --grey-color: #{inspect($grey)};
+  --light-grey: #{inspect($light-grey)};
+  --red-themes: #{inspect($red-themes)};
+  --dark-themes: #{inspect($dark-themes)};
+  --blue-themes: #{inspect($blue-themes)};
+  --yellow-themes: #{inspect($yellow-themes)};
+  --grey-dark-theme: #{inspect($grey-dark-theme)};
+  --link-color: #{inspect($link-color)};
+
+  //Font-size
+  --h1-font-size: #{inspect($h1-fontsize)};
+  --h2-font-size: #{inspect($h2-fontsize)};
+  --h3-font-size: #{inspect($h3-fontsize)};
+  --h4-font-size: #{inspect($h4-fontsize)};
+  --h5-font-size: #{inspect($h5-fontsize)};
+  --h6-font-size: #{inspect($h6-fontsize)};
+
+  --h-font-weight: #{inspect($h-font-weight)};
+  --h-margin: #{inspect($h-margin)};
+  --heading-font-family: #{inspect($heading-font-family)};
+
+  //Buttons
+  --button--dark: #{inspect($button-dark)};
+  --button--white: #{inspect($button-white)};
+  --button--yellow: #{inspect($button-yellow)};
+  --button--green: #{inspect($button-green)};
+  --button--grey: #{inspect($button-grey)};
+  --button--red: #{inspect($button-red)};
+  --button--primary: #{inspect($button-primary)};
+  --button--grey-dark: #{inspect($button-grey-dark)};
+  --button--blue: #{inspect($button-blue)};
+  --button--blue-dark: #{inspect($button-blue-dark)};
+
+  //Forms
+  --placeholder-color: #{inspect($placeholder-color)};
+  --placeholder-active-color: #{inspect($placeholder-active-color)};
+  --input-dark-bg: #{inspect($input-dark-bg)};
+
+  --checkbox-blue-dark: #{inspect($checkbox-blue-dark)};
+  --checkbox-green: #{inspect($checkbox-green)};
+  --checkbox-red: #{inspect($checkbox-red)};
+  --checkbox-yellow: #{inspect($checkbox-yellow)};
+  --checkbox-blue: #{inspect($checkbox-blue)};
+}

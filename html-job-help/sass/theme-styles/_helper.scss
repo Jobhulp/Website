@@ -1,0 +1,698 @@
+/*------------- #HELPERS --------------*/
+
+// Positioning
+
+.overlay-standard, .overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(18, 18, 20, 0.3);
+  transition: all 0.3s ease;
+}
+
+.overlay-stunning {
+  background: rgba(18, 18, 20, 0.6);
+}
+
+.full-block-link {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.w-45 {
+  width: 45%;
+}
+
+.gutter-sizer {
+  width: 40px;
+}
+
+.grid-sizer {
+  width: 33.3333%;
+}
+
+.grid-sizer-half-width {
+  width: 50%;
+}
+
+.grid-sizer-full-width {
+  width: 100%;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.medium-padding40 {
+  padding: 40px 0;
+}
+
+.bg-light-grey {
+ background-color: var(--light-grey);
+}
+
+.bg-dark-themes {
+  background-color: var(--dark-themes);
+}
+
+.c-red {
+  color: var(--red-themes);
+}
+
+.c-grey {
+  color: var(--grey-color);
+}
+
+.fs-12 {
+  font-size: 12px;
+}
+
+.fs-14 {
+  font-size: 14px;
+}
+
+.fs-16 {
+  font-size: 16px;
+}
+
+.fs-20 {
+  font-size: 20px;
+}
+
+.bg-accent-primary {
+  background-color: var(--primary-accent-color);
+}
+
+.negative-margin-top-63 {
+  margin-top: -63px;
+}
+
+.negative-margin-top-115 {
+  margin-top: -115px;
+}
+
+.medium-padding60 {
+  padding: 60px 0;
+
+  @media (max-width: 768px) {
+    padding: 20px 0;
+  }
+}
+
+.medium-padding80 {
+  padding: 80px 0;
+
+  @media (max-width: 768px) {
+    padding: 35px 0;
+  }
+}
+
+.medium-padding100 {
+  padding: 100px 0;
+
+  @media (max-width: 768px) {
+    padding: 35px 0;
+  }
+}
+
+.medium-padding120 {
+  padding: 120px 0;
+
+  @media (max-width: 768px) {
+    padding: 35px 0;
+  }
+}
+
+.medium-padding180 {
+  padding: 180px 0;
+
+  @media (max-width: 768px) {
+    padding: 90px 0;
+  }
+}
+
+.medium-padding270 {
+  padding: 270px 0;
+
+  @media (max-width: 768px) {
+    padding: 100px 0;
+  }
+}
+
+.pb100 {
+  padding-bottom: 100px;
+
+  @media (max-width: 768px) {
+    padding-bottom: 35px;
+  }
+}
+
+.pb200 {
+  padding-bottom: 200px;
+
+  @media (max-width: 768px) {
+    padding-bottom: 150px;
+  }
+}
+
+.pb60 {
+  padding-bottom: 60px;
+
+  @media (max-width: 768px) {
+    padding-bottom: 30px;
+  }
+}
+
+.pt200 {
+  padding-top: 200px;
+
+  @media (max-width: 768px) {
+    padding-top: 150px;
+  }
+}
+
+.pt80 {
+  padding-top: 80px;
+
+  @media (max-width: 768px) {
+    padding-top: 35px;
+  }
+}
+
+.pt180 {
+  padding-top: 180px;
+}
+
+.pt100 {
+  padding-top: 100px;
+
+  @media (max-width: 768px) {
+    padding-top: 35px;
+  }
+}
+
+.pt400 {
+  padding-top: 400px;
+
+  @media (max-width: 1024px) {
+    padding-top: 200px;
+  }
+
+  @media (max-width: 768px) {
+    padding-top: 100px;
+  }
+}
+
+.pb360 {
+  padding-bottom: 360px;
+}
+
+.pb120 {
+  padding-bottom: 120px;
+
+  @media (max-width: 768px) {
+    padding-bottom: 35px;
+  }
+}
+
+.pt120 {
+  padding-top: 120px;
+
+  @media (max-width: 768px) {
+    padding-top: 35px;
+  }
+}
+
+.pb80 {
+  padding-bottom: 80px;
+
+  @media (max-width: 768px) {
+    padding-bottom: 35px;
+  }
+}
+
+.pb30 {
+  padding-bottom: 30px;
+}
+
+.mb-negative-1 {
+  margin-bottom: -1px;
+}
+
+.mt60 {
+  margin-top: 60px;
+
+  @media (max-width: 768px) {
+    margin-top: 35px;
+  }
+}
+
+.mb30 {
+  margin-bottom: 30px;
+}
+
+.mt30 {
+  margin-top: 30px;
+}
+
+.mb40 {
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 15px;
+  }
+}
+
+.mb20 {
+  margin-bottom: 20px;
+}
+
+.mb60 {
+  margin-bottom: 60px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 35px;
+  }
+}
+
+.c-primary {
+  color: var(--primary-accent-color);
+}
+
+.c-secondary {
+  color: var(--heading-color);
+}
+
+.font-color-custom * {
+  color: inherit;
+}
+
+.custom-color * {
+  color: inherit;
+}
+
+.weight-bold {
+  font-weight: 700;
+}
+
+.weight-normal {
+  font-weight: 400;
+}
+
+.icon-demonstration {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: rgba(0, 229, 176, .5);
+  border-radius: 20px;
+}
+
+/*------------- #Socials BG-helper --------------*/
+
+.bg-rss {
+  background-color: $c-rss;
+}
+
+.bg-mail {
+  background-color: $c-mail;
+}
+
+.bg-pinterest {
+  background-color: $c-pinterest;
+}
+
+.bg-googleplus {
+  background-color: $c-googleplus;
+}
+
+.bg-google {
+  background-color: $c-google;
+}
+
+.bg-facebook {
+  background-color: $c-facebook;
+}
+
+.bg-twitter {
+  background-color: $c-twitter;
+}
+
+.bg-amazon {
+  background-color: $c-amazone;
+}
+
+.bg-behance {
+  background-color: $c-behance;
+}
+
+.bg-bing {
+  background-color: $c-bing;
+}
+
+.bg-creative-market {
+  background-color: $c-creative-market;
+}
+
+.bg-deviantart {
+  background-color: $c-deviantart;
+}
+
+.bg-dribble {
+  background-color: $c-dribbble;
+}
+
+.bg-dropbox {
+  background-color: $c-dropbox;
+}
+
+.bg-envato {
+  background-color: $c-envato;
+}
+
+.bg-flickr {
+  background-color: $c-flickr;
+}
+
+.bg-instagram {
+  background-color: $c-instagram;
+}
+
+.bg-kickstarter {
+  background-color: $c-kickstarter;
+}
+
+.bg-linkedin {
+  background-color: $c-linkedin;
+}
+
+.bg-medium {
+  background-color: $c-medium;
+}
+
+.bg-periscope {
+  background-color: $c-periscope;
+}
+
+.bg-quora {
+  background-color: $c-quora;
+}
+
+.bg-reddit {
+  background-color: $c-reddit;
+}
+
+.bg-shutterstock {
+  background-color: $c-shutterstock;
+}
+
+.bg-skype {
+  background-color: $c-skype;
+}
+
+.bg-snapchat {
+  background-color: $c-snapchat;
+}
+
+.bg-soundcloud {
+  background-color: $c-soundcloud;
+}
+
+.bg-spotify {
+  background-color: $c-spotify;
+}
+
+.bg-trello {
+  background-color: $c-trello;
+}
+
+.bg-tumblr {
+  background-color: $c-tumblr;
+}
+
+.bg-vimeo {
+  background-color: $c-vimeo;
+}
+
+.bg-vk {
+  background-color: $c-vk;
+}
+
+.bg-whatsapp {
+  background-color: $c-whatsapp;
+}
+
+.bg-wikipedia {
+  background-color: $c-wikipedia;
+}
+
+.bg-wordpress {
+  background-color: $c-wordpress;
+}
+
+.bg-youtube {
+  background-color: $c-youtube;
+}
+
+.bg-messanger {
+  background-color: $c-messanger;
+}
+
+.bg-telegram {
+  background-color: $c-telegram;
+}
+
+.bg-email {
+  background-color: $c-email;
+}
+
+/*------------- #Socials COLOR-helper --------------*/
+
+.c-rss {
+  color: $c-rss;
+  fill: $c-rss;
+}
+
+.c-mail {
+  color: $c-mail;
+  fill: $c-mail;
+}
+
+.c-pinterest {
+  color: $c-pinterest;
+  fill: $c-pinterest;
+}
+
+.c-googleplus {
+  color: $c-googleplus;
+  fill: $c-googleplus;
+}
+
+.c-google {
+  color: $c-google;
+  fill: $c-google;
+}
+
+.c-facebook {
+  color: $c-facebook;
+  fill: $c-facebook;
+}
+
+.c-twitter {
+  color: $c-twitter;
+  fill: $c-twitter;
+}
+
+.c-amazon {
+  color: $c-amazone;
+  fill: $c-amazone;
+}
+
+.c-behance {
+  color: $c-behance;
+  fill: $c-behance;
+}
+
+.c-bing {
+  color: $c-bing;
+  fill: $c-bing;
+}
+
+.c-creative-market {
+  color: $c-creative-market;
+  fill: $c-creative-market;
+}
+
+.c-deviantart {
+  color: $c-deviantart;
+  fill: $c-deviantart;
+}
+
+.c-dribble {
+  color: $c-dribbble;
+  fill: $c-dribbble;
+}
+
+.c-dropbox {
+  color: $c-dropbox;
+  fill: $c-dropbox;
+}
+
+.c-envato {
+  color: $c-envato;
+  fill: $c-envato;
+}
+
+.c-flickr {
+  color: $c-flickr;
+  fill: $c-flickr;
+}
+
+.c-instagram {
+  color: $c-instagram;
+  fill: $c-instagram;
+}
+
+.c-kickstarter {
+  color: $c-kickstarter;
+  fill: $c-kickstarter;
+}
+
+.c-linkedin {
+  color: $c-linkedin;
+  fill: $c-linkedin;
+}
+
+.c-medium {
+  color: $c-medium;
+  fill: $c-medium;
+}
+
+.c-periscope {
+  color: $c-periscope;
+  fill: $c-periscope;
+}
+
+.c-quora {
+  color: $c-quora;
+  fill: $c-quora;
+}
+
+.c-reddit {
+  color: $c-reddit;
+  fill: $c-reddit;
+}
+
+.c-shutterstock {
+  color: $c-shutterstock;
+  fill: $c-shutterstock;
+}
+
+.c-skype {
+  color: $c-skype;
+  fill: $c-skype;
+}
+
+.c-snapchat {
+  color: $c-snapchat;
+  fill: $c-snapchat;
+}
+
+.c-soundcloud {
+  color: $c-soundcloud;
+  fill: $c-soundcloud;
+}
+
+.c-spotify {
+  color: $c-spotify;
+  fill: $c-spotify;
+}
+
+.c-trello {
+  color: $c-trello;
+  fill: $c-trello;
+}
+
+.c-tumblr {
+  color: $c-tumblr;
+  fill: $c-tumblr;
+}
+
+.c-vimeo {
+  color: $c-vimeo;
+  fill: $c-vimeo;
+}
+
+.c-vk {
+  color: $c-vk;
+  fill: $c-vk;
+}
+
+.c-whatsapp {
+  color: $c-whatsapp;
+  fill: $c-whatsapp;
+}
+
+.c-wikipedia {
+  color: $c-wikipedia;
+  fill: $c-wikipedia;
+}
+
+.c-wordpress {
+  color: $c-wordpress;
+  fill: $c-wordpress;
+}
+
+.c-youtube {
+  color: $c-youtube;
+  fill: $c-youtube;
+}
+
+.c-messanger {
+  color: $c-messanger;
+  fill: $c-messanger;
+}
+
+.c-telegram {
+  color: $c-telegram;
+  fill: $c-telegram;
+}
+
+.c-email {
+  color: $c-email;
+  fill: $c-email;
+}
+
+
+/*------------- Responsive Mode --------------*/
+
+
+@media (max-width: 768px) {
+  .fs-12 {
+    font-size: 10px;
+  }
+
+  .fs-14 {
+    font-size: 12px;
+  }
+
+  .fs-16 {
+    font-size: 14px;
+  }
+
+  .fs-20 {
+    font-size: 16px;
+  }
+
+  .medium-padding40 {
+    padding: 15px 0;
+  }
+}

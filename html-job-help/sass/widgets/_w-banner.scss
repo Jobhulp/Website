@@ -1,0 +1,67 @@
+/*------------- #W-BANNER --------------*/
+
+
+.w-banner {
+  text-align: center;
+  overflow: hidden;
+
+  .widget-title {
+	color: var(--white-color);
+	margin: 0;
+  }
+
+  &.widget-sidebar {
+	border-radius: 5px;
+	background-color: var(--dark-themes);
+  }
+}
+
+.banner-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px 0 20px;
+}
+
+.banner-header {
+  padding: 20px;
+  font-size: 12px;
+  color: var(--grey-color);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-bottom: 1px solid var(--placeholder-color);
+}
+
+.icon-market-wrap {
+  display: inline-flex;
+  align-items: center;
+
+  a {
+	& + a {
+	  margin-left: 20px;
+	}
+  }
+
+  .puzzle-icon {
+	width: 24px;
+	height: 24px;
+	fill: var(--white-color);
+	color: var(--white-color);
+	margin: 40px 0;
+
+	&:hover {
+	  fill: var(--primary-accent-color);
+	  color: var(--primary-accent-color);
+	}
+  }
+}
+
+
+/*------------- Responsive Mode --------------*/
+
+
+@media (max-width: 768px) {
+  .banner-content {
+	padding: 30px 20px 0 20px;
+  }
+}
