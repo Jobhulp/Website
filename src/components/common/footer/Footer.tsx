@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from "next/link";
 
 const Footer: React.FC = () => {
 	return (
@@ -37,23 +38,23 @@ const Footer: React.FC = () => {
 
 								<ul>
 									<li>
-										<a href="08_candidate_lists_row_map.html">Browse Jobs</a>
+										<Link href="/candidates/candidate-lists">Browse Jobs</Link>
 									</li>
 
 									<li>
-										<a href="03_job_lists_row_map.html">Browse Companies</a>
+										<Link href="/employers/company-lists">Browse Companies</Link>
 									</li>
 
 									<li>
-										<a href="07_company_lists_alphabet.html">Categories</a>
+										<Link href="/categories">Categories</Link>
 									</li>
 
 									<li>
-										<a href="11_submit_resume.html">Submit Resume</a>
+										<Link href="/candidates/submit-resume">Submit Resume</Link>
 									</li>
 
 									<li>
-										<a href="12_resume_preview.html">Dashboard</a>
+										<Link href="/candidates/resume-preview">Dashboard</Link>
 									</li>
 								</ul>
 							</div>
@@ -67,15 +68,15 @@ const Footer: React.FC = () => {
 
 								<ul>
 									<li>
-										<a href="09_candidate_lists_grid.html">Browse Candidates</a>
+										<Link href="/candidates/candidate-lists-grid">Browse Candidates</Link>
 									</li>
 
 									<li>
-										<a href="16_standard_news_with_sidebar.html">Post a Job</a>
+										<Link href="/employers/job-lists">Post a Job</Link>
 									</li>
 
 									<li>
-										<a href="12_resume_preview.html">Dashboard</a>
+										<Link href="/employers/company-profile">Dashboard</Link>
 									</li>
 								</ul>
 							</div>
@@ -128,22 +129,22 @@ const Footer: React.FC = () => {
 						<div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 text-center text-lg-left mb-4 mb-lg-0">
 							<ul className="footer-main-menu">
 								<li>
-									<a href="index.html">Home</a>
+									<Link href="/">Home</Link>
 								</li>
 								<li>
-									<a href="02_how_it_works.html">How it Works</a>
+									<Link href="/how-it-works">How it Works</Link>
 								</li>
 								<li>
-									<a href="03_job_lists_row_map.html">Employers</a>
+									<Link href="/employers/job-lists">Employers</Link>
 								</li>
 								<li>
-									<a href="08_candidate_lists_row_map.html">Candidates</a>
+									<Link href="/candidates/candidate-lists">Candidates</Link>
 								</li>
 								<li>
-									<a href="15_news_grid.html">News</a>
+									<Link href="/news/news-page">News</Link>
 								</li>
 								<li>
-									<a href="index.html">Pages</a>
+									<Link href="/pages/pricing-plans">Pages</Link>
 								</li>
 							</ul>
 						</div>
