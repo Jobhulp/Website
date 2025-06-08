@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useJobs } from './useJobs';
-import Tabs from '../common/Tabs';
+import Tabs from './Tabs';
 
 type TabId = 'jobs' | 'candidates';
 

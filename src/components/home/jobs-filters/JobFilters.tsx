@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import type { StylesConfig, GroupBase, SingleValue } from 'react-select';
-import Input from '../ui/Input';
-import Tabs from '../ui/Tabs';
+import Input from '../../ui/Input';
+import Tabs from '../../ui/Tabs';
 
 const Select = dynamic(() => import('react-select'), { ssr: false }) as React.ComponentType<{
   options: Option[];
