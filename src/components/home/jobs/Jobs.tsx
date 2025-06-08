@@ -32,7 +32,7 @@ const JobCard: React.FC<JobCardProps> = ({ job, formatTimeAgo }) => (
 					</div>
 				</div>
 				<a href={`05_job_details.html?id=${job.id}`} className="logo-company">
-					<img className="logo" src={job.companyLogo} title="company" alt="company logo" />
+					<img className="logo" src={job.companyLogo.src} title="company" alt="company logo" />
 				</a>
 			</div>
 			<div className="ui-card-footer">
@@ -65,7 +65,7 @@ const CandidateCard: React.FC<CandidateCardProps> = ({ candidate }) => (
 					<div className="vacancies-location">{candidate.location}</div>
 				</div>
 				<a href={`10_candidate_details.html?id=${candidate.id}`} className="avatar avatar--80">
-					<img src={candidate.avatar} title="user" alt="user avatar" />
+					<img src={candidate.avatar.src} title="user" alt="user avatar" />
 				</a>
 			</div>
 			<div className="ui-card-footer">

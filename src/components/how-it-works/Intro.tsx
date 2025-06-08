@@ -1,4 +1,5 @@
 import React from "react";
+import howItWorks from '@/assets/img/svg/02_how_it_works.svg';
 
 const Intro: React.FC = () => {
   return (
@@ -19,7 +20,7 @@ const Intro: React.FC = () => {
       <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12 m-auto">
         <div className="crumina-module crumina-our-video">
           <div className="video-thumb">
-            <img src="img/svg/02_how_it_works.svg" alt="video" />
+            <img src={howItWorks.src} alt="video" />
             <a
               href="https://www.youtube.com/watch?v=wnJ6LuUFpMo"
               className="video-control js-popup-iframe"

@@ -3,7 +3,7 @@ import { JobFilters } from "@/components/home/jobs-filters/JobFilters";
 import Categories from "@/components/home/categories/Categories";
 import Jobs from "@/components/home/jobs/Jobs";
 import Download from "@/components/common/download/Download";
-import Testimonial from "@/components/testimonial/Testimonial";
+import Testimonial from "@/components/common/testimonial/Testimonial";
 import HomeBlog from "@/components/home/home-blog/HomeBlog";
 import Footer from "@/components/common/footer/Footer";
 import SignupCta from "@/components/signup-cta/SignupCta";

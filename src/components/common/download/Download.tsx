@@ -1,4 +1,5 @@
 import React from "react";
+import iphone from '@/assets/img/iphone.png';
 
 const Download: React.FC = () => {
   return (
@@ -31,7 +32,7 @@ const Download: React.FC = () => {
           </div>
 
           <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt-auto ml-auto mr-auto">
-            <img src="img/iphone.png" alt="iphone" />
+            <img src={iphone.src} alt="iphone" />
           </div>
         </div>
       </div>

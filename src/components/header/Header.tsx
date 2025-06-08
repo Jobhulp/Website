@@ -3,6 +3,7 @@
 import "./style.css";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Link from "next/link";
+import logo from '@/assets/img/svg/01_logo_white.svg';
 
 const Header = () => {
   return (
@@ -15,7 +16,7 @@ const Header = () => {
           <Link href="/" className="site-logo">
             <img
               className="puzzle-icon"
-              src="img/svg/01_logo_white.svg"
+              src={logo.src}
               alt="logo"
               width="120"
             />

@@ -1,4 +1,7 @@
 import React from 'react';
+import author6 from '@/assets/img/author6.jpg';
+import post1 from '@/assets/img/post1.jpg';
+import post2 from '@/assets/img/post2.jpg';
 
 interface BlogPostProps {
 	title: string;
@@ -40,7 +43,7 @@ const BlogPost: React.FC<BlogPostProps> = ({
 					</div>
 				</div>
 				<div className="post-thumb">
-					<img src={image} alt="post" />
+					<img src={image.src} alt="post" />
 				</div>
 			</div>
 
@@ -80,7 +83,7 @@ const HomeBlog: React.FC = () => {
 			title: "Attached: The Important & Standard Post Format",
 			categories: ["Startup", "Business"],
 			content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolor.",
-			image: "img/post1.jpg",
+			image: post1,
 			date: "8 December 2018",
 			comments: 6,
 			isLarge: true
@@ -89,7 +92,7 @@ const HomeBlog: React.FC = () => {
 			title: "Simple Post with Featured Image",
 			categories: ["Business"],
 			content: "Ut enim ad minim aliquip veniam, quis aliquip nostrud aliquip exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-			image: "img/post2.jpg",
+			image: post2,
 			date: "26 November 2018",
 			comments: 0,
 			isLarge: false

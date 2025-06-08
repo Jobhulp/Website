@@ -16,7 +16,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
       <div className="quote-footer">
         <div className="author-block">
           <div className="avatar avatar--70">
-            <img src={testimonial.author.image} alt={testimonial.author.name} />
+            <img src={testimonial.author.image.src} alt={testimonial.author.name} />
           </div>
           <div className="author-content">
             <h6 className="author-name">{testimonial.author.name}</h6>

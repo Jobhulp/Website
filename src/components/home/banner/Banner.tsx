@@ -2,6 +2,9 @@
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
+import teamSvg from '@/assets/img/svg/01_team.svg';
+import freelancerSvg from '@/assets/img/svg/03_freelancer.svg';
+import employerSvg from '@/assets/img/svg/04_employer.svg';
 
 const Banner = () => (
   <div className="crumina-module crumina-module-slider slider--main navigation-center-both-sides bg-dark-themes">
@@ -36,7 +39,7 @@ const Banner = () => (
               </div>
             </div>
             <div className="col-lg-8 col-md-6 col-sm-12 col-xs-12" data-swiper-parallax="-100">
-              <img src="/img/svg/01_team.svg" alt="team" />
+              <img src={teamSvg.src} alt="team" />
             </div>
           </div>
         </div>
@@ -45,7 +48,7 @@ const Banner = () => (
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-7 col-md-6 col-sm-12 col-xs-12 mb-3 mb-md-0" data-swiper-parallax="-100">
-              <img src="/img/svg/03_freelancer.svg" alt="team" />
+              <img src={freelancerSvg.src} alt="team" />
             </div>
             <div className="col-lg-5 col-md-6 col-sm-12 col-xs-12" data-swiper-parallax="-300">
               <h2 className="h1 main-slider-title">Uw droomjob slechts een klik verwijderd</h2>
@@ -69,7 +72,7 @@ const Banner = () => (
               </div>
             </div>
             <div className="col-lg-7 col-md-6 col-sm-12 col-xs-12" data-swiper-parallax="-100">
-              <img src="/img/svg/04_employer.svg" alt="team" />
+              <img src={employerSvg.src} alt="team" />
             </div>
           </div>
         </div>

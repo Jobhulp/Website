@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from "next/link";
+import logo from '@/assets/img/svg/01_logo_white.svg';
 
 const Footer: React.FC = () => {
 	return (
@@ -11,7 +12,7 @@ const Footer: React.FC = () => {
 						<div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-4 mb-lg-0">
 							<div className="widget w-info">
 								<a href="index.html" className="site-logo">
-									<img className="puzzle-icon" src="img/svg/01_logo_white.svg" alt="logo" width="120" />
+									<img className="puzzle-icon" src={logo.src} alt="logo" width="120" />
 								</a>
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 

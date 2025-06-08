@@ -1,4 +1,8 @@
 import { TestimonialData } from './types';
+import author1 from '@/assets/img/author1.jpg';
+import author6 from '@/assets/img/author6.jpg';
+import author7 from '@/assets/img/author7.jpg';
+import author8 from '@/assets/img/author8.jpg';
 
 export const testimonials: TestimonialData[] = [
   {
@@ -7,7 +11,7 @@ export const testimonials: TestimonialData[] = [
     author: {
       name: "Philip Demarco",
       role: "Copywriter",
-      image: "img/author6.jpg"
+      image: author6
     }
   },
   {
@@ -16,7 +20,7 @@ export const testimonials: TestimonialData[] = [
     author: {
       name: "Angelina Johnson",
       role: "Graphic Designer",
-      image: "img/author1.jpg"
+      image: author1
     }
   },
   {
@@ -25,7 +29,7 @@ export const testimonials: TestimonialData[] = [
     author: {
       name: "Peter Spenser",
       role: "Marketing Director",
-      image: "img/author7.jpg"
+      image: author7
     }
   },
   {
@@ -34,7 +38,7 @@ export const testimonials: TestimonialData[] = [
     author: {
       name: "John Doe",
       role: "Software Engineer",
-      image: "img/author8.jpg"
+      image: author8
     }
   },
   {
@@ -43,7 +47,7 @@ export const testimonials: TestimonialData[] = [
     author: {
       name: "John Doe",
       role: "Software Engineer",
-      image: "img/author8.jpg"
+      image: author8
     }
   }
 ];
