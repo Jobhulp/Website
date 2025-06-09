@@ -1,5 +1,5 @@
 /* Import Bootstrap CSS */
-@import "bootstrap/dist/css/bootstrap.min.css";
+@import "../../public/css/vendors/bootstrap/bootstrap.css";
 
 /* Import Font Awesome */
 @import "../../public/css/font-awesome.css";
@@ -117,4 +117,14 @@ body {
 .crumina-sticky-sidebar {
   position: sticky;
   top: 0vh;
+}
+
+
+button.close {
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }

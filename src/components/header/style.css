@@ -1371,6 +1371,14 @@ nav li.menu-item-has-mega-menu ul.mega-menu-row ul {
   font-family: inherit;
   z-index: 100;
 }
+
+/* hide on mobile */
+@media (max-width: 768px) {
+  .custom-select-container {
+    display: none;
+  }
+}
+
 .custom-select-selected {
   color: #fff;
   padding: 8px 16px 8px 12px;
@@ -1439,4 +1447,20 @@ nav li.menu-item-has-mega-menu ul.mega-menu-row ul {
 .custom-select-option:hover {
   color: var(--primary-accent-color);
   font-weight: bold;
+}
+
+.menu-icon-wrapper {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+/* HIDE ON DESKTOP */
+@media (min-width: 768px) {
+  .menu-icon-wrapper {
+    display: none;
+  }
 }

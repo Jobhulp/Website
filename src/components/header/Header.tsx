@@ -1,316 +1,407 @@
 "use client";
 
+import React, { useState } from 'react';
 import "./style.css";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Link from "next/link";
 import logo from '@/assets/img/svg/01_logo_white.svg';
 
 const Header = () => {
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showSignupModal, setShowSignupModal] = useState(false);
+
+  const handleLoginClick = () => {
+    setShowLoginModal(true);
+    setShowSignupModal(false);
+  };
+
+  const handleSignupClick = () => {
+    setShowSignupModal(true);
+    setShowLoginModal(false);
+  };
+
+  const handleCloseModals = () => {
+    setShowLoginModal(false);
+    setShowSignupModal(false);
+  };
+
+  const handleSwitchToLogin = () => {
+    setShowSignupModal(false);
+    setShowLoginModal(true);
+  };
+
   return (
-    <header
-      className="header header--absolute header--transparent"
-      id="site-header"
-    >
-      <div className="container">
-        <div className="header-content-wrapper">
-          <Link href="/" className="site-logo">
-            <img
-              className="puzzle-icon"
-              src={logo.src}
-              alt="logo"
-              width="120"
-            />
-          </Link>
+    <>
+      <header
+        className="header header--absolute header--transparent"
+        id="site-header"
+      >
+        <div className="container">
+          <div className="header-content-wrapper">
+            <Link href="/" className="site-logo">
+              <img
+                className="puzzle-icon"
+                src={logo.src}
+                alt="logo"
+                width="120"
+              />
+            </Link>
 
-          <nav id="primary-menu" className="primary-menu">
-            <a
-              href="javascript:void(0)"
-              id="menu-icon-trigger"
-              className="menu-icon-trigger showhide"
-            >
-              <span className="mob-menu--title">Menu</span>
-              <span id="menu-icon-wrapper" className="menu-icon-wrapper">
-                <svg width="1000px" height="1000px">
-                  <path
-                    id="pathD"
-                    d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800"
-                  ></path>
-                  <path id="pathE" d="M 300 500 L 700 500"></path>
-                  <path
-                    id="pathF"
-                    d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200"
-                  ></path>
-                </svg>
-              </span>
-            </a>
+            <nav id="primary-menu" className="primary-menu primary-menu-responsive">
+              <a
+                id="menu-icon-trigger"
+                className="menu-icon-trigger showhide"
+              >
+                <span className="mob-menu--title">Menu</span>
+                <span id="menu-icon-wrapper" className="menu-icon-wrapper">
+                  <i className="puzzle-icon fas fa-bars"></i>
+                </span>
+              </a>
 
-            <ul className="primary-menu-menu">
-              <li>
-                <Link href="/">Home</Link>
-              </li>
+              <ul className="primary-menu-menu">
+                <li>
+                  <Link href="/">Home</Link>
+                </li>
 
-              <li className="">
-                <Link href="/how-it-works">How it Works</Link>
-              </li>
+                <li className="">
+                  <Link href="/how-it-works">How it Works</Link>
+                </li>
 
-              <li className="menu-item-has-children">
-                <a href="#">
-                  Employers
-                  <span className="show indicator">
-                    <i className="puzzle-icon far fa-angle-down"></i>
-                  </span>
-                </a>
+                <li className="menu-item-has-children">
+                  <a href="#">
+                    Employers
+                    <span className="show indicator">
+                      <i className="puzzle-icon far fa-angle-down"></i>
+                    </span>
+                  </a>
 
-                <ul className="sub-menu">
-                  <li>
-                    <Link href="/employers/job-lists">Job lists</Link>
-                  </li>
-                  <li>
-                    <Link href="/employers/job-lists-grid">Job lists grid</Link>
-                  </li>
-                  <li>
-                    <Link href="/employers/job-details">Job details</Link>
-                  </li>
-                  <li>
-                    <Link href="/employers/company-profile">Company profile</Link>
-                  </li>
-                  <li>
-                    <Link href="/employers/company-lists">Company lists</Link>
-                  </li>
-                </ul>
-              </li>
+                  <ul className="sub-menu">
+                    <li>
+                      <Link href="/employers/job-lists">Job lists</Link>
+                    </li>
+                    <li>
+                      <Link href="/employers/job-lists-grid">Job lists grid</Link>
+                    </li>
+                    <li>
+                      <Link href="/employers/job-details">Job details</Link>
+                    </li>
+                    <li>
+                      <Link href="/employers/company-profile">Company profile</Link>
+                    </li>
+                    <li>
+                      <Link href="/employers/company-lists">Company lists</Link>
+                    </li>
+                  </ul>
+                </li>
 
-              <li className="menu-item-has-children">
-                <a href="#">
-                  Candidates
-                  <span className="show indicator">
-                    <i className="puzzle-icon far fa-angle-down"></i>
-                  </span>
-                </a>
-                <ul className="sub-menu">
-                  <li>
-                    <Link href="/candidates/candidate-lists">Candidate lists</Link>
-                  </li>
-                  <li>
-                    <Link href="/candidates/candidate-lists-grid">Candidate lists grid</Link>
-                  </li>
-                  <li>
-                    <Link href="/candidates/candidate-details">Candidate details</Link>
-                  </li>
-                  <li>
-                    <Link href="/candidates/submit-resume">Submit resume</Link>
-                  </li>
-                  <li>
-                    <Link href="/candidates/resume-preview">Resume preview</Link>
-                  </li>
-                  <li>
-                    <Link href="/candidates/resume-added">Resume added</Link>
-                  </li>
-                </ul>
-              </li>
+                <li className="menu-item-has-children">
+                  <a href="#">
+                    Candidates
+                    <span className="show indicator">
+                      <i className="puzzle-icon far fa-angle-down"></i>
+                    </span>
+                  </a>
+                  <ul className="sub-menu">
+                    <li>
+                      <Link href="/candidates/candidate-lists">Candidate lists</Link>
+                    </li>
+                    <li>
+                      <Link href="/candidates/candidate-lists-grid">Candidate lists grid</Link>
+                    </li>
+                    <li>
+                      <Link href="/candidates/candidate-details">Candidate details</Link>
+                    </li>
+                    <li>
+                      <Link href="/candidates/submit-resume">Submit resume</Link>
+                    </li>
+                    <li>
+                      <Link href="/candidates/resume-preview">Resume preview</Link>
+                    </li>
+                    <li>
+                      <Link href="/candidates/resume-added">Resume added</Link>
+                    </li>
+                  </ul>
+                </li>
 
-              <li className="menu-item-has-children">
-                <a href="#">
-                  News
-                  <span className="show indicator">
-                    <i className="puzzle-icon far fa-angle-down"></i>
-                  </span>
-                </a>
-                <ul className="sub-menu">
-                  <li>
-                    <Link href="/news/news-page">News page</Link>
-                  </li>
-                  <li>
-                    <Link href="/news/standard-news-with-sidebar">Standard news with sidebar</Link>
-                  </li>
-                  <li>
-                    <Link href="/news/news-details-standard">News details standard</Link>
-                  </li>
-                  <li>
-                    <Link href="/news/news-details-gallery">News details gallery</Link>
-                  </li>
-                  <li>
-                    <Link href="/news/news-details-video">News details with video</Link>
-                  </li>
-                </ul>
-              </li>
+                <li className="menu-item-has-children">
+                  <a href="#">
+                    News
+                    <span className="show indicator">
+                      <i className="puzzle-icon far fa-angle-down"></i>
+                    </span>
+                  </a>
+                  <ul className="sub-menu">
+                    <li>
+                      <Link href="/news/news-page">News page</Link>
+                    </li>
+                    <li>
+                      <Link href="/news/standard-news-with-sidebar">Standard news with sidebar</Link>
+                    </li>
+                    <li>
+                      <Link href="/news/news-details-standard">News details standard</Link>
+                    </li>
+                    <li>
+                      <Link href="/news/news-details-gallery">News details gallery</Link>
+                    </li>
+                    <li>
+                      <Link href="/news/news-details-video">News details with video</Link>
+                    </li>
+                  </ul>
+                </li>
 
-              <li className="menu-item-has-mega-menu menu-item-has-children">
-                <a href="#">
-                  Pages
-                  <span className="show indicator">
-                    <i className="puzzle-icon far fa-angle-down"></i>
-                  </span>
-                </a>
-                <div className="megamenu">
-                  <div className="megamenu-row">
-                    <div className="col3">
-                      <ul>
-                        <li className="megamenu-item-info">
-                          <h6 className="megamenu-item-info-title">Pages</h6>
-                        </li>
-                        <li>
-                          <Link href="/pages/pricing-plans">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Pricing plans
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/contacts">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Contacts
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/send-message">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Send message
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/coming-soon">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Coming Soon Page
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/error-404">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Error 404
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/sign-up">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Sign Up
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/login">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Login
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
+                <li className="menu-item-has-mega-menu menu-item-has-children">
+                  <a href="#">
+                    Pages
+                    <span className="show indicator">
+                      <i className="puzzle-icon far fa-angle-down"></i>
+                    </span>
+                  </a>
+                  <div className="megamenu">
+                    <div className="megamenu-row">
+                      <div className="col3">
+                        <ul>
+                          <li className="megamenu-item-info">
+                            <h6 className="megamenu-item-info-title">Pages</h6>
+                          </li>
+                          <li>
+                            <Link href="/pages/pricing-plans">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Pricing plans
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/contacts">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Contacts
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/send-message">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Send message
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/coming-soon">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Coming Soon Page
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/error-404">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Error 404
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/sign-up">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Sign Up
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/login">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Login
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
 
-                    <div className="col3">
-                      <ul>
-                        <li className="megamenu-item-info">
-                          <h6 className="megamenu-item-info-title">
-                            Classic Styles
-                          </h6>
-                        </li>
-                        <li>
-                          <Link href="/pages/accordions">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Accordions
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/button-styles">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Button Styles
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/forms">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Forms
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/icon-with-text">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Icon with Text
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/link-styles">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Link Styles
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/tab-styles">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Tab Styles
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
+                      <div className="col3">
+                        <ul>
+                          <li className="megamenu-item-info">
+                            <h6 className="megamenu-item-info-title">
+                              Classic Styles
+                            </h6>
+                          </li>
+                          <li>
+                            <Link href="/pages/accordions">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Accordions
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/button-styles">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Button Styles
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/forms">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Forms
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/icon-with-text">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Icon with Text
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/link-styles">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Link Styles
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/tab-styles">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Tab Styles
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
 
-                    <div className="col3">
-                      <ul>
-                        <li className="megamenu-item-info">
-                          <h6 className="megamenu-item-info-title">
-                            Typography
-                          </h6>
-                        </li>
-                        <li>
-                          <Link href="/pages/heading-styles">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Heading Styles
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/highlights">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Highlights
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/blockquotes">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Blockquotes
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/columns">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Columns
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/lists">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Lists
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="/pages/icons">
-                            <i className="puzzle-icon fas fa-caret-right"></i>
-                            Icons
-                          </Link>
-                        </li>
-                      </ul>
+                      <div className="col3">
+                        <ul>
+                          <li className="megamenu-item-info">
+                            <h6 className="megamenu-item-info-title">
+                              Typography
+                            </h6>
+                          </li>
+                          <li>
+                            <Link href="/pages/heading-styles">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Heading Styles
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/highlights">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Highlights
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/blockquotes">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Blockquotes
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/columns">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Columns
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/lists">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Lists
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/pages/icons">
+                              <i className="puzzle-icon fas fa-caret-right"></i>
+                              Icons
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </li>
-            </ul>
-          </nav>
+                </li>
+              </ul>
+            </nav>
 
-          <nav className="login-menu">
-            <ul>
-              <li>
-                <Link href="/signup">Sign Up</Link>
-              </li>
-              <li>
-                <Link
-                  href="/login"
-                  className="crumina-button button--primary button--s button--hover-primary"
-                >
-                  Login
-                </Link>
-              </li>
-            </ul>
-          </nav>
+            <nav className="login-menu">
+              <ul>
+                <li>
+                  <a href="#" onClick={(e) => { e.preventDefault(); handleSignupClick(); }}>Sign Up</a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="crumina-button button--primary button--s button--hover-primary"
+                    onClick={(e) => { e.preventDefault(); handleLoginClick(); }}
+                  >
+                    Login
+                  </a>
+                </li>
+              </ul>
+            </nav>
 
-          <LanguageSwitcher />
+            <LanguageSwitcher />
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Login Modal */}
+      {showLoginModal && (
+        <div className="modal fade window-popup show" style={{ display: 'block' }} tabIndex={-1} role="dialog" aria-hidden="true">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" onClick={handleCloseModals} aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <form className="form-login">
+                  <h2>My Account</h2>
+                  <div className="mb-4">For fast login use your social account.</div>
+                  <button type="button" className="crumina-button button--blue-dark button--l button--with-icon button--icon-left w-100 mb-2">
+                    <i className="puzzle-icon fab fa-facebook-square"></i>Login with the Facebook
+                  </button>
+                  <button type="button" className="crumina-button button--blue button--l button--with-icon button--icon-left w-100 mb-4">
+                    <i className="puzzle-icon fab fa-twitter"></i>Login with the Twitter
+                  </button>
+                  <label htmlFor="name">Username or Email Address *</label>
+                  <input id="name" name="name" placeholder="" type="text" />
+                  <div className="d-flex align-items-center justify-content-between mb-3">
+                    <label className="mb-0" htmlFor="password">Password *</label>
+                    <a href="#">Lost your password?</a>
+                  </div>
+                  <input id="password" name="password" placeholder="" type="password" />
+                  <div className="checkbox checkbox--transparent mt-2 mb-4">
+                    <label>
+                      <input type="checkbox" name="optionsCheckboxes4" />
+                      <span className="checkbox-material"><span className="check"></span></span>
+                      Remember Me
+                    </label>
+                  </div>
+                  <button type="button" className="crumina-button button--green button--l w-100">Log In</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Signup Modal */}
+      {showSignupModal && (
+        <div className="modal fade window-popup show" style={{ display: 'block' }} tabIndex={-1} role="dialog" aria-hidden="true">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" onClick={handleCloseModals} aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <form className="form-login">
+                  <h2 className="mb-4">Register</h2>
+                  <label htmlFor="first_name">First Name *</label>
+                  <input id="first_name" name="name" placeholder="" type="text" />
+                  <label htmlFor="last_name">Last Name *</label>
+                  <input id="last_name" name="name" placeholder="" type="text" />
+                  <label htmlFor="password1">Password *</label>
+                  <input id="password1" name="name" placeholder="" type="password" />
+                  <button type="button" className="crumina-button button--green button--l w-100 my-3">Create an Account</button>
+                  <button type="button" className="crumina-button button--white button--l w-100" onClick={handleSwitchToLogin}>Log In</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Backdrop */}
+      {(showLoginModal || showSignupModal) && (
+        <div className="modal-backdrop fade show" style={{ opacity: 0.5 }}></div>
+      )}
+    </>
   );
 };
 

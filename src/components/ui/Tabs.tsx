@@ -22,8 +22,7 @@ const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, onTabChange, className }) 
             className="nav-item"
             role="presentation"
           >
-            <button
-              type="button"
+            <a
               className={`nav-link h6 tabs-scroll${activeTab === tab.value ? ' active' : ''}`}
               onClick={() => onTabChange(tab.value)}
               id={tab.value}
@@ -31,9 +30,10 @@ const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, onTabChange, className }) 
               role="tab"
               aria-controls={tab.value}
               aria-selected={activeTab === tab.value}
+              style={{ cursor: 'pointer' }} 
             >
               {tab.label}
-            </button>
+            </a>
           </li>
         ))}
       </ul>
