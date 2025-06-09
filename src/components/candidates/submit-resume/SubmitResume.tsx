@@ -32,7 +32,7 @@ const SubmitResume = () => {
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <header className="crumina-module crumina-heading heading--h2 heading--with-decoration heading--inline">
                 <h2 className="heading-title">Have an Account?</h2>
-                <div className="heading-text">If you don't have an account you can create one below by entering your email address. Your account details will be confirmed via email.</div>
+                <div className="heading-text">If you don&apos;t have an account you can create one below by entering your email address. Your account details will be confirmed via email.</div>
               </header>
             </div>
           </div>

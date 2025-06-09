@@ -1,87 +1,213 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+import BlogPost from '@/components/news/BlogPost';
+import BlogPostVideo from '@/components/news/BlogPostVideo';
+import BlogPostQuote from '@/components/news/BlogPostQuote';
+import BlogPostAudio from '@/components/news/BlogPostAudio';
+import BlogPostGallery from '@/components/news/BlogPostGallery';
+import BlogPostLink from '@/components/news/BlogPostLink';
+import post7 from '@/assets/img/post7.jpg';
+import post8 from '@/assets/img/post8.jpg';
+import post9 from '@/assets/img/post9.jpg';
+import post10 from '@/assets/img/post10.jpg';
+import post11 from '@/assets/img/post11.jpg';
+import post12 from '@/assets/img/post12.jpg';
+import { StaticImageData } from 'next/image';
+import Pagination from '@/components/candidates/candidate-lists/Pagination';
 
-const NewsDetailsVideo: React.FC = () => {
+type BlogPostType =
+  | {
+      type: 'standard';
+      title: string;
+      categories: string[];
+      content: string;
+      image?: StaticImageData;
+      date: string;
+      comments: number;
+      isLarge?: boolean;
+    }
+  | {
+      type: 'video';
+      title: string;
+      categories: string[];
+      content: string;
+      image: StaticImageData;
+      date: string;
+      comments: number;
+      videoUrl: string;
+    }
+  | {
+      type: 'quote';
+      quote: string;
+      author: string;
+      role: string;
+    }
+  | {
+      type: 'audio';
+      title: string;
+      categories: string[];
+      content: string;
+      date: string;
+      comments: number;
+      soundcloudUrl: string;
+    }
+  | {
+      type: 'gallery';
+      title: string;
+      categories: string[];
+      content: string;
+      images: StaticImageData[];
+      date: string;
+      comments: number;
+      isLarge?: boolean;
+    }
+  | {
+      type: 'link';
+      title: string;
+      link: string;
+      site: string;
+    };
+
+const blogPosts: BlogPostType[] = [
+  {
+    type: 'standard',
+    title: 'Attached: The Important & Standard Post Format',
+    categories: ['Startup', 'Business'],
+    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolor.',
+    image: post7,
+    date: '8 December 2018',
+    comments: 6,
+    isLarge: true
+  },
+  {
+    type: 'standard',
+    title: 'Simple Post with Featured Image',
+    categories: ['Business'],
+    content: 'Ut enim ad minim aliquip veniam, quis aliquip nostrud aliquip exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    image: post8,
+    date: '26 November 2018',
+    comments: 0
+  },
+  {
+    type: 'video',
+    title: 'YouTube Video Post Format',
+    categories: ['Marketing'],
+    content: 'Ut enim ad minim aliquip veniam, quis aliquip nostrud aliquip exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    image: post9,
+    date: '14 November 2018',
+    comments: 7,
+    videoUrl: 'https://www.youtube.com/watch?v=wnJ6LuUFpMo'
+  },
+  {
+    type: 'quote',
+    quote: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat velit esse cillum dolore.',
+    author: 'Angelina Johnson',
+    role: 'Graphic Designer'
+  },
+  {
+    type: 'audio',
+    title: 'SoundCloud Audio Post Format',
+    categories: ['Creative'],
+    content: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    date: '30 October 2018',
+    comments: 238,
+    soundcloudUrl: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/392732244&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true'
+  },
+  {
+    type: 'link',
+    title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
+    link: '#',
+    site: 'crumina.net'
+  },
+  {
+    type: 'gallery',
+    title: 'Photo Gallery Post Format',
+    categories: ['Photography', 'Art'],
+    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolor.',
+    images: [post10, post10, post10, post10],
+    date: '23 October 2018',
+    comments: 6,
+    isLarge: true
+  },
+  {
+    type: 'standard',
+    title: 'Simple Post with Featured Image',
+    categories: ['Startup'],
+    content: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ',
+    image: post11,
+    date: '13 September 2018',
+    comments: 46
+  },
+  {
+    type: 'video',
+    title: 'Standard Video Post Format',
+    categories: ['Creative'],
+    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    image: post12,
+    date: '22 August 2018',
+    comments: 2,
+    videoUrl: 'https://www.youtube.com/watch?v=wnJ6LuUFpMo'
+  },
+  {
+    type: 'standard',
+    title: 'Simple Post without Featured Image',
+    categories: ['Business'],
+    content: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    date: '7 August 2018',
+    comments: 0
+  }
+];
+
+const renderBlogPost = (post: BlogPostType, index: number) => {
+  switch (post.type) {
+    case 'video':
+      return <BlogPostVideo key={index} {...post} />;
+    case 'quote':
+      return <BlogPostQuote key={index} {...post} />;
+    case 'audio':
+      return <BlogPostAudio key={index} {...post} />;
+    case 'gallery':
+      return <BlogPostGallery key={index} {...post} />;
+    case 'link':
+      return <BlogPostLink key={index} {...post} />;
+    default:
+      return <BlogPost key={index} {...post} />;
+  }
+};
+
+const NewsStandardNewsWithSidebar: React.FC = () => {
   return (
     <div className="main-content-wrapper">
-      <div className="header--spacer" style={{ height: "142.234px", backgroundColor: "rgb(18, 18, 20)" }}></div>
-      <section className="stunning-header bg-light-grey stunning-bg4 pb120 pt80">
+      <div className="header--spacer" style={{ height: '142.234px', backgroundColor: 'rgb(18, 18, 20)' }}></div>
+      <section className="stunning-header stunning-bg3 pb120 pt80">
+        <div className="overlay overlay-stunning"></div>
         <div className="container">
           <div className="row align-items-end">
-            <div className="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <ul className="breadcrumbs">
                 <li className="breadcrumbs-item">
                   <Link href="/">Home<i className="puzzle-icon fal fa-angle-double-right"></i></Link>
                 </li>
-                <li className="breadcrumbs-item">
-                  <Link href="/news">News<i className="puzzle-icon fal fa-angle-double-right"></i></Link>
-                </li>
                 <li className="breadcrumbs-item active">
-                  <span>Creative</span>
+                  <span>News</span>
                 </li>
               </ul>
-              <h1 className="page-title text-white">Standard Video Post Format</h1>
-
-              <div className="post-info my-3 my-sm-5">
-                <div className="author-block info-item my-2">
-                  <div className="avatar avatar--60">
-                    <img src="/img/author10.jpg" alt="avatar" />
-                  </div>
-                  <div className="author-content">
-                    <div className="description">Posted by</div>
-                    <Link href="/author" className="link--uppercase-wide fs-12 text-white">Betty Stevens</Link>
-                  </div>
-                </div>
-
-                <div className="info-item my-2">
-                  <div className="description">Categorys:</div>
-                  <div className="value">
-                    <Link href="#" className="link--uppercase-wide arrow--white fs-12">Business</Link>,
-                    <Link href="#" className="link--uppercase-wide arrow--white fs-12">Startup</Link>
-                  </div>
-                </div>
-
-                <div className="info-item my-2">
-                  <div className="description">Date:</div>
-                  <div className="value">
-                    <Link href="#" className="link--uppercase-wide arrow--white fs-12">26 November 2018</Link>
-                  </div>
-                </div>
-
-                <div className="info-item my-2">
-                  <div className="description">Comments:</div>
-                  <div className="value">
-                    <Link href="#" className="link--uppercase-wide arrow--white fs-12">
-                      0
-                      <i className="puzzle-icon fas fa-comment-alt-dots c-grey"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
+              <h1 className="page-title text-white">Read our blog</h1>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="row">
+      <section className="bg-light-grey medium-padding120">
+        <div className="container">
+          <div className="row mb20">
             <div className="col-lg-8 col-md-12 col-sm-12 col-xs-12">
-              <article className="hentry post post-standard has-post-thumbnail post-standard-details video-youtube">
-                <div className="post__content">
-                  <p className="fs-20">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo.
-                  </p>
-
-                  <div className="post-thumb">
-                    <img src="/img/post17.jpg" alt="post" />
-                    <a href="https://www.youtube.com/watch?v=wnJ6LuUFpMo" className="video-control video-control-youtube youtube--big js-popup-iframe">
-                      <svg className="puzzle-icon" width="21" height="26">
-                        <path fill="#FFF" fillRule="evenodd" d="M0 .016l21 12.119L0 25.984V.016z" />
-                      </svg>
-                    </a>
-                  </div>
-
-                  {/* Article content will go here */}
-                </div>
-              </article>
+              <div>
+                {blogPosts.map((post, index) => renderBlogPost(post, index))}
+              </div>
+              <Pagination currentPage={1} totalPages={10} onPageChange={() => {}} />
             </div>
             <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12 mt-4 mt-lg-0">
               <div className="crumina-sticky-sidebar">
@@ -207,4 +333,4 @@ const NewsDetailsVideo: React.FC = () => {
   );
 };
 
-export default NewsDetailsVideo;
+export default NewsStandardNewsWithSidebar;

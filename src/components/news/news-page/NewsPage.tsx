@@ -222,12 +222,14 @@ const NewsPage: React.FC = () => {
   const equalHeightRef = useEqualHeight('.hentry.post');
 
   return (
+    <section>
+            <div className="header--spacer" style={{ height: '142.234px', backgroundColor: 'rgb(18, 18, 20)' }}></div>
     <div className="main-content-wrapper">
       <PageHeader
         title="Read our blog"
         breadcrumbs={[
           { label: 'Home', href: '/' },
-          { label: 'News' }
+          { label: 'News', isActive: true }
         ]}
         showSearch
       />
@@ -264,6 +266,7 @@ const NewsPage: React.FC = () => {
         </div>
       </section>
     </div>
+    </section>
   );
 };
 
