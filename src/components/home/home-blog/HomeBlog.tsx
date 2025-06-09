@@ -1,13 +1,13 @@
 import React from 'react';
-import author6 from '@/assets/img/author6.jpg';
 import post1 from '@/assets/img/post1.jpg';
 import post2 from '@/assets/img/post2.jpg';
+import { StaticImageData } from 'next/image';
 
 interface BlogPostProps {
 	title: string;
 	categories: string[];
 	content: string;
-	image: string;
+	image: StaticImageData;
 	date: string;
 	comments: number;
 	isLarge?: boolean;
