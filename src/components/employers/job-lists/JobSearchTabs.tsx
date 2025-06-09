@@ -50,37 +50,51 @@ const JobSearchTabs: React.FC = () => (
                       <button type="button" className="crumina-button button--dark button--xl w-full">Search</button>
                     </div>
                   </div>
-                  <div className="row mt-4">
-                    <div className="col-lg-12">
-                      <div className="flex flex-wrap gap-4">
-                        <label className="checkbox checkbox--blue-dark">
-                          <input type="checkbox" name="optionsCheckboxes" />
-                          <span className="checkbox-material"><span className="check"></span></span>
-                          Part Time
-                        </label>
-                        <label className="checkbox checkbox--green">
-                          <input type="checkbox" name="optionsCheckboxes1" />
-                          <span className="checkbox-material"><span className="check"></span></span>
-                          Full Time
-                        </label>
-                        <label className="checkbox checkbox--red">
-                          <input type="checkbox" name="optionsCheckboxes2" />
-                          <span className="checkbox-material"><span className="check"></span></span>
-                          Temporary
-                        </label>
-                        <label className="checkbox checkbox--yellow">
-                          <input type="checkbox" name="optionsCheckboxes3" />
-                          <span className="checkbox-material"><span className="check"></span></span>
-                          Internship
-                        </label>
-                        <label className="checkbox checkbox--blue">
-                          <input type="checkbox" name="optionsCheckboxes4" />
-                          <span className="checkbox-material"><span className="check"></span></span>
-                          Freelance
-                        </label>
-                      </div>
-                    </div>
-                  </div>
+                  <div className="row mt-4 mt-md-0">
+										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+											<div className="checkboxes-wrap">
+												<div className="checkbox checkbox--blue-dark">
+													<label>
+														<input type="checkbox" name="optionsCheckboxes"/>
+														<span className="checkbox-material"><span className="check"></span></span>
+														Part Time
+													</label>
+												</div>
+
+												<div className="checkbox checkbox--green">
+													<label>
+														<input type="checkbox" name="optionsCheckboxes1"/>
+														<span className="checkbox-material"><span className="check"></span></span>
+														Full Time
+													</label>
+												</div>
+
+												<div className="checkbox checkbox--red">
+													<label>
+														<input type="checkbox" name="optionsCheckboxes2"/>
+														<span className="checkbox-material"><span className="check"></span></span>
+														Temporary
+													</label>
+												</div>
+
+												<div className="checkbox checkbox--yellow">
+													<label>
+														<input type="checkbox" name="optionsCheckboxes3"/>
+														<span className="checkbox-material"><span className="check"></span></span>
+														Internship
+													</label>
+												</div>
+
+												<div className="checkbox checkbox--blue">
+													<label>
+														<input type="checkbox" name="optionsCheckboxes4"/>
+														<span className="checkbox-material"><span className="check"></span></span>
+														Freelance
+													</label>
+												</div>
+											</div>
+										</div>
+									</div>
                 </form>
               </div>
             </div>

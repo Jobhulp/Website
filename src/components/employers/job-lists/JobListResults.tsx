@@ -1,13 +1,5 @@
 import React from "react";
 import { jobs, featured } from './jobListData';
-import client2 from '@/assets/img/client2.png';
-import client3 from '@/assets/img/client3.png';
-import client4 from '@/assets/img/client4.png';
-import client5 from '@/assets/img/client5.png';
-import client6 from '@/assets/img/client6.png';
-import client7 from '@/assets/img/client7.png';
-import client8 from '@/assets/img/client8.png';
-import company1 from '@/assets/img/company1.jpg';
 import iphone1 from '@/assets/img/iphone1.png';
 
 const JobListResults: React.FC = () => (
