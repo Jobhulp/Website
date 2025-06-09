@@ -79,7 +79,357 @@ const NewsDetailsVideo: React.FC = () => {
                     </a>
                   </div>
 
-                  {/* Article content will go here */}
+                  <h2>H2. Duis aute irure dolor in reprehenderit in voluptate velit</h2>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                  </p>
+                  <h3>H3. Excepteur sint occaecat cupidatat</h3>
+                  <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                    ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                    sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  </p>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  <blockquote>
+                    <p>Ut enim ad minim veniam,
+                      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                      commodo consequat velit esse cillum dolore.
+                    </p>
+                    <h6>
+                      Angelina Johnson
+                      <span>Graphic Designer</span>
+                    </h6>
+                  </blockquote>
+                  <h3>H3. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</h3>
+                  <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                    qui officia deserunt mollit anim id est laborum.
+                  </p>
+                  <div className="wp-caption alignleft">
+                    <img className="alignleft" src="/img/post18.jpg" alt="post" />
+                  </div>
+                  <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+                    anim id est laborum quis nostrud exercitation ullamco laboris nisi ut aliquip ipsum
+                    dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                    laboris nisi ut
+                  </p>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </p>
+                  <h4>H4. Cepteur sint occaecat cupidatat non proident</h4>
+                  <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                    nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                    officia deserunt mollit anim id est laborum.
+                  </p>
+                  <ol>
+                    <li>
+                      <Link href="#">Lorem ipsum dolor sit amet.</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Veniam, quis nostrud exercitation ullamco.</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Ut enim ad minim veniam, quis nostrud.</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Duis aute irure dolor in reprehenderit.</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Excepteur sint occaecat cupidatat non proident.</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Sunt in culpa qui officia.</Link>
+                    </li>
+                  </ol>
+                  <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                    ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                    sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  </p>
+                  <h5>H5. Quis nostrud exercitation ullamco laboris nisi ut aliquip:</h5>
+                  <ul>
+                    <li>
+                      <Link href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Veniam, quis nostrud exercitation ullamco laboris nisi.</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Ut enim ad minim veniam, quis nostrud.</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Duis aute irure dolor in reprehenderit in voluptate velit esse.</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Excepteur sint occaecat cupidatat non proident.</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Sunt in culpa qui officia deserunt mollit anim id est laborum.</Link>
+                    </li>
+                  </ul>
+                  <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                    ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur.
+                  </p>
+                  <ul className="tags-list mt60">
+                    <li>
+                      <Link href="#">Startup</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Business</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Art</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Photographyp</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Creative</Link>
+                    </li>
+                  </ul>
+                  <div className="ui-card-footer">
+                    <div className="d-flex align-items-center w-100">
+                      <h5 className="mr-4">Share:</h5>
+                      <ul className="socials socials--round socials--colored">
+                        <li>
+                          <Link className="bg-facebook" href="#">
+                            <i className="puzzle-icon fab fa-facebook-f"></i>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="bg-messanger" href="#">
+                            <i className="puzzle-icon fab fa-facebook-messenger"></i>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="bg-twitter" href="#">
+                            <i className="puzzle-icon fab fa-twitter"></i>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="bg-google" href="#">
+                            <i className="puzzle-icon fab fa-google-plus-g"></i>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="bg-telegram" href="#">
+                            <i className="puzzle-icon fab fa-telegram-plane"></i>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="bg-linkedin" href="#">
+                            <i className="puzzle-icon fab fa-linkedin-in"></i>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="bg-email" href="#">
+                            <i className="puzzle-icon far fa-at"></i>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="d-flex justify-content-between align-items-center flex-wrap mt60">
+                    <Link href="/news/news-details-gallery" className="crumina-button button--dark button--xl button--bordered button--uppercase-wide button--with-icon button--icon-left my-2 w-45"><i className="puzzle-icon fal fa-long-arrow-left"></i>Previous Post</Link>
+                    <Link href="/news/news-details-video" className="crumina-button button--dark button--xl button--bordered button--uppercase-wide button--with-icon button--icon-right my-2 w-45">Next Post<i className="puzzle-icon fal fa-long-arrow-right"></i></Link>
+                  </div>
+                  <div className="comments medium-padding80" id="comments">
+                    <header className="crumina-module crumina-heading heading--h2 heading--with-decoration heading--inline">
+                      <h2 className="heading-title">6 Comments</h2>
+                    </header>
+                    <ol className="comments__list">
+                      <li className="comments__item">
+                        <div className="comment-entry comment comments__article">
+                          <div className="comments__body">
+                            <div className="comments__avatar">
+                              <div className="author-block">
+                                <div className="avatar avatar--70">
+                                  <img src="/img/author6.jpg" alt="avatar" />
+                                </div>
+                              </div>
+                            </div>
+                            <header className="comment-meta comments__header">
+                              <cite className="fn url comments__author">
+                                <Link href="#" rel="external" className="h6">Philip Demarco</Link>
+                              </cite>
+                              <div className="comment-content comment">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
+                              </div>
+                            </header>
+                          </div>
+                          <div className="comments__footer">
+                            <div className="comments__time">
+                              <Link href="#" className="published link--uppercase-wide c-grey fs-12">23 October 2018</Link>
+                            </div>
+                            <Link href="#" className="link--uppercase-wide link--with-icon link--icon-right fs-12">Reply<i className="puzzle-icon far fa-angle-right"></i></Link>
+                          </div>
+                        </div>
+                        <ol className="children">
+                          <li className="comments__item">
+                            <div className="comment-entry comment comments__article">
+                              <div className="comments__body">
+                                <div className="comments__avatar">
+                                  <div className="author-block">
+                                    <div className="avatar avatar--70">
+                                      <img src="/img/author2.jpg" alt="avatar" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <header className="comment-meta comments__header">
+                                  <cite className="fn url comments__author">
+                                    <Link href="#" rel="external" className="h6">Jerry Thomas</Link>
+                                  </cite>
+                                  <div className="comment-content comment">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                  </div>
+                                </header>
+                              </div>
+                              <div className="comments__footer">
+                                <div className="comments__time">
+                                  <Link href="#" className="published link--uppercase-wide c-grey fs-12">23 October 2018</Link>
+                                </div>
+                                <Link href="#" className="link--uppercase-wide link--with-icon link--icon-right fs-12">Reply<i className="puzzle-icon far fa-angle-right"></i></Link>
+                              </div>
+                            </div>
+                          </li>
+                          <li className="comments__item">
+                            <div className="comment-entry comment comments__article">
+                              <div className="comments__body">
+                                <div className="comments__avatar">
+                                  <div className="author-block">
+                                    <div className="avatar avatar--70">
+                                      <img src="/img/author10.jpg" alt="avatar" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <header className="comment-meta comments__header">
+                                  <cite className="fn url comments__author">
+                                    <Link href="#" rel="external" className="h6">Betty Stevens</Link>
+                                  </cite>
+                                  <div className="comment-content comment">
+                                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                  </div>
+                                </header>
+                              </div>
+                              <div className="comments__footer">
+                                <div className="comments__time">
+                                  <Link href="#" className="published link--uppercase-wide c-grey fs-12">23 October 2018</Link>
+                                </div>
+                                <Link href="#" className="link--uppercase-wide link--with-icon link--icon-right fs-12">Reply<i className="puzzle-icon far fa-angle-right"></i></Link>
+                              </div>
+                            </div>
+                            <ol className="children">
+                              <li className="comments__item">
+                                <div className="comment-entry comment comments__article">
+                                  <div className="comments__body">
+                                    <div className="comments__avatar">
+                                      <div className="author-block">
+                                        <div className="avatar avatar--70">
+                                          <img src="/img/author3.jpg" alt="avatar" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <header className="comment-meta comments__header">
+                                      <cite className="fn url comments__author">
+                                        <Link href="#" rel="external" className="h6">Catherine White</Link>
+                                      </cite>
+                                      <div className="comment-content comment">
+                                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                      </div>
+                                    </header>
+                                  </div>
+                                  <div className="comments__footer">
+                                    <div className="comments__time">
+                                      <Link href="#" className="published link--uppercase-wide c-grey fs-12">23 October 2018</Link>
+                                    </div>
+                                    <Link href="#" className="link--uppercase-wide link--with-icon link--icon-right fs-12">Reply<i className="puzzle-icon far fa-angle-right"></i></Link>
+                                  </div>
+                                </div>
+                              </li>
+                            </ol>
+                          </li>
+                        </ol>
+                      </li>
+                      <li className="comments__item">
+                        <div className="comment-entry comment comments__article">
+                          <div className="comments__body">
+                            <div className="comments__avatar">
+                              <div className="author-block">
+                                <div className="avatar avatar--70">
+                                  <img src="/img/author11.jpg" alt="avatar" />
+                                </div>
+                              </div>
+                            </div>
+                            <header className="comment-meta comments__header">
+                              <cite className="fn url comments__author">
+                                <Link href="#" rel="external" className="h6">Russell Wright</Link>
+                              </cite>
+                              <div className="comment-content comment">
+                                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                              </div>
+                            </header>
+                          </div>
+                          <div className="comments__footer">
+                            <div className="comments__time">
+                              <Link href="#" className="published link--uppercase-wide c-grey fs-12">23 October 2018</Link>
+                            </div>
+                            <Link href="#" className="link--uppercase-wide link--with-icon link--icon-right fs-12">Reply<i className="puzzle-icon far fa-angle-right"></i></Link>
+                          </div>
+                        </div>
+                        <ol className="children">
+                          <li className="comments__item">
+                            <div className="comment-entry comment comments__article">
+                              <div className="comments__body">
+                                <div className="comments__avatar">
+                                  <div className="author-block">
+                                    <div className="avatar avatar--70">
+                                      <img src="/img/author13.jpg" alt="avatar" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <header className="comment-meta comments__header">
+                                  <cite className="fn url comments__author">
+                                    <Link href="#" rel="external" className="h6">Maria Bowman</Link>
+                                  </cite>
+                                  <div className="comment-content comment">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                  </div>
+                                </header>
+                              </div>
+                              <div className="comments__footer">
+                                <div className="comments__time">
+                                  <Link href="#" className="published link--uppercase-wide c-grey fs-12">23 October 2018</Link>
+                                </div>
+                                <Link href="#" className="link--uppercase-wide link--with-icon link--icon-right fs-12">Reply<i className="puzzle-icon far fa-angle-right"></i></Link>
+                              </div>
+                            </div>
+                          </li>
+                        </ol>
+                      </li>
+                    </ol>
+                  </div>
+                  <form className="contact-form leave-reply" method="post">
+                    <div className="row align-items-center">
+                      <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <header className="crumina-module crumina-heading heading--h2 heading--with-decoration">
+                          <h2 className="heading-title">Leave a Comment</h2>
+                        </header>
+                      </div>
+                      <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-4 mb-md-0">
+                        <div className="c-grey">* Lorem ipsum dolor sit, consectetur adipiscing elit, sed do.</div>
+                      </div>
+                    </div>
+                    <textarea rows={5} name="message" id="message" placeholder="Your Message"></textarea>
+                    <input name="name" placeholder="Your Name" type="text" />
+                    <input name="email" placeholder="Your Email Address" type="email" />
+                    <input name="site" placeholder="Website" type="text" />
+                    <button type="button" className="crumina-button button--dark button--xl mt-3">Post a Comment</button>
+                  </form>
                 </div>
               </article>
             </div>
