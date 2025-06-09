@@ -1,6 +1,7 @@
 import React from "react";
-import { jobs, featured } from './jobListData';
+import { jobs } from './jobListData';
 import iphone1 from '@/assets/img/iphone1.png';
+import FeaturedJobsSlider from './FeaturedJobsSlider';
 
 const JobListResults: React.FC = () => (
   <section className="bg-light-grey pb120">
@@ -31,47 +32,7 @@ const JobListResults: React.FC = () => (
         </div>
         <div className="col-lg-4 mt-4 mt-lg-0">
           <aside aria-label="sidebar" className="sidebar sidebar-right">
-            <div className="widget w-featured-vacancies widget-sidebar">
-              <h3 className="widget-title">Featured</h3>
-              <div className="crumina-module crumina-module-slider navigation-top-right">
-                <div className="swiper-btn-wrap">
-                  <div className="swiper-btn-prev">
-                    <i className="puzzle-icon fal fa-long-arrow-left"></i>
-                  </div>
-                  <div className="swiper-btn-next">
-                    <i className="puzzle-icon fal fa-long-arrow-right"></i>
-                  </div>
-                </div>
-                <div className="swiper-container" data-show-items="1" data-prev-next="1">
-                  <div className="swiper-wrapper">
-                    {featured.map((item, idx) => (
-                      <div className="swiper-slide" key={idx}>
-                        <div className="ui-card featured-vacancies">
-                          <div className="ui-card-content">
-                            <div className="vacancies-title-location">
-                              <a href="#" className="vacancies-title h6">{item.title}</a>
-                              <div className="vacancies-location">
-                                <time className="published">{item.time}</time>
-                                {item.location}
-                              </div>
-                            </div>
-                            <a href="#" className="logo-company logo-company--thumb">
-                              <img className="logo" src={item.logo.src} alt="company" />
-                              <img src={item.company.src} alt="company" />
-                              <div className="overlay"></div>
-                            </a>
-                          </div>
-                          <div className="ui-card-footer">
-                            <a href="#" className="link--uppercase-wide fs-12">{item.category}</a>
-                            <button type="button" className={`crumina-button ${item.typeClass} button--xxs button--uppercase-wide`}>{item.type}</button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <FeaturedJobsSlider />
             <div className="widget w-banner widget-sidebar mt-4">
               <div className="banner-header">Advertising</div>
               <div className="banner-content">

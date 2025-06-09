@@ -1,3 +1,11 @@
-export default function ResumePreview() {
-  return <main>Resume preview page</main>;
+import ResumePreview from '@/components/candidates/resume-preview/ResumePreview';
+import Footer from '@/components/common/footer/Footer';
+
+export default function ResumePreviewPage() {
+  return (
+    <main>
+      <ResumePreview />
+      <Footer />
+    </main>
+  );
 }

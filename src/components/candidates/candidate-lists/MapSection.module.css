@@ -1,0 +1,29 @@
+/* Import Leaflet styles */
+@import "leaflet/dist/leaflet.css";
+@import "react-leaflet-cluster/lib/assets/MarkerCluster.css";
+@import "react-leaflet-cluster/lib/assets/MarkerCluster.Default.css";
+
+.mapContainer {
+  height: 400px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.mapWrapper {
+  height: 400px;
+  width: 100%;
+  position: relative;
+  background: #f5f5f5;
+}
+
+/* Fix Leaflet default styles */
+:global(.leaflet-container) {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+
+:global(.leaflet-control-container) {
+  z-index: 2;
+}

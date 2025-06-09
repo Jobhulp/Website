@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import freelancerSvg from '@/assets/img/svg/03_freelancer.svg';
+import freelancerSvg from '@/assets/img/svg/04_employer.svg';
 
 const StunningHeader: React.FC = () => (
   <section className="stunning-header bg-dark-themes pt200 pb200">
@@ -18,7 +18,7 @@ const StunningHeader: React.FC = () => (
               <span>Find a Job</span>
             </li>
           </ul>
-          <h1 className="page-title text-white">We have 69,368 job offers for you!</h1>
+          <h1 className="page-title text-white">We have 6.368 professional candidates!</h1>
         </div>
         <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <img src={freelancerSvg.src} alt="company" />

@@ -83,6 +83,10 @@ body {
   margin-bottom: -50px !important;
 }
 
+.remove-marge-pagination {
+  margin-bottom: 0 !important;
+}
+
 .pagination-bottom-center .swiper-pagination {
   bottom: 0;
   left: 50%;
