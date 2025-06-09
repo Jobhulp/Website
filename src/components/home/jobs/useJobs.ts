@@ -2,13 +2,22 @@
 'use client';
 
 import { useState } from 'react';
+import type { StaticImageData } from 'next/image';
+import client2 from '@/assets/img/client2.png';
+import client3 from '@/assets/img/client3.png';
+import client4 from '@/assets/img/client4.png';
+import client5 from '@/assets/img/client5.png';
+import client6 from '@/assets/img/client6.png';
+import client7 from '@/assets/img/client7.png';
+import author2 from '@/assets/img/author2.jpg';
+import author3 from '@/assets/img/author3.jpg';
 
 interface Job {
   id: string;
   title: string;
   location: string;
   postedAt: string;
-  companyLogo: string;
+  companyLogo: StaticImageData;
   category: string;
   type: string;
   isFeatured?: boolean;
@@ -18,7 +27,7 @@ interface Candidate {
   id: string;
   name: string;
   location: string;
-  avatar: string;
+  avatar: StaticImageData;
   role: string;
   rate: string;
 }
@@ -31,7 +40,7 @@ export const useJobs = () => {
       title: 'Data Center Support Specialist Engineer',
       location: 'London, United Kingdom',
       postedAt: '2018-10-14 12:00:00',
-      companyLogo: './img/client2.png',
+      companyLogo: client2,
       category: 'IT Contractor',
       type: 'Part Time',
       isFeatured: true
@@ -41,7 +50,7 @@ export const useJobs = () => {
       title: 'Visualizer, web designer Max 3Ds, Cinema 4D',
       location: 'New York, USA',
       postedAt: '2018-10-14 12:00:00',
-      companyLogo: './img/client3.png',
+      companyLogo: client3,
       category: 'Digital & Creative',
       type: 'Full Time',
       isFeatured: true
@@ -51,7 +60,7 @@ export const useJobs = () => {
       title: 'Regional Sales Manager',
       location: 'Melbourne, Australia',
       postedAt: '2018-10-14 12:00:00',
-      companyLogo: './img/client4.png',
+      companyLogo: client4,
       category: 'Sales & Marketing',
       type: 'Temporary'
     },
@@ -60,7 +69,7 @@ export const useJobs = () => {
       title: 'Front End and Back End Developer',
       location: 'California, USA',
       postedAt: '2018-10-14 12:00:00',
-      companyLogo: './img/client5.png',
+      companyLogo: client5,
       category: 'Web Development',
       type: 'Internship',
       isFeatured: true
@@ -70,7 +79,7 @@ export const useJobs = () => {
       title: 'Professional Copywriter for Commercial Advertising',
       location: 'Cologne, Germany',
       postedAt: '2018-10-14 12:00:00',
-      companyLogo: './img/client6.png',
+      companyLogo: client6,
       category: 'Writing',
       type: 'Freelance'
     },
@@ -79,7 +88,7 @@ export const useJobs = () => {
       title: 'Front End and Back End Developer',
       location: 'London, United Kingdom',
       postedAt: '2018-10-14 12:00:00',
-      companyLogo: './img/client7.png',
+      companyLogo: client7,
       category: 'Web Development',
       type: 'Part Time'
     }
@@ -90,7 +99,7 @@ export const useJobs = () => {
       id: '1',
       name: 'Jerry Thomas',
       location: 'London, United Kingdom',
-      avatar: './img/author2.jpg',
+      avatar: author2,
       role: 'Web Developer',
       rate: '$45 / hour'
     },
@@ -98,7 +107,7 @@ export const useJobs = () => {
       id: '2',
       name: 'Catherine White',
       location: 'New York, USA',
-      avatar: './img/author3.jpg',
+      avatar: author3,
       role: 'UX/UI Designer',
       rate: '$60 / Hour'
     }
