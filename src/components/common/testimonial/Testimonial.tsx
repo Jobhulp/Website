@@ -30,7 +30,7 @@ const Testimonial: React.FC = () => {
             <div className="crumina-module crumina-module-slider pagination-bottom-center slider--item-with-shadow">
               <Swiper
                 slidesPerView={3}
-                spaceBetween={40}
+                spaceBetween={30}
                 pagination={{
                     clickable: true,
                 }}
