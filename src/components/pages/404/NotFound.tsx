@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const NotFound = () => {
   return (
@@ -10,12 +10,12 @@ const NotFound = () => {
             <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12 mb-5 mb-md-0">
               <ul className="breadcrumbs">
                 <li className="breadcrumbs-item">
-                  <Link to="/">
+                  <Link href="/">
                     Home<i className="puzzle-icon fal fa-angle-double-right"></i>
                   </Link>
                 </li>
                 <li className="breadcrumbs-item">
-                  <Link to="/">
+                  <Link href="/">
                     Pages<i className="puzzle-icon fal fa-angle-double-right"></i>
                   </Link>
                 </li>
@@ -56,7 +56,7 @@ const NotFound = () => {
                   bestaan. Maar er zijn nog een paar dingen die u kunt doen. Klik op het sitelogo om naar de homepage te gaan of probeer te zoeken.
                 </div>
               </header>
-              <Link to="/" className="crumina-button button--primary button--xl">
+              <Link href="/" className="crumina-button button--primary button--xl">
                 Ga naar Homapagina
               </Link>
             </div>
