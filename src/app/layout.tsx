@@ -10,7 +10,7 @@ const ibmPlexSans = IBM_Plex_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Job Help - Find Your Next Career',
+  title: 'Jobhulp - Find Your Next Career',
   description: 'Job board website for finding your next career opportunity',
 }
 
