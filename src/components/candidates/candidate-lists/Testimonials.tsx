@@ -52,11 +52,32 @@ export default function Testimonials() {
             <div className="crumina-module crumina-module-slider pagination-bottom-center slider--item-with-shadow">
             <Swiper
                 slidesPerView={3}
-                spaceBetween={30}
+                spaceBetween={40}
                 pagination={{
                     clickable: true,
                 }}
                 navigation={false}
+                breakpoints={{
+                  0: {
+                    slidesPerView: 1,
+                  },
+                  576: { // sm
+                    slidesPerView: 2,
+                  },
+                  768: { // md
+                    slidesPerView: 3,
+                  },
+                  992: { // lg
+                    slidesPerView: 4,
+                  },
+                  1200: { // xl
+                    slidesPerView: 5,
+                  },
+                  1400: { // xxl
+                    slidesPerView: 6,
+                  },
+                }}
+                loop={true}
                 modules={[Pagination]}
                 className="swiper-container"
               >

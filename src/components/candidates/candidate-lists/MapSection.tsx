@@ -126,8 +126,8 @@ const MapSection: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="crumina-module crumina-map crumina-map--700" id="map-employer">
-        <div className="crumina-module crumina-map crumina-map--700" id="map-employer">
+      <div className="crumina-module crumina-map crumina-map--700" id="map-candidate">
+        <div className="crumina-module crumina-map crumina-map--700" id="map-candidate">
           <span>Loading map...</span>
         </div>
       </div>
@@ -136,8 +136,8 @@ const MapSection: React.FC = () => {
 
   if (error || !L) {
     return (
-      <div className="crumina-module crumina-map crumina-map--700" id="map-employer">
-        <div className="crumina-module crumina-map crumina-map--700" id="map-employer">
+      <div className="crumina-module crumina-map crumina-map--700" id="map-candidate">
+        <div className="crumina-module crumina-map crumina-map--700" id="map-candidates">
           {error || "Failed to load map"}
         </div>
       </div>
@@ -147,11 +147,11 @@ const MapSection: React.FC = () => {
   return (
     <section>
       <div className="header--spacer" style={{ height: "142.234px", backgroundColor: "rgb(18, 18, 20)" }}></div>
-      <div className="crumina-module crumina-map crumina-map--700" id="map-employer" style={{ position: "relative" }}>
+      <div className="crumina-module crumina-map crumina-map--700" id="map-candidates" style={{ position: "relative" }}>
         <div className="block-location-info">
           <h1 className="text-2xl font-bold">We have 69,368 job offers for you!</h1>
         </div>
-        <div className={styles.leafletContainer + " crumina-module crumina-map crumina-map--700"} id="map-employer">
+        <div className={styles.leafletContainer + " crumina-module crumina-map crumina-map--700"} id="map-candidate">
           <ClientMap L={L} />
         </div>
       </div>

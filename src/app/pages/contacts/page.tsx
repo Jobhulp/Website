@@ -1,3 +1,11 @@
-export default function Contacts() {
-  return <main>Contacts page</main>;
+import Contacts from '@/components/pages/contacts/Contacts';
+import Footer from '@/components/common/footer/Footer';
+
+export default function ContactsPage() {
+  return (
+    <div>
+      <Contacts />
+      <Footer />
+    </div>
+  );
 }

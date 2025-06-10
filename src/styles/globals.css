@@ -87,11 +87,7 @@ body {
 }
 
 .swiper-pagination {
-  margin-bottom: -50px !important;
-}
-
-.remove-marge-pagination {
-  margin-bottom: 0 !important;
+  margin-bottom: -45px !important;
 }
 
 .pagination-bottom-center .swiper-pagination {

@@ -11,6 +11,7 @@ import client12 from '@/assets/img/client12.png';
 import client13 from '@/assets/img/client13.png';
 import client14 from '@/assets/img/client14.png';
 import client15 from '@/assets/img/client15.png';
+import Link from "next/link";
 
 const companies = [
   {
@@ -92,23 +93,26 @@ const RelatedCompaniesSlider: React.FC = () => (
               navigation={false}
               modules={[Pagination]}
               breakpoints={{
-                320: {
+                0: {
                   slidesPerView: 1,
-                  spaceBetween: 20
                 },
-                480: {
+                576: { // sm
                   slidesPerView: 2,
-                  spaceBetween: 20
                 },
-                768: {
+                768: { // md
                   slidesPerView: 3,
-                  spaceBetween: 30
                 },
-                1024: {
+                992: { // lg
                   slidesPerView: 4,
-                  spaceBetween: 30
-                }
+                },
+                1200: { // xl
+                  slidesPerView: 5,
+                },
+                1400: { // xxl
+                  slidesPerView: 6,
+                },
               }}
+              loop={true}
               className="swiper-container auto-height"
             >
               {companies.map((company, idx) => (
@@ -120,9 +124,9 @@ const RelatedCompaniesSlider: React.FC = () => (
                       </a>
                     </div>
                     <div className="ui-card-footer">
-                      <a href="/employers/company-profile" className="link--bold link--with-icon link--icon-right">
+                      <Link href="/employers/company-profile" className="link--bold link--with-icon link--icon-right">
                         View profile<i className="puzzle-icon far fa-angle-right"></i>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </SwiperSlide>

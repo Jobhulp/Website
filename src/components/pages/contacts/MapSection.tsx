@@ -102,7 +102,7 @@ const ClientMap: React.FC<{ L: typeof import("leaflet") }> = ({ L }) => {
   return <div ref={mapRef} className={styles.mapContainer} />;
 };
 
-const CandidateMap: React.FC = () => {
+const MapSection: React.FC = () => {
   const [L, setL] = React.useState<typeof import("leaflet") | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
@@ -126,8 +126,8 @@ const CandidateMap: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="crumina-module crumina-map crumina-map--700" id="map-candidate">
-        <div className="crumina-module crumina-map crumina-map--700" id="map-candidate">
+      <div className="crumina-module crumina-map crumina-map--700" id="map-employer">
+        <div className="crumina-module crumina-map crumina-map--700" id="map-employer">
           <span>Loading map...</span>
         </div>
       </div>
@@ -136,8 +136,8 @@ const CandidateMap: React.FC = () => {
 
   if (error || !L) {
     return (
-      <div className="crumina-module crumina-map crumina-map--700" id="map-candidate">
-        <div className="crumina-module crumina-map crumina-map--700" id="map-candidate">
+      <div className="crumina-module crumina-map crumina-map--700" id="map-employer">
+        <div className="crumina-module crumina-map crumina-map--700" id="map-employer">
           {error || "Failed to load map"}
         </div>
       </div>
@@ -146,10 +146,9 @@ const CandidateMap: React.FC = () => {
 
   return (
     <section>
-      <div className="header--spacer" style={{ height: "142.234px", backgroundColor: "rgb(18, 18, 20)" }}></div>
-      <div className="crumina-module crumina-map crumina-map--700" id="map-candidate" style={{ position: "relative" }}>
+      <div className="crumina-module crumina-map crumina-map--700" id="map-employer" style={{ position: "relative" }}>
         <div className="block-location-info">
-          <h1 className="text-2xl font-bold">We have 6.368 professional candidates!</h1>
+          <h1 className="text-2xl font-bold">We have 69,368 job offers for you!</h1>
         </div>
         <div className={styles.leafletContainer + " crumina-module crumina-map crumina-map--700"} id="map-employer">
           <ClientMap L={L} />
@@ -159,4 +158,4 @@ const CandidateMap: React.FC = () => {
   );
 };
 
-export default CandidateMap;
+export default MapSection;

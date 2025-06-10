@@ -76,12 +76,33 @@ const RelatedCandidates: React.FC = () => {
             <div className="crumina-module crumina-module-slider pagination-bottom-center slider--item-with-shadow">
             <Swiper
                 slidesPerView={3}
-                spaceBetween={30}
+                spaceBetween={40}
                 pagination={{
                   clickable: true,
                 }}
                 navigation={false}
                 modules={[Pagination]}
+                breakpoints={{
+                  0: {
+                    slidesPerView: 1,
+                  },
+                  576: { // sm
+                    slidesPerView: 2,
+                  },
+                  768: { // md
+                    slidesPerView: 3,
+                  },
+                  992: { // lg
+                    slidesPerView: 4,
+                  },
+                  1200: { // xl
+                    slidesPerView: 5,
+                  },
+                  1400: { // xxl
+                    slidesPerView: 6,
+                  },
+                }}
+                loop={true}
                 className="swiper-container"
               >
                   {candidates.map((candidate, idx) => (

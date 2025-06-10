@@ -146,6 +146,18 @@ const RelatedVacanciesSlider: React.FC = () => (
               }}
               navigation={false}
               modules={[Pagination]}
+              breakpoints={{
+                0: {
+                  slidesPerView: 1,
+                },
+                768: {
+                  slidesPerView: 2,
+                },
+                1024: {
+                  slidesPerView: 4,
+                },
+              }}
+              loop={true}
               className="swiper-container"
             >
               {relatedJobs.map((job, idx) => (
