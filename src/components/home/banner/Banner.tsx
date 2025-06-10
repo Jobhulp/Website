@@ -31,7 +31,7 @@ const Banner = () => (
           <div className="row align-items-center">
             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-3 mb-md-0" data-swiper-parallax="-300">
               <h2 className="h1 main-slider-title">Krijg je droomjob</h2>
-              <h3 className="main-slider-sub-title">We hebben
+              <h3 className="main-slider-sub-title"> <span>We hebben </span>
                 <span className="c-primary">69.368</span> geweldige vacatures die je verdient!</h3>
               <div className="universal-btn-wrapper">
                 <a href="/how-it-works" className="crumina-button button--yellow button--xl button--hover-primary">Hoe het werkt</a>

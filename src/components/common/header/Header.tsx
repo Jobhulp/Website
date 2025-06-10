@@ -1,14 +1,23 @@
 "use client";
-
 import React, { useState } from 'react';
 import "./style.css";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Link from "next/link";
 import logo from '@/assets/img/svg/01_logo_white.svg';
+import { useMegaMenu } from './useMegaMenu';
 
 const Header = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
+
+  const {
+    isMenuOpen,
+    activeSubmenu,
+    toggleMenu,
+    handleSubmenuClick,
+    handleMouseEnter,
+    handleMouseLeave
+  } = useMegaMenu();
 
   const handleLoginClick = () => {
     setShowLoginModal(true);
@@ -33,7 +42,7 @@ const Header = () => {
   return (
     <>
       <header
-        className="header header--absolute header--transparent"
+        className="header header--sticky header--dark"
         id="site-header"
       >
         <div className="container">
@@ -47,14 +56,15 @@ const Header = () => {
               />
             </Link>
 
-            <nav id="primary-menu" className="primary-menu primary-menu-responsive">
+            <nav id="primary-menu" className={`primary-menu primary-menu-responsive ${isMenuOpen ? 'mobile-menu-open' : ''}`}>
               <a
                 id="menu-icon-trigger"
                 className="menu-icon-trigger showhide"
+                onClick={toggleMenu}
               >
                 <span className="mob-menu--title">Menu</span>
                 <span id="menu-icon-wrapper" className="menu-icon-wrapper">
-                  <i className="puzzle-icon fas fa-bars"></i>
+                  <i className="puzzle-icon fas fa-bars fa-lg"></i>
                 </span>
               </a>
 
@@ -67,15 +77,22 @@ const Header = () => {
                   <Link href="/how-it-works">How it Works</Link>
                 </li>
 
-                <li className="menu-item-has-children">
-                  <a href="#">
+                <li
+                  className={`menu-item-has-children ${activeSubmenu === 'employers' ? 'active' : ''}`}
+                  onMouseEnter={() => handleMouseEnter('employers')}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <a href="#" onClick={(e) => {
+                    e.preventDefault();
+                    handleSubmenuClick('employers');
+                  }}>
                     Employers
                     <span className="show indicator">
                       <i className="puzzle-icon far fa-angle-down"></i>
                     </span>
                   </a>
 
-                  <ul className="sub-menu">
+                  <ul className="sub-menu" style={{ display: activeSubmenu === 'employers' ? 'block' : 'none' }}>
                     <li>
                       <Link href="/employers/job-lists">Job lists</Link>
                     </li>
@@ -94,14 +111,21 @@ const Header = () => {
                   </ul>
                 </li>
 
-                <li className="menu-item-has-children">
-                  <a href="#">
+                <li
+                  className={`menu-item-has-children ${activeSubmenu === 'candidates' ? 'active' : ''}`}
+                  onMouseEnter={() => handleMouseEnter('candidates')}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <a href="#" onClick={(e) => {
+                    e.preventDefault();
+                    handleSubmenuClick('candidates');
+                  }}>
                     Candidates
                     <span className="show indicator">
                       <i className="puzzle-icon far fa-angle-down"></i>
                     </span>
                   </a>
-                  <ul className="sub-menu">
+                  <ul className="sub-menu" style={{ display: activeSubmenu === 'candidates' ? 'block' : 'none' }}>
                     <li>
                       <Link href="/candidates/candidate-lists">Candidate lists</Link>
                     </li>
@@ -123,14 +147,21 @@ const Header = () => {
                   </ul>
                 </li>
 
-                <li className="menu-item-has-children">
-                  <a href="#">
+                <li
+                  className={`menu-item-has-children ${activeSubmenu === 'news' ? 'active' : ''}`}
+                  onMouseEnter={() => handleMouseEnter('news')}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <a href="#" onClick={(e) => {
+                    e.preventDefault();
+                    handleSubmenuClick('news');
+                  }}>
                     News
                     <span className="show indicator">
                       <i className="puzzle-icon far fa-angle-down"></i>
                     </span>
                   </a>
-                  <ul className="sub-menu">
+                  <ul className="sub-menu" style={{ display: activeSubmenu === 'news' ? 'block' : 'none' }}>
                     <li>
                       <Link href="/news/news-page">News page</Link>
                     </li>
@@ -149,14 +180,21 @@ const Header = () => {
                   </ul>
                 </li>
 
-                <li className="menu-item-has-mega-menu menu-item-has-children">
-                  <a href="#">
+                <li
+                  className={`menu-item-has-mega-menu menu-item-has-children ${activeSubmenu === 'pages' ? 'active' : ''}`}
+                  onMouseEnter={() => handleMouseEnter('pages')}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <a href="#" onClick={(e) => {
+                    e.preventDefault();
+                    handleSubmenuClick('pages');
+                  }}>
                     Pages
                     <span className="show indicator">
                       <i className="puzzle-icon far fa-angle-down"></i>
                     </span>
                   </a>
-                  <div className="megamenu">
+                  <div className="megamenu" style={{ display: activeSubmenu === 'pages' ? 'block' : 'none' }}>
                     <div className="megamenu-row">
                       <div className="col3">
                         <ul>

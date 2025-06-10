@@ -1464,3 +1464,15 @@ nav li.menu-item-has-mega-menu ul.mega-menu-row ul {
     display: none;
   }
 }
+
+.primary-menu-responsive.mobile-menu-open .primary-menu-menu {
+  display: block;
+}
+
+.menu-icon-trigger {
+  position: fixed;
+  right: 24px;
+  top: 60px;
+  z-index: 1000;
+}
+

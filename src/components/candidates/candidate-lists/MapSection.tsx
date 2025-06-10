@@ -149,7 +149,7 @@ const MapSection: React.FC = () => {
       <div className="header--spacer" style={{ height: "142.234px", backgroundColor: "rgb(18, 18, 20)" }}></div>
       <div className="crumina-module crumina-map crumina-map--700" id="map-candidates" style={{ position: "relative" }}>
         <div className="block-location-info">
-          <h1 className="text-2xl font-bold">We have 69,368 job offers for you!</h1>
+          <div className="h1">We have 69,368 job offers for you!</div>
         </div>
         <div className={styles.leafletContainer + " crumina-module crumina-map crumina-map--700"} id="map-candidate">
           <ClientMap L={L} />

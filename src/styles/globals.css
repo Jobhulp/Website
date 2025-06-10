@@ -30,6 +30,7 @@ html,
 body {
   padding: 0;
   margin: 0;
+  font-size: 14px;
   font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, Segoe UI,
     Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
     sans-serif;
@@ -124,4 +125,18 @@ button.close {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+}
+
+/* Mobile Menu Styles */
+@media (max-width: 768px) {
+
+
+  .header--spacer {
+    height: 110px !important;
+  }
+
+}
+
+.menu-icon-wrapper {
+  margin-top: 5px;
 }
