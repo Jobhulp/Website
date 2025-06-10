@@ -24,7 +24,7 @@ const CandidateDetails = () => {
                   </Link>
                 </li>
                 <li className="breadcrumbs-item">
-                  <Link href="/employers">
+                  <Link href="/employers/job-lists">
                     Employers
                     <i className="puzzle-icon fal fa-angle-double-right"></i>
                   </Link>

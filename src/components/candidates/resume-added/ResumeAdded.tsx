@@ -17,7 +17,7 @@ const ResumeAdded = () => {
                   </Link>
                 </li>
                 <li className="breadcrumbs-item">
-                  <Link href="/candidates">
+                  <Link href="/candidates/candidate-lists">
                     Kandidaten
                     <i className="puzzle-icon fal fa-angle-double-right"></i>
                   </Link>

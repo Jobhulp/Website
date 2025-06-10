@@ -11,7 +11,7 @@ const JobDetailsHeader: React.FC = () => (
               <Link href="/">Home<i className="puzzle-icon fal fa-angle-double-right"></i></Link>
             </li>
             <li className="breadcrumbs-item">
-              <Link href="/candidates/lists-grid">Candidates<i className="puzzle-icon fal fa-angle-double-right"></i></Link>
+              <Link href="/candidates/candidate-lists-grid">Candidates<i className="puzzle-icon fal fa-angle-double-right"></i></Link>
             </li>
             <li className="breadcrumbs-item">
               <Link href="/employers/job-lists-grid">Find a Job<i className="puzzle-icon fal fa-angle-double-right"></i></Link>

@@ -92,15 +92,6 @@ const RelatedCandidates: React.FC = () => {
                   768: { // md
                     slidesPerView: 3,
                   },
-                  992: { // lg
-                    slidesPerView: 4,
-                  },
-                  1200: { // xl
-                    slidesPerView: 5,
-                  },
-                  1400: { // xxl
-                    slidesPerView: 6,
-                  },
                 }}
                 loop={true}
                 className="swiper-container"

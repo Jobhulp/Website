@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 interface CandidateCardProps {
   name: string;
   location: string;
@@ -23,7 +25,7 @@ export default function CandidateCard({
     <div className={`ui-card ${isFeatured ? 'featured-vacancies' : ''} ${className}`}>
       <div className="ui-card-content">
         <div className="vacancies-title-location">
-          <a href="/candidates/details" className="vacancies-title h5">{name}</a>
+          <Link href="/candidates/candidate-details" className="vacancies-title h5">{name}</Link>
           <div className="vacancies-location">{location}</div>
         </div>
         <div className="avatar-skills-wrap">
@@ -33,17 +35,17 @@ export default function CandidateCard({
           {skills && skills.length > 0 && (
             <div className="skills">
               {skills.map((skill, index) => (
-                <a key={index} href="#" className="crumina-button button--grey button--xs button--bordered button--hover-primary">
+                <Link key={index} href="/candidates/candidate-details" className="crumina-button button--grey button--xs button--bordered button--hover-primary">
                   {skill}
-                </a>
+                </Link>
               ))}
             </div>
           )}
         </div>
       </div>
       <div className="ui-card-footer">
-        <a href="#" className="link--uppercase-wide fs-12">{title}</a>
-        <a href="#" className="link--bold fs-12">{rate}</a>
+        <Link href="#" className="link--uppercase-wide fs-12">{title}</Link>
+        <Link href="#" className="link--bold fs-12">{rate}</Link>
       </div>
     </div>
   );
