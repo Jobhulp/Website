@@ -39,6 +39,12 @@ const Header = () => {
     setShowLoginModal(true);
   };
 
+  const handleLinkClick = () => {
+    if (isMenuOpen) {
+      toggleMenu();
+    }
+  };
+
   return (
     <>
       <header
@@ -47,7 +53,7 @@ const Header = () => {
       >
         <div className="container">
           <div className="header-content-wrapper">
-            <Link href="/" className="site-logo">
+            <Link href="/" className="site-logo" onClick={handleLinkClick}>
               <img
                 className="puzzle-icon"
                 src={logo.src}
@@ -70,11 +76,11 @@ const Header = () => {
 
               <ul className="primary-menu-menu">
                 <li>
-                  <Link href="/">Home</Link>
+                  <Link href="/" onClick={handleLinkClick}>Home</Link>
                 </li>
 
                 <li className="">
-                  <Link href="/how-it-works">How it Works</Link>
+                  <Link href="/how-it-works" onClick={handleLinkClick}>How it Works</Link>
                 </li>
 
                 <li
@@ -94,19 +100,19 @@ const Header = () => {
 
                   <ul className="sub-menu" style={{ display: activeSubmenu === 'employers' ? 'block' : 'none' }}>
                     <li>
-                      <Link href="/employers/job-lists">Job lists</Link>
+                      <Link href="/employers/job-lists" onClick={handleLinkClick}>Job lists</Link>
                     </li>
                     <li>
-                      <Link href="/employers/job-lists-grid">Job lists grid</Link>
+                      <Link href="/employers/job-lists-grid" onClick={handleLinkClick}>Job lists grid</Link>
                     </li>
                     <li>
-                      <Link href="/employers/job-details">Job details</Link>
+                      <Link href="/employers/job-details" onClick={handleLinkClick}>Job details</Link>
                     </li>
                     <li>
-                      <Link href="/employers/company-profile">Company profile</Link>
+                      <Link href="/employers/company-profile" onClick={handleLinkClick}>Company profile</Link>
                     </li>
                     <li>
-                      <Link href="/employers/company-lists">Company lists</Link>
+                      <Link href="/employers/company-lists" onClick={handleLinkClick}>Company lists</Link>
                     </li>
                   </ul>
                 </li>
@@ -127,22 +133,22 @@ const Header = () => {
                   </a>
                   <ul className="sub-menu" style={{ display: activeSubmenu === 'candidates' ? 'block' : 'none' }}>
                     <li>
-                      <Link href="/candidates/candidate-lists">Candidate lists</Link>
+                      <Link href="/candidates/candidate-lists" onClick={handleLinkClick}>Candidate lists</Link>
                     </li>
                     <li>
-                      <Link href="/candidates/candidate-lists-grid">Candidate lists grid</Link>
+                      <Link href="/candidates/candidate-lists-grid" onClick={handleLinkClick}>Candidate lists grid</Link>
                     </li>
                     <li>
-                      <Link href="/candidates/candidate-details">Candidate details</Link>
+                      <Link href="/candidates/candidate-details" onClick={handleLinkClick}>Candidate details</Link>
                     </li>
                     <li>
-                      <Link href="/candidates/submit-resume">Submit resume</Link>
+                      <Link href="/candidates/submit-resume" onClick={handleLinkClick}>Submit resume</Link>
                     </li>
                     <li>
-                      <Link href="/candidates/resume-preview">Resume preview</Link>
+                      <Link href="/candidates/resume-preview" onClick={handleLinkClick}>Resume preview</Link>
                     </li>
                     <li>
-                      <Link href="/candidates/resume-added">Resume added</Link>
+                      <Link href="/candidates/resume-added" onClick={handleLinkClick}>Resume added</Link>
                     </li>
                   </ul>
                 </li>
@@ -163,19 +169,19 @@ const Header = () => {
                   </a>
                   <ul className="sub-menu" style={{ display: activeSubmenu === 'news' ? 'block' : 'none' }}>
                     <li>
-                      <Link href="/news/news-page">News page</Link>
+                      <Link href="/news/news-page" onClick={handleLinkClick}>News page</Link>
                     </li>
                     <li>
-                      <Link href="/news/standard-news-with-sidebar">Standard news with sidebar</Link>
+                      <Link href="/news/standard-news-with-sidebar" onClick={handleLinkClick}>Standard news with sidebar</Link>
                     </li>
                     <li>
-                      <Link href="/news/news-details-standard">News details standard</Link>
+                      <Link href="/news/news-details-standard" onClick={handleLinkClick}>News details standard</Link>
                     </li>
                     <li>
-                      <Link href="/news/news-details-gallery">News details gallery</Link>
+                      <Link href="/news/news-details-gallery" onClick={handleLinkClick}>News details gallery</Link>
                     </li>
                     <li>
-                      <Link href="/news/news-details-video">News details with video</Link>
+                      <Link href="/news/news-details-video" onClick={handleLinkClick}>News details with video</Link>
                     </li>
                   </ul>
                 </li>
@@ -202,43 +208,43 @@ const Header = () => {
                             <h6 className="megamenu-item-info-title">Pages</h6>
                           </li>
                           <li>
-                            <Link href="/pages/pricing-plans">
+                            <Link href="/pages/pricing-plans" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Pricing plans
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/contacts">
+                            <Link href="/pages/contacts" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Contacts
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/send-message">
+                            <Link href="/pages/send-message" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Send message
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/coming-soon">
+                            <Link href="/pages/coming-soon" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Coming Soon Page
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/error-404">
+                            <Link href="/pages/error-404" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Error 404
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/sign-up">
+                            <Link href="/pages/sign-up" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Sign Up
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/login">
+                            <Link href="/pages/login" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Login
                             </Link>
@@ -254,37 +260,37 @@ const Header = () => {
                             </h6>
                           </li>
                           <li>
-                            <Link href="/pages/accordions">
+                            <Link href="/pages/accordions" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Accordions
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/button-styles">
+                            <Link href="/pages/button-styles" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Button Styles
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/forms">
+                            <Link href="/pages/forms" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Forms
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/icon-with-text">
+                            <Link href="/pages/icon-with-text" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Icon with Text
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/link-styles">
+                            <Link href="/pages/link-styles" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Link Styles
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/tab-styles">
+                            <Link href="/pages/tab-styles" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Tab Styles
                             </Link>
@@ -300,37 +306,37 @@ const Header = () => {
                             </h6>
                           </li>
                           <li>
-                            <Link href="/pages/heading-styles">
+                            <Link href="/pages/heading-styles" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Heading Styles
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/highlights">
+                            <Link href="/pages/highlights" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Highlights
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/blockquotes">
+                            <Link href="/pages/blockquotes" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Blockquotes
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/columns">
+                            <Link href="/pages/columns" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Columns
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/lists">
+                            <Link href="/pages/lists" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Lists
                             </Link>
                           </li>
                           <li>
-                            <Link href="/pages/icons">
+                            <Link href="/pages/icons" onClick={handleLinkClick}>
                               <i className="puzzle-icon fas fa-caret-right"></i>
                               Icons
                             </Link>
