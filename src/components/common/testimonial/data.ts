@@ -1,8 +1,5 @@
 import { TestimonialData } from './types';
-import author1 from '@/assets/img/author1.jpg';
 import author6 from '@/assets/img/author6.jpg';
-import author7 from '@/assets/img/author7.jpg';
-import author8 from '@/assets/img/author8.jpg';
 
 export const testimonials: TestimonialData[] = [
   {
@@ -20,7 +17,7 @@ export const testimonials: TestimonialData[] = [
     author: {
       name: "Angelina Johnson",
       role: "Graphic Designer",
-      image: author1
+      image: author6
     }
   },
   {
@@ -29,7 +26,7 @@ export const testimonials: TestimonialData[] = [
     author: {
       name: "Peter Spenser",
       role: "Marketing Director",
-      image: author7
+      image: author6
     }
   },
   {
@@ -38,7 +35,7 @@ export const testimonials: TestimonialData[] = [
     author: {
       name: "John Doe",
       role: "Software Engineer",
-      image: author8
+      image: author6
     }
   },
   {
@@ -47,7 +44,7 @@ export const testimonials: TestimonialData[] = [
     author: {
       name: "John Doe",
       role: "Software Engineer",
-      image: author8
+      image: author6
     }
   }
 ];

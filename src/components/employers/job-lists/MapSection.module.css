@@ -17,13 +17,13 @@
   background: #f5f5f5;
 }
 
-/* Fix Leaflet default styles */
-:global(.leaflet-container) {
+/* Leaflet styles */
+.leafletContainer :global(.leaflet-container) {
   height: 100%;
   width: 100%;
   z-index: 1;
 }
 
-:global(.leaflet-control-container) {
+.leafletContainer :global(.leaflet-control-container) {
   z-index: 2;
 }

@@ -3,6 +3,7 @@
 import React from 'react';
 import { useJobs } from './useJobs';
 import Tabs from './Tabs';
+import { StaticImageData } from 'next/image';
 
 type TabId = 'jobs' | 'candidates';
 
@@ -12,7 +13,7 @@ interface JobCardProps {
 		title: string;
 		location: string;
 		postedAt: string;
-		companyLogo: string;
+		companyLogo: StaticImageData;
 		category: string;
 		type: string;
 		isFeatured?: boolean;
@@ -50,7 +51,7 @@ interface CandidateCardProps {
 		id: string;
 		name: string;
 		location: string;
-		avatar: string;
+		avatar: StaticImageData;
 		role: string;
 		rate: string;
 	};

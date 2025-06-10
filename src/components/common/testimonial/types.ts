@@ -6,6 +6,6 @@ export interface TestimonialData {
   author: {
     name: string;
     role: string;
-    image: string | StaticImageData;
+    image: StaticImageData;
   };
 }
