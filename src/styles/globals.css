@@ -1,11 +1,11 @@
 /* Import Bootstrap CSS */
-@import "../../public/css/vendors/bootstrap/bootstrap.css";
+@import "../assets/css/vendors/bootstrap/bootstrap.css";
 
 /* Import Font Awesome */
-@import "../../public/css/font-awesome.css";
+@import "../assets/css/font-awesome.css";
 
 /* Import main.css */
-@import "../../public/css/main.css";
+@import "../assets/css/main.css";
 
 
 /* Global styles */
