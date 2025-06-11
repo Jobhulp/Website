@@ -162,7 +162,7 @@ const Header = () => {
                     e.preventDefault();
                     handleSubmenuClick('news');
                   }}>
-                    News
+                    Nieuws
                     <span className="show indicator">
                       <i className="puzzle-icon far fa-angle-down"></i>
                     </span>
