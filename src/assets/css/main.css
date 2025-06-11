@@ -5720,6 +5720,18 @@ img.mfp-img {
     text-align: center;
     padding: 0;
   }
+  /*------------- #HEADER --------------*/
+  .header {
+  position: fixed;
+  min-width: 100%;
+  padding: 40px 0;
+  z-index: 1001;
+  left: 0;
+  top: 0;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  }
 }
 
 @media all and (max-width: 900px) {
