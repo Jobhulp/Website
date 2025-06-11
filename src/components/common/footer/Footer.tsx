@@ -152,7 +152,7 @@ const Footer: React.FC = () => {
 
 						<div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 text-center text-lg-right">
 							<div className="copyright">
-								<span>© getFullYear() </span>
+								<span>© <script>document.write(new Date().getFullYear());</script> </span>
 								<span><a href="index.html">Jobbhulp.</a></span>
 								<span>Part of <a href="https://ospi-international.org/" className="logo-title">OSPI</a></span>
 							</div>
