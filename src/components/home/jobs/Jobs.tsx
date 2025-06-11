@@ -32,7 +32,7 @@ const JobCard: React.FC<JobCardProps> = ({ job, formatTimeAgo }) => (
 						{job.location}
 					</div>
 				</div>
-				<a href={`05_job_details.html?id=${job.id}`} className="logo-company">
+				<a href={`/jobs/job-details`} className="logo-company">
 					<img className="logo" src={job.companyLogo.src} title="company" alt="company logo" />
 				</a>
 			</div>
