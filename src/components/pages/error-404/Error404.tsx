@@ -2,12 +2,12 @@ import Link from 'next/link';
 
 export default function Error404() {
   return (
-	<section>
-		<div class="header--spacer" style="height: 142.234px; background-color: rgb(18, 18, 20);"></div>
-    	<div className="main-content-wrapper">
-      		<section className="pt120">
-				<div className="container">
-					<div className="row align-items-start">
+    <div className="main-content-wrapper">
+      <div className="header--spacer" style={{ height: "142.234px", backgroundColor: "rgb(18, 18, 20)" }}></div>
+
+      <section className="pt120">
+		<div className="container">
+			<div className="row align-items-start">
 				<div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-5 mb-lg-0">
 					<header className="crumina-module crumina-heading heading--h2 heading--with-decoration">
 						<h2 className="heading-title">We kunnen de pagina die u zoekt niet vinden!</h2>
@@ -25,6 +25,5 @@ export default function Error404() {
 		</div>
 	</section>
     </div>
-		</section>
   );
 }
