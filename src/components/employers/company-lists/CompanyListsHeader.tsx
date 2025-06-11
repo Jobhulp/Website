@@ -23,7 +23,7 @@ const CompanyListsHeader = () => (
           <h1 className="page-title text-white">Vind je droombedrijf</h1>
 
           <p className="text-white fs-20 my-3 my-sm-5">
-            Zoek je een werkomgeving waar je écht tot je recht komt? Bij Jobhulp matchen we je met bedrijven die passen bij jouw talenten, interesses en persoonlijkheid.
+            Zoek je een werkomgeving waar je écht tot je recht komt? We matchen je met bedrijven die passen bij jouw talenten, interesses en persoonlijkheid.
           </p>
 
           <Link href="/employers/job-lists" className="crumina-button button--yellow button--xl button--hover-primary">
