@@ -98,7 +98,7 @@ const Header = () => {
                     </span>
                   </a>
 
-                  <ul className="sub-menu" style={{ display: activeSubmenu === 'employers' ? 'block' : 'none' }}>
+                  <ul className="sub-menu" style={{ display: activeSubmenu === 'jobs' ? 'block' : 'none' }}>
                     <li>
                       <Link href="/jobs/job-lists" onClick={handleLinkClick}>Job lists</Link>
                     </li>
