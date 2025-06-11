@@ -15,7 +15,7 @@ const JobDetailsCompanyInfo: React.FC = () => (
           <p className="no-margin">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborpum.</p>
         </div>
         <div className="col-lg-2 col-md-6 col-sm-12 col-xs-12 mb-4 mb-lg-0">
-          <a href="https://envato.com/" className="crumina-button button--dark button--l button--bordered">Website</a>
+          <a href="https://jobbhulp.be/jobs/company-profile" className="crumina-button button--dark button--l button--bordered">Bedrijfsprofiel</a>
         </div>
         <div className="col-lg-2 col-md-6 col-sm-12 col-xs-12 mb-0 mb-lg-0">
           <a href="#" className="crumina-button button--primary button--l button--with-icon button--icon-left"><i className="puzzle-icon far fa-envelope"></i>Message</a>
