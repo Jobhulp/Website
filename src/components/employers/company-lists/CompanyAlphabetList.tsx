@@ -96,7 +96,7 @@ const CompanyAlphabetList: React.FC = () => {
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <header className="crumina-module crumina-heading heading--h2 heading--with-decoration heading--inline mb-0">
               <h2 className="heading-title">We hebben 368 geweldige bedrijven speciaal voor jou!</h2>
-              <div className="heading-text">van alle bedrijven die via Jobhulp op zoek zijn naar gemotiveerde kandidaten. Van lokale kmo’s tot grote spelers — elk bedrijf selecteert op basis van competenties, interesses en persoonlijkheid. Geen loze sollicitaties, wel eerlijke kansen.</div>
+              <div className="heading-text">Alle bedrijven die via Jobhulp op zoek zijn naar gemotiveerde kandidaten. Van lokale kmo’s tot grote spelers — elk bedrijf selecteert op basis van competenties, interesses en persoonlijkheid. Geen loze sollicitaties, wel eerlijke kansen.</div>
             </header>
           </div>
         </div>
