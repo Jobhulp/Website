@@ -84,15 +84,15 @@ const Header = () => {
                 </li>
 
                 <li
-                  className={`menu-item-has-children ${activeSubmenu === 'employers' ? 'active' : ''}`}
-                  onMouseEnter={() => handleMouseEnter('employers')}
+                  className={`menu-item-has-children ${activeSubmenu === 'jobs' ? 'active' : ''}`}
+                  onMouseEnter={() => handleMouseEnter('jobs')}
                   onMouseLeave={handleMouseLeave}
                 >
                   <a href="#" onClick={(e) => {
                     e.preventDefault();
-                    handleSubmenuClick('employers');
+                    handleSubmenuClick('jobs');
                   }}>
-                    Employers
+                    Jobs
                     <span className="show indicator">
                       <i className="puzzle-icon far fa-angle-down"></i>
                     </span>
@@ -100,19 +100,19 @@ const Header = () => {
 
                   <ul className="sub-menu" style={{ display: activeSubmenu === 'employers' ? 'block' : 'none' }}>
                     <li>
-                      <Link href="/employers/job-lists" onClick={handleLinkClick}>Job lists</Link>
+                      <Link href="/jobs/job-lists" onClick={handleLinkClick}>Job lists</Link>
                     </li>
                     <li>
-                      <Link href="/employers/job-lists-grid" onClick={handleLinkClick}>Job lists grid</Link>
+                      <Link href="/jobs/job-lists-grid" onClick={handleLinkClick}>Job lists grid</Link>
                     </li>
                     <li>
-                      <Link href="/employers/job-details" onClick={handleLinkClick}>Job details</Link>
+                      <Link href="/jobs/job-details" onClick={handleLinkClick}>Job details</Link>
                     </li>
                     <li>
-                      <Link href="/employers/company-profile" onClick={handleLinkClick}>Company profile</Link>
+                      <Link href="/jobs/company-profile" onClick={handleLinkClick}>Company profile</Link>
                     </li>
                     <li>
-                      <Link href="/employers/company-lists" onClick={handleLinkClick}>Company lists</Link>
+                      <Link href="/jobs/company-lists" onClick={handleLinkClick}>Company lists</Link>
                     </li>
                   </ul>
                 </li>
