@@ -6580,7 +6580,7 @@ label {
 .header {
   position: fixed;
   min-width: 100%;
-  padding: 40px 0;
+  padding: 10px 0;
   z-index: 1001;
   left: 0;
   top: 0;
