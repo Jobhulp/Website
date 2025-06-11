@@ -3,6 +3,7 @@ import Link from "next/link";
 import logo from '@/assets/img/svg/01_logo_white.svg';
 
 const Footer: React.FC = () => {
+	const currentYear = new Date().getFullYear()
 	return (
 		<footer id="site-footer" className="footer bg-dark-themes">
 
@@ -152,7 +153,7 @@ const Footer: React.FC = () => {
 
 						<div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 text-center text-lg-right">
 							<div className="copyright">
-								<span>© <script>document.write(new Date().getFullYear());</script> </span>
+								<span>© {currentYear}</span>
 								<span><a href="index.html">Jobbhulp.</a></span>
 								<span>Part of <a href="https://ospi-international.org/" className="logo-title">OSPI</a></span>
 							</div>
