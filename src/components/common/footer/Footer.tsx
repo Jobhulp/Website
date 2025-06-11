@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
 
 								<div className="contact-item">
 									<i className="puzzle-icon far fa-at" />
-									<a href="mailto:info@sample.com">support@jobook.com</a>
+									<a href="mailto:info@jobhulp.be">info@jobhulp.be</a>
 								</div>
 
 							</div>
@@ -152,7 +152,7 @@ const Footer: React.FC = () => {
 
 						<div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 text-center text-lg-right">
 							<div className="copyright">
-								<span>© 2019 </span>
+								<span>© getFullYear() </span>
 								<span><a href="index.html">Jobbhulp.</a></span>
 								<span>Part of <a href="https://ospi-international.org/" className="logo-title">OSPI</a></span>
 							</div>

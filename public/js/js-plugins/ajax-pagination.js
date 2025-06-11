@@ -21,7 +21,7 @@ $( document ).ready( function () {
         $button.on( 'click', function () {
 
 
-            //Crumina custom JS for equalHeight
+            //ina custom JS for equalHeight
             var elemHeight = $( this ).closest( 'body' ).find( '.sorting-portfolio .sorting-item' ).css( 'height' );
             //...end
 
@@ -54,7 +54,7 @@ $( document ).ready( function () {
                                         elem.addClass( 'animate' );
                                     } else {
 
-                                        //Crumina custom JS for equalHeight
+                                        //ina custom JS for equalHeight
                                         elem.css( 'height', elemHeight );
                                         //...end
 
