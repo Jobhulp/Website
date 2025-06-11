@@ -80,7 +80,7 @@ const Header = () => {
                 </li>
 
                 <li className="">
-                  <Link href="/how-it-works" onClick={handleLinkClick}>How it Works</Link>
+                  <Link href="/how-it-works" onClick={handleLinkClick}>Hoe het werkt</Link>
                 </li>
 
                 <li
