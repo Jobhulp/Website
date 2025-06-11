@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./style.css";
 
 const languages = [
-  { value: "Ua", label: "Ua" },
+  { value: "Nl", label: "Nl" },
   { value: "En", label: "En" },
   { value: "Fr", label: "Fr" },
   { value: "De", label: "De" },
