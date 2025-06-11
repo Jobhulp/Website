@@ -83,7 +83,7 @@ const Contacts: React.FC = () => {
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <header className="crumina-module crumina-heading heading--h2 heading--with-decoration heading--inline mb-0">
                 <h2 className="heading-title">
-                  Find a Puzzler office near you
+                  Find a Jobbhulp office near you
                 </h2>
                 <div className="heading-text">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed

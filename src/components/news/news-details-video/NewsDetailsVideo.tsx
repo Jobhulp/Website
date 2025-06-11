@@ -475,7 +475,7 @@ const NewsDetailsVideo: React.FC = () => {
                     <div className="widget w-banner widget-sidebar">
                       <div className="banner-header">Advertising</div>
                       <div className="banner-content">
-                        <h4 className="widget-title">Download free Puzzler App for your mobile</h4>
+                        <h4 className="widget-title">Download free Jobbhulp App for your mobile</h4>
                         <div className="icon-market-wrap">
                           <Link href="#"><i className="puzzle-icon fab fa-apple"></i></Link>
                           <Link href="#"><i className="puzzle-icon fab fa-google-play"></i></Link>

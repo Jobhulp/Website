@@ -36,7 +36,7 @@ const JobListResults: React.FC = () => (
             <div className="widget w-banner widget-sidebar mt-4">
               <div className="banner-header">Advertising</div>
               <div className="banner-content">
-                <h4 className="widget-title">Download free Puzzler App for your mobile</h4>
+                <h4 className="widget-title">Download free Jobbhulp App for your mobile</h4>
                 <div className="icon-market-wrap flex gap-2">
                   <a href="#"><i className="puzzle-icon fab fa-apple" /></a>
                   <a href="#"><i className="puzzle-icon fab fa-google-play" /></a>

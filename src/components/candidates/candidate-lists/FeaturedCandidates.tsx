@@ -117,7 +117,7 @@ export default function FeaturedCandidates() {
           Advertising
         </div>
         <div className="banner-content">
-          <h4 className="widget-title">Download free Puzzler App for your mobile</h4>
+          <h4 className="widget-title">Download free Jobbhulp App for your mobile</h4>
           <div className="icon-market-wrap">
             <a href="#"><i className="puzzle-icon fab fa-apple"></i></a>
             <a href="#"><i className="puzzle-icon fab fa-google-play"></i></a>

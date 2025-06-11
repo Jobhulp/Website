@@ -153,9 +153,8 @@ const Footer: React.FC = () => {
 						<div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 text-center text-lg-right">
 							<div className="copyright">
 								<span>© 2019 </span>
-								<span><a href="index.html">Puzzler.</a></span>
-								<span>designed by <a href="https://themeforest.net/user/themefire/portfolio" className="logo-title">themefire.</a></span>
-								<span>Developed by <a href="https://crumina.net/" className="logo-title">Crumina</a></span>
+								<span><a href="index.html">Jobbhulp.</a></span>
+								<span>Part of <a href="https://ospi-international.org/" className="logo-title">OSPI</a></span>
 							</div>
 						</div>
 
