@@ -3,35 +3,6 @@ import Link from 'next/link';
 export default function Error404() {
   return (
     <div className="main-content-wrapper">
-      <section className="stunning-header bg-dark-themes pt200 pb120">
-		<div className="container">
-			<div className="row align-items-end">
-				<div className="col-lg-8 col-md-8 col-sm-12 col-xs-12 mb-5 mb-md-0">
-					<ul className="breadcrumbs">
-						<li className="breadcrumbs-item">
-							<Link href="/">Home<i className="puzzle-icon fal fa-angle-double-right"></i></Link>
-						</li>
-						<li className="breadcrumbs-item">
-							<Link href="/">Pages<i className="puzzle-icon fal fa-angle-double-right"></i></Link>
-						</li>
-						<li className="breadcrumbs-item active">
-							  <span>Error 404</span>
-						</li>
-					</ul>
-
-					<h1 className="page-title text-white">Pagina Niet Gevonden</h1>
-				</div>
-
-				<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-					<div className="input--with-icon input--icon-right">
-						<input id="input2" className="input--dark" name="name" placeholder="Waar ben je naar op zoek?" type="text" />
-						<i className="puzzle-icon fal fa-search"></i>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
       <section className="pt120">
 		<div className="container">
 			<div className="row align-items-start">
