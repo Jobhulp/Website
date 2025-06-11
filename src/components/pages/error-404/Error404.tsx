@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 export default function Error404() {
   return (
+	<div class="header--spacer" style="height: 142.234px; background-color: rgb(18, 18, 20);"></div>
     <div className="main-content-wrapper">
       <section className="pt120">
 		<div className="container">
