@@ -23,7 +23,7 @@ const CompanyListsHeader = () => (
           <h1 className="page-title text-white">Vind uw droombedrijf</h1>
 
           <p className="text-white fs-20 my-3 my-sm-5">
-            van alle bedrijven die via Jobhulp op zoek zijn naar gemotiveerde kandidaten. Van lokale kmo’s tot grote spelers — elk bedrijf selecteert op basis van competenties, interesses en persoonlijkheid. Geen loze sollicitaties, wel eerlijke kansen.
+            Zoek je een werkomgeving waar je écht tot je recht komt? Bij Jobhulp matchen we je met bedrijven die passen bij jouw talenten, interesses en persoonlijkheid. Geen eindeloze zoektochten — gewoon de juiste klik.
           </p>
 
           <Link href="/employers/job-lists" className="crumina-button button--yellow button--xl button--hover-primary">
