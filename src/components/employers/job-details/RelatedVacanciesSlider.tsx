@@ -165,7 +165,7 @@ const RelatedVacanciesSlider: React.FC = () => (
                   <div className={`ui-card h-100`}>
                     <div className="ui-card-content">
                       <div className="vacancies-title-location">
-                        <a href="#" className="vacancies-title h6">{job.title}</a>
+                        <a href="/jobs/job-details" className="vacancies-title h6">{job.title}</a>
                         <div className="vacancies-location">
                           <time className="published">{job.time}</time>
                           {job.location}
