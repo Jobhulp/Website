@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
 								<a href="index.html" className="site-logo">
 									<img className="puzzle-icon" src={logo.src} alt="logo" width="120" />
 								</a>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+								<p>Jobhulp koppelt werkzoekenden slim aan werkgevers via testen op competenties, interesses en persoonlijkheid. Zo vermijden we nutteloze gesprekken en vinden beide partijen sneller de juiste match.</p>
 
 								<div className="contact-item">
 									<svg className="puzzle-icon" width="11" height="16">
