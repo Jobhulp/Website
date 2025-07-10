@@ -7,7 +7,7 @@ const Employer: React.FC = () => {
         <div className="row mb60">
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <header className="crumina-module crumina-heading heading--h2 heading--with-decoration decoration--red-theme heading--inline mb-0">
-              <h2 className="heading-title">Zoek een professional</h2>
+              <h2 className="heading-title">Zoek een medewerker</h2>
               <div className="heading-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
             </header>
           </div>
@@ -17,7 +17,7 @@ const Employer: React.FC = () => {
           <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 mb-4 mb-md-0">
             <div className="crumina-module crumina-info-box info-box--standard">
               <div className="info-box-content">
-                <a href="" className="h3 info-box-title" data-toggle="modal" data-target="#signupModal">maak een account</a>
+                <a href="" className="h3 info-box-title" data-toggle="modal" data-target="#signupModal">maak een bedrijfsaccount</a>
                 <p className="info-box-text">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat.</p>
               </div>
               <div className="info-box-thumb">
@@ -45,7 +45,7 @@ const Employer: React.FC = () => {
           <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 mb-0">
             <div className="crumina-module crumina-info-box info-box--standard">
               <div className="info-box-content">
-                <a href="03_job_lists_row_map.html" className="h3 info-box-title">Huur een werknemer in</a>
+                <a href="03_job_lists_row_map.html" className="h3 info-box-title">Neem een werknemer aan</a>
                 <p className="info-box-text">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
               </div>
               <div className="info-box-thumb">
