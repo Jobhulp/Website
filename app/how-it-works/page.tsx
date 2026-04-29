@@ -13,10 +13,10 @@ const HowItWorks = () => {
   return (
     <main>
       <Jumbotron
-        title="Hoe Jobhulp voor u werkt"
+        title="Hoe Jobhulp werkt"
         breadcrumbs={[
           { label: 'Home', href: '/' },
-          { label: 'How it works', isActive: true }
+          { label: 'Hoe het werkt', isActive: true }
         ]}
       >
         <Intro />

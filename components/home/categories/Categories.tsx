@@ -9,52 +9,82 @@ interface Category {
 
 const categories: Category[] = [
   {
-    title: "Gezondheidszorg",
-    positions: 369,
-    icon: "puzzle-icon",
-    link: "/jobs/healthcare"
-  },
-  {
-    title: "Boekhouding en financiën",
-    positions: 309,
-    icon: "puzzle-icon",
-    link: "/jobs/finance"
-  },
-  {
-    title: "IT-aannemer",
-    positions: 260,
+    title: "IT & Development",
+    positions: 892,
     icon: "puzzle-icon",
     link: "/jobs/it"
   },
   {
-    title: "Motoren & automotive",
-    positions: 214,
+    title: "Gezondheidszorg",
+    positions: 743,
     icon: "puzzle-icon",
-    link: "/jobs/automotive"
+    link: "/jobs/healthcare"
   },
   {
-    title: "Bouw en voorzieningen",
-    positions: 168,
+    title: "Finance & Accounting",
+    positions: 651,
+    icon: "puzzle-icon",
+    link: "/jobs/finance"
+  },
+  {
+    title: "Marketing & Communicatie",
+    positions: 534,
+    icon: "puzzle-icon",
+    link: "/jobs/marketing"
+  },
+  {
+    title: "Sales & Business Dev",
+    positions: 489,
+    icon: "puzzle-icon",
+    link: "/jobs/sales"
+  },
+  {
+    title: "Bouw & Constructie",
+    positions: 412,
     icon: "puzzle-icon",
     link: "/jobs/construction"
   },
   {
-    title: "Makelaars kantoor",
-    positions: 127,
+    title: "Automotive & Techniek",
+    positions: 387,
+    icon: "puzzle-icon",
+    link: "/jobs/automotive"
+  },
+  {
+    title: "Horeca & Hospitality",
+    positions: 356,
+    icon: "puzzle-icon",
+    link: "/jobs/hospitality"
+  },
+  {
+    title: "Vastgoed & Makelaardij",
+    positions: 298,
     icon: "puzzle-icon",
     link: "/jobs/real-estate"
   },
   {
-    title: "Restaurant en voedselservice",
-    positions: 85,
+    title: "HR & Recruitment",
+    positions: 267,
     icon: "puzzle-icon",
-    link: "/jobs/food-service"
+    link: "/jobs/hr"
   },
   {
-    title: "Verkoop & Marketing",
-    positions: 42,
+    title: "Operations & Logistiek",
+    positions: 234,
     icon: "puzzle-icon",
-    link: "/jobs/sales-marketing"
+    link: "/jobs/operations"
+  },
+  {
+    title: "Design & Creative",
+    positions: 198,
+    icon: "puzzle-icon",
+    link: "/jobs/design"
+  },
+  {
+    title: "Customer Service",
+    positions: 176,
+    icon: "puzzle-icon",
+    link: "/jobs/customer-service"
   }
 ];
 
@@ -65,9 +95,9 @@ const Categories: React.FC = () => {
         <div className="row mb60">
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <header className="crumina-module crumina-heading heading--h2 heading--with-decoration heading--inline mb-0">
-              <h2 className="heading-title">Bladert door vacatures op specialisme</h2>
+              <h2 className="heading-title">Vind matches per specialisme</h2>
               <div className="heading-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.
+                Ontdek jobs die passen bij jouw expertise. Jobhulp matcht je automatisch met bedrijven die op zoek zijn naar jouw specifieke vaardigheden en ervaring.
               </div>
             </header>
           </div>
@@ -84,7 +114,7 @@ const Categories: React.FC = () => {
                   <a href={category.link} className="h5 info-box-title">{category.title}</a>
                 </div>
                 <div className="info-box-content">
-                  <a href={category.link} className="info-box-link">{category.positions} open positions</a>
+                  <a href={category.link} className="info-box-link">{category.positions} matches</a>
                 </div>
               </div>
             </div>
@@ -94,7 +124,7 @@ const Categories: React.FC = () => {
         <div className="row justify-content-center">
           <div className="col-auto">
             <a href="#" className="crumina-button button--yellow button--xl load-more-button" data-load-link="category-to-load.html" data-container="category-grid">
-              Show More Categories
+              Meer specialismen tonen
             </a>
           </div>
         </div>

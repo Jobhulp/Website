@@ -94,8 +94,8 @@ export const JobFilters: React.FC<JobFiltersProps> = () => {
   // const [findLocation, setFindLocation] = useState<Option>(locationOptions[0]);
 
   const tabList = [
-    { label: "Vind een Job", value: "find" },
-    { label: "Zoek een kandidaat", value: "candidate" },
+    { label: "Ik zoek een job", value: "find" },
+    { label: "Ik zoek een kandidaat", value: "candidate" },
   ];
 
   return (
@@ -124,56 +124,12 @@ export const JobFilters: React.FC<JobFiltersProps> = () => {
                     role="tabpanel"
                     aria-labelledby="find-tab"
                   >
-                    {/* <form className="form--search">
-                      <div className="row">
-                        <div className="col-md-4 col-sm-6 col-xs-12 mb-3 mb-md-0">
-                          <Input
-                            name="name"
-                            placeholder="Keywords"
-                            type="text"
-                            value={findKeywords}
-                            onChange={e => setFindKeywords(e.target.value)}
-                          />
-                          <div className="c-grey fs-14">* Zoekwoorden bijv. webdesign</div>
-                        </div>
-                        <div className="col-md-3 col-sm-6 col-xs-12 mb-3 mb-md-0">
-                          <Select
-                            instanceId="find-specialism"
-                            id="select1"
-                            classNamePrefix="puzzle--select"
-                            options={specialismOptions}
-                            value={findSpecialism}
-                            onChange={(option: Option | null) => { if (isOption(option)) setFindSpecialism(option); }}
-                            styles={customSelectStyles}
-                            isSearchable={false}
-                            placeholder="Alle specialismen"
-                          />
-                          <div className="c-grey fs-14">* Filter op specialismen bijv. ontwikkelaar</div>
-                        </div>
-                        <div className="col-md-3 col-sm-6 col-xs-12 mb-3 mb-md-0">
-                          <Select
-                            instanceId="find-location"
-                            id="select2"
-                            classNamePrefix="puzzle--select"
-                            options={locationOptions}
-                            value={findLocation}
-                            onChange={(option: Option | null) => { if (isOption(option)) setFindLocation(option); }}
-                            styles={customSelectStyles}
-                            isSearchable={false}
-                            placeholder="Alle Locaties"
-                          />
-                        </div>
-                        <div className="col-md-2 col-sm-6 col-xs-12 mb-3 mb-md-0">
-                          <button type="button" className="crumina-button button--dark button--xl">Zoeken</button>
-                        </div>
-                      </div>
-                    </form> */}
                     <form className="form--search">
                       <div className="row">
                         <div className="col-md-4 mb-3">
                           <input
                             name="name"
-                            placeholder="Your Full Name"
+                            placeholder="Zoekwoorden (bv. webdesign)"
                             type="text"
                             className="input input-bordered w-full"
                           />
@@ -183,12 +139,12 @@ export const JobFilters: React.FC<JobFiltersProps> = () => {
                             id="select1"
                             className="puzzle--select w-full"
                           >
-                            <option>All Specialisms</option>
+                            <option>Alle specialismen</option>
                             <option value="1">Freelance</option>
                             <option value="2">Full Time</option>
-                            <option value="3">Internship</option>
+                            <option value="3">Stage</option>
                             <option value="4">Part Time</option>
-                            <option value="5">Temporary</option>
+                            <option value="5">Tijdelijk</option>
                           </select>
                         </div>
                         <div className="col-md-3 mb-3">
@@ -196,12 +152,12 @@ export const JobFilters: React.FC<JobFiltersProps> = () => {
                             id="select2"
                             className="puzzle--select w-full"
                           >
-                            <option>All Locations</option>
-                            <option value="1">Freelance</option>
-                            <option value="2">Full Time</option>
-                            <option value="3">Internship</option>
-                            <option value="4">Part Time</option>
-                            <option value="5">Temporary</option>
+                            <option>Alle locaties</option>
+                            <option value="1">Antwerpen</option>
+                            <option value="2">Brussel</option>
+                            <option value="3">Gent</option>
+                            <option value="4">Leuven</option>
+                            <option value="5">Limburg</option>
                           </select>
                         </div>
                         <div className="col-md-2 mb-3">
@@ -209,7 +165,7 @@ export const JobFilters: React.FC<JobFiltersProps> = () => {
                             type="button"
                             className="crumina-button button--dark button--xl w-full"
                           >
-                            Search
+                            Zoeken
                           </button>
                         </div>
                       </div>
@@ -293,76 +249,40 @@ export const JobFilters: React.FC<JobFiltersProps> = () => {
                     role="tabpanel"
                     aria-labelledby="candidate-tab"
                   >
-                    {/* <form className="form--search">
-                      <div className="row">
-                        <div className="col-md-4 col-sm-6 col-xs-12 mb-3 mb-md-0">
-                          <input name="name" placeholder="Keywords" type="text"/>
-                          <div className="c-grey fs-14">* Search keywords e.g. web design</div>
-                        </div>
-                        <div className="col-md-3 col-sm-6 col-xs-12 mb-3 mb-md-0">
-                          <Select
-                            id="select3"
-                            classNamePrefix="puzzle--select"
-                            options={specialismOptions}
-                            value={candidateSpecialism}
-                            onChange={(option: Option | null) => { if (isOption(option)) setCandidateSpecialism(option); }}
-                            styles={customSelectStyles}
-                            isSearchable={false}
-                            placeholder="All Specialisms"
-                          />
-                          <div className="c-grey fs-14">* Filter by specialisms e.g. developer</div>
-                        </div>
-                        <div className="col-md-3 col-sm-6 col-xs-12 mb-3 mb-md-0">
-                          <Select
-                            id="select4"
-                            classNamePrefix="puzzle--select"
-                            options={locationOptions}
-                            value={candidateLocation}
-                            onChange={(option: Option | null) => { if (isOption(option)) setCandidateLocation(option); }}
-                            styles={customSelectStyles}
-                            isSearchable={false}
-                            placeholder="All Locations"
-                          />
-                        </div>
-                        <div className="col-md-2 col-sm-6 col-xs-12 mb-3 mb-md-0">
-                          <button type="button" className="crumina-button button--dark button--xl">Search</button>
-                        </div>
-                      </div>
-                    </form> */}
                     <form className="form--search">
                       <div className="row">
                         <div className="col-md-4 mb-3">
                           <input
                             name="name"
-                            placeholder="Your Full Name"
+                            placeholder="Zoekwoorden (bv. developer)"
                             type="text"
                             className="input input-bordered w-full"
                           />
                         </div>
                         <div className="col-md-3 mb-3">
                           <select
-                            id="select1"
+                            id="select3"
                             className="puzzle--select w-full"
                           >
-                            <option>All Specialisms</option>
+                            <option>Alle specialismen</option>
                             <option value="1">Freelance</option>
                             <option value="2">Full Time</option>
-                            <option value="3">Internship</option>
+                            <option value="3">Stage</option>
                             <option value="4">Part Time</option>
-                            <option value="5">Temporary</option>
+                            <option value="5">Tijdelijk</option>
                           </select>
                         </div>
                         <div className="col-md-3 mb-3">
                           <select
-                            id="select2"
+                            id="select4"
                             className="puzzle--select w-full"
                           >
-                            <option>All Locations</option>
-                            <option value="1">Freelance</option>
-                            <option value="2">Full Time</option>
-                            <option value="3">Internship</option>
-                            <option value="4">Part Time</option>
-                            <option value="5">Temporary</option>
+                            <option>Alle locaties</option>
+                            <option value="1">Antwerpen</option>
+                            <option value="2">Brussel</option>
+                            <option value="3">Gent</option>
+                            <option value="4">Leuven</option>
+                            <option value="5">Limburg</option>
                           </select>
                         </div>
                         <div className="col-md-2 mb-3">
@@ -370,7 +290,7 @@ export const JobFilters: React.FC<JobFiltersProps> = () => {
                             type="button"
                             className="crumina-button button--dark button--xl w-full"
                           >
-                            Search
+                            Zoeken
                           </button>
                         </div>
                       </div>

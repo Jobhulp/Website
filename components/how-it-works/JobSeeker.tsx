@@ -7,8 +7,11 @@ const JobSeeker: React.FC = () => {
         <div className="row mb60">
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <header className="crumina-module crumina-heading heading--h2 heading--with-decoration decoration--yellow-theme heading--inline mb-0">
-              <h2 className="heading-title">Vind uw droombaan in een paar klikken</h2>
-              <div className="heading-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+              <h2 className="heading-title">Voor Kandidaten: De ervaring in 3 stappen</h2>
+              <div className="heading-text">
+                Het platform leert je kennen. Geen klassiek CV nodig, geen eindeloos solliciteren. 
+                Je vult in wie je bent en wat je zoekt, en Jobhulp doet de rest.
+              </div>
             </header>
           </div>
         </div>
@@ -17,14 +20,16 @@ const JobSeeker: React.FC = () => {
           <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 mb-4 mb-md-0">
             <div className="crumina-module crumina-info-box info-box--border-top h-100">
               <div className="info-box-thumb">
-                <a href="#" className="h4 info-box-title" data-toggle="modal" data-target="#signupModal">maak een account</a>
-                <svg className="puzzle-icon" width="100" height="100">
-                  <path fill="" fillRule="evenodd" d="M98.946 18.219L63.32 32.785v65.549c0 .92-.746 1.666-1.666 1.666h-6.666c-.92 0-1.666-.746-1.666-1.666V61.668H41.658a8.195 8.195 0 0 1-4.999-1.667v38.333c0 .92-.746 1.666-1.666 1.666H11.664c-.92 0-1.666-.746-1.666-1.666V65.001H1.666c-.92 0-1.666-.746-1.666-1.667V40.002c0-6.443 5.222-11.667 11.664-11.667h2.883c-.443-.388-.86-.805-1.248-1.248-4.85-5.54-4.291-13.964 1.248-18.814 5.539-4.851 13.961-4.292 18.81 1.248 4.85 5.54 4.292 13.964-1.247 18.814h2.882c6.442 0 11.665 5.224 11.665 11.667v8.333h6.665V1.669c0-.92.746-1.666 1.666-1.666h6.665a1.64 1.64 0 0 1 .634.117l36.659 14.999a1.667 1.667 0 0 1 0 3.1zm-65.62.116c0-5.522-4.476-9.999-9.998-9.999-5.521 0-9.998 4.477-9.998 9.999 0 5.523 4.477 10 9.998 10 5.522 0 9.998-4.477 9.998-10zM20.729 31.669l2.599 6.916 2.6-6.916h-5.199zm32.593 19.999h-8.331a1.667 1.667 0 0 1-1.667-1.667v-9.999a8.332 8.332 0 0 0-8.331-8.333h-5.516l-4.582 12.249a1.667 1.667 0 0 1-3.133 0L17.18 31.669h-5.516a8.332 8.332 0 0 0-8.331 8.333v21.666h6.665V40.002h3.332v56.665h8.332V61.668h3.333v34.999h8.331V40.002h3.333v13.333a4.999 4.999 0 0 0 4.999 4.999h11.664v-6.666zm6.665-48.332h-3.332v93.331h3.332V3.336zm3.333.85v24.999l30.594-12.516L63.32 4.186zM21.662 48.335h3.333v3.333h-3.333v-3.333z"/>
-                </svg>
-                <p className="info-box-text">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur.</p>
-              </div>
-              <div className="info-box-content">
-                <a href="18_news_details_gallery.html" className="link--bold link--with-icon link--icon-right">Read more<i className="puzzle-icon far fa-angle-right"></i></a>
+                <span className="step-badge bg-yellow c-dark">Stap 1</span>
+                <h4 className="info-box-title mt-3">Maak je profiel</h4>
+                <ul className="feature-list">
+                  <li>Geef je skills aan</li>
+                  <li>Vul in hoe je graag werkt</li>
+                  <li>Geef je voorkeuren: sector, type bedrijf, remote, etc.</li>
+                </ul>
+                <p className="info-box-text highlight-text">
+                  Geen klassiek CV nodig. Het platform begrijpt wie je bent via structuur, niet via tekst.
+                </p>
               </div>
             </div>
           </div>
@@ -32,14 +37,16 @@ const JobSeeker: React.FC = () => {
           <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 mb-4 mb-md-0">
             <div className="crumina-module crumina-info-box info-box--border-top h-100">
               <div className="info-box-thumb">
-                <a href="11_submit_resume.html" className="h4 info-box-title">Voeg je cv toe</a>
-                <svg className="puzzle-icon" width="100" height="100">
-                  <path fill="" fillRule="evenodd" d="M100 58.929v5.357h-3.571V59.35l-1.599-3.193a1.79 1.79 0 0 1 0-1.598l1.599-3.195V37.5a1.79 1.79 0 0 0-1.786-1.786h-1.786v58.929c0 .473-.187.928-.523 1.263l-3.572 3.571a1.78 1.78 0 0 1-2.524 0l-3.572-3.571a1.783 1.783 0 0 1-.523-1.263V30.357c0-.986.8-1.785 1.786-1.785h7.142c.986 0 1.786.799 1.786 1.785v1.786h1.786A5.364 5.364 0 0 1 100 37.5v14.286c0 .277-.064.55-.189.798l-1.386 2.773 1.387 2.773c.124.247.188.522.188.799zM89.286 32.143h-3.572v28.571h3.572V32.143zm0 32.143h-3.572v29.618l1.786 1.785 1.786-1.785V64.286zM67.693 92.693c-.766 4.15-4.397 7.307-8.764 7.307h-50C4.005 100 0 95.994 0 91.072V16.071c0-4.368 3.157-7.998 7.307-8.764C8.073 3.157 11.703 0 16.071 0h50C70.995 0 75 4.005 75 8.929v75c0 4.367-3.157 7.998-7.307 8.764zM8.929 10.714a5.364 5.364 0 0 0-5.358 5.357v75.001a5.364 5.364 0 0 0 5.358 5.357h50a5.364 5.364 0 0 0 5.357-5.357V16.071a5.364 5.364 0 0 0-5.357-5.357h-50zm62.5-1.785a5.365 5.365 0 0 0-5.358-5.358h-50c-2.325 0-4.289 1.499-5.028 3.572h47.886c4.923 0 8.928 4.005 8.928 8.928v72.886c2.073-.739 3.572-2.703 3.572-5.028v-75zM42.857 82.143h14.286v3.571H42.857v-3.571zm-25-10.715h39.286V75H17.857v-3.572zm0-7.142h39.286v3.571H17.857v-3.571zm0-7.143h39.286v3.571H17.857v-3.571zm0-7.143h39.286v3.571H17.857V50zm-7.143-7.143h46.429v3.571H10.714v-3.571zm0-7.143h46.429v3.571H10.714v-3.571zm23.215-3.571c-4.924 0-8.929-4.005-8.929-8.929 0-4.923 4.005-8.928 8.929-8.928 4.923 0 8.928 4.005 8.928 8.928 0 4.924-4.005 8.929-8.928 8.929zm0-14.286a5.364 5.364 0 0 0-5.358 5.357 5.365 5.365 0 0 0 5.358 5.358 5.364 5.364 0 0 0 5.357-5.358 5.364 5.364 0 0 0-5.357-5.357zM14.286 53.571h-3.572V50h3.572v3.571zm0 7.143h-3.572v-3.571h3.572v3.571zm0 7.143h-3.572v-3.571h3.572v3.571zm0 7.143h-3.572v-3.572h3.572V75zM25 85.714H10.714v-3.571H25v3.571z"/>
-                </svg>
-                <p className="info-box-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-              </div>
-              <div className="info-box-content">
-                <a href="18_news_details_gallery.html" className="link--bold link--with-icon link--icon-right">Read more<i className="puzzle-icon far fa-angle-right"></i></a>
+                <span className="step-badge bg-yellow c-dark">Stap 2</span>
+                <h4 className="info-box-title mt-3">Ontvang matches</h4>
+                <ul className="feature-list">
+                  <li>Krijg automatisch jobs die passen</li>
+                  <li>Zie waarom iets matcht</li>
+                  <li>Bekijk de matchscore (bv. 82%)</li>
+                </ul>
+                <p className="info-box-text highlight-text">
+                  Transparantie: je ziet precies waarom een job wel of niet past bij jouw profiel.
+                </p>
               </div>
             </div>
           </div>
@@ -47,16 +54,26 @@ const JobSeeker: React.FC = () => {
           <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 mb-0">
             <div className="crumina-module crumina-info-box info-box--border-top h-100">
               <div className="info-box-thumb">
-                <a href="11_submit_resume.html" className="h4 info-box-title">Krijg een job</a>
-                <svg className="puzzle-icon" width="100" height="100">
-                  <path fill="" fillRule="evenodd" d="M74.389 61.761l23.308-23.313L100 40.752l-24.075 24.08a6.476 6.476 0 0 1-1.788 5.837L56.616 88.193a6.463 6.463 0 0 1-4.606 1.909 6.464 6.464 0 0 1-4.608-1.909l-.124-.124a5.06 5.06 0 0 1-1.982.404c-2.742 0-4.97-2.186-5.066-4.905a5.07 5.07 0 0 1-4.886-4.887 5.072 5.072 0 0 1-4.887-4.888c-2.718-.096-4.904-2.323-4.904-5.066a5.03 5.03 0 0 1 1.007-3.009l-7.045-7.046a1.626 1.626 0 0 1-.477-1.152v-4.171L.02 35.915l2.202-2.403 11.597 10.633 20.832-20.836-15.136-15.14 2.303-2.303 22.803 22.807 2.781 2.781h5.841c.431 0 .847.171 1.151.478l2.106 2.106 29.794-29.8 2.303 2.304L57.65 37.495l-.003.005L45.81 49.246c2.986 1.875 6.998 1.517 9.589-1.074l4.836-4.837 2.303 2.304-2.106 2.107 13.705 13.707c.094.096.164.208.252.308zM45.296 85.215a1.82 1.82 0 0 0 1.291-.534l7.75-7.752a1.829 1.829 0 0 0-2.583-2.584l-7.75 7.752a1.829 1.829 0 0 0 1.292 3.118zm-4.887-4.887c.489 0 .947-.191 1.292-.535l7.75-7.751a1.828 1.828 0 0 0-2.584-2.584l-7.749 7.751a1.83 1.83 0 0 0 1.291 3.119zm-4.886-4.888c.489 0 .946-.19 1.292-.534l7.749-7.751a1.829 1.829 0 0 0-2.583-2.584l-7.75 7.751a1.828 1.828 0 0 0 1.292 3.118zm-4.886-4.887a1.82 1.82 0 0 0 1.291-.534l7.75-7.752a1.829 1.829 0 0 0-2.583-2.584l-7.75 7.752a1.829 1.829 0 0 0 1.292 3.118zm6.318-44.941L16.223 46.349l4.395 4.029 20.549-20.553-4.212-4.213zm34.879 38.144L58.129 50.049l-.427.425c-4.249 4.254-11.195 4.28-15.477.061a1.636 1.636 0 0 1-.005-2.317l11.972-11.881-1.624-1.624h-5.841c-.431 0-.847-.172-1.151-.478l-2.106-2.106-21.175 21.178v3.539l6.516 6.516 5.981-5.982a5.047 5.047 0 0 1 3.594-1.489c2.742 0 4.97 2.186 5.066 4.905a5.07 5.07 0 0 1 4.886 4.888 5.07 5.07 0 0 1 4.887 4.887c2.718.096 4.904 2.323 4.904 5.066a5.058 5.058 0 0 1-1.487 3.596l-6.781 6.782c1.248 1.091 3.268 1.059 4.452-.125l17.521-17.525a3.236 3.236 0 0 0 .954-2.303c0-.872-.339-1.69-.954-2.306zM70.028 7.312l1.487-3.032a49.466 49.466 0 0 1 3.079 1.655l-1.702 2.917a44.459 44.459 0 0 0-2.864-1.54zm-6.009-2.345l.946-3.241c1.118.328 2.238.709 3.333 1.138l-1.23 3.143a36.758 36.758 0 0 0-3.049-1.04zm-6.333-1.269l.392-3.352c1.181.138 2.348.32 3.466.543l-.658 3.312a40.654 40.654 0 0 0-3.2-.503zm-5.858-.323l-.656.006-.049-3.376.705-.005c.947 0 1.869.022 2.772.064l-.159 3.372a55.614 55.614 0 0 0-2.613-.061zM44.165.597c1.142-.181 2.31-.32 3.469-.42l.286 3.364a44.32 44.32 0 0 0-3.229.392L44.165.597zM37.36 2.175a48.734 48.734 0 0 1 3.374-.911l.762 3.288c-1.054.245-2.111.53-3.139.849l-.997-3.226zm-6.508 2.536a48.426 48.426 0 0 1 3.207-1.386l1.228 3.145a46.733 46.733 0 0 0-2.989 1.291l-1.446-3.05zM12.523 36.342a4.894 4.894 0 0 1-4.887-4.888 4.893 4.893 0 0 1 4.887-4.887 4.893 4.893 0 0 1 4.886 4.887 4.893 4.893 0 0 1-4.886 4.888zm0-6.517c-.898 0-1.629.732-1.629 1.629 0 .898.731 1.629 1.629 1.629a1.63 1.63 0 0 0 1.628-1.629c0-.897-.731-1.629-1.628-1.629zM3.56 46.682A46.704 46.704 0 0 0 3.442 50l-3.447.005V50c0-1.192.041-2.39.126-3.563l3.439.245zm.351 9.954l-3.413.486a49.785 49.785 0 0 1-.377-3.548l3.439-.245c.077 1.1.196 2.212.351 3.307zm1.407 6.49l-3.308.968a50.005 50.005 0 0 1-.881-3.458l3.368-.733c.236 1.081.512 2.165.821 3.223zm2.318 6.217l-3.135 1.432a50.173 50.173 0 0 1-1.366-3.293l3.231-1.207a47.171 47.171 0 0 0 1.27 3.068zm3.188 5.822l-2.9 1.866A50.638 50.638 0 0 1 6.1 73.963l3.026-1.655a45.676 45.676 0 0 0 1.698 2.857zm3.978 5.312l-2.604 2.26a50.775 50.775 0 0 1-2.24-2.777l2.758-2.069a49.788 49.788 0 0 0 2.086 2.586zm4.699 4.7l-2.26 2.605a49.984 49.984 0 0 1-2.611-2.434l2.439-2.436a47.316 47.316 0 0 0 2.432 2.265zm5.316 3.988l-1.865 2.9a50.106 50.106 0 0 1-2.932-2.039l2.07-2.759c.881.662 1.8 1.3 2.727 1.898zm5.834 3.193l-1.436 3.134a50.327 50.327 0 0 1-3.193-1.601l1.655-3.024a48.536 48.536 0 0 0 2.974 1.491zm6.221 2.321l-.969 3.308a48.736 48.736 0 0 1-3.389-1.127l1.209-3.229c1.027.384 2.085.736 3.149 1.048zm6.49 1.407l-.486 3.412a49.225 49.225 0 0 1-3.513-.63l.729-3.368c1.074.23 2.174.429 3.27.586zm6.623.465l.002 3.448c-1.188 0-2.388-.041-3.563-.124l.243-3.439a47.46 47.46 0 0 0 3.318.115zm7.118 2.945a50.375 50.375 0 0 1-3.548.378l-.245-3.44a46.88 46.88 0 0 0 3.306-.352l.487 3.414zm6.971-1.51a50.73 50.73 0 0 1-3.458.881l-.733-3.369a47.774 47.774 0 0 0 3.222-.821l.969 3.309zm6.679-2.494a49.075 49.075 0 0 1-3.292 1.366l-1.205-3.231a46.237 46.237 0 0 0 3.065-1.271l1.432 3.136zm6.254-3.42a49.752 49.752 0 0 1-3.065 1.822l-1.654-3.026c.97-.531 1.93-1.101 2.854-1.696l1.865 2.9zm5.706-4.276a50.502 50.502 0 0 1-2.777 2.24l-2.069-2.759a47.197 47.197 0 0 0 2.588-2.088l2.258 2.607zm5.046-5.046a50.013 50.013 0 0 1-2.434 2.611l-2.436-2.439a45.679 45.679 0 0 0 2.265-2.433l2.605 2.261zm1.384-7.576l2.899 1.867a49.27 49.27 0 0 1-2.041 2.933l-2.758-2.071c.66-.881 1.3-1.798 1.9-2.729zm3.191-5.833l3.133 1.436a50.327 50.327 0 0 1-1.601 3.193l-3.025-1.655a47.445 47.445 0 0 0 1.493-2.974zm2.322-6.224l3.308.969a49.097 49.097 0 0 1-1.128 3.389l-3.228-1.207c.384-1.03.736-2.091 1.048-3.151zm1.404-6.49l3.412.486a49.249 49.249 0 0 1-.629 3.514l-3.37-.729c.232-1.074.431-2.174.587-3.271zM96.528 50h3.447c0 1.188-.041 2.387-.124 3.565l-3.439-.243c.078-1.095.116-2.214.116-3.322z"/>
-                </svg>
-                <p className="info-box-text">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-              </div>
-              <div className="info-box-content">
-                <a href="18_news_details_gallery.html" className="link--bold link--with-icon link--icon-right">Read more<i className="puzzle-icon far fa-angle-right"></i></a>
+                <span className="step-badge bg-yellow c-dark">Stap 3</span>
+                <h4 className="info-box-title mt-3">Toon interesse</h4>
+                <ul className="feature-list">
+                  <li>Toon interesse in een job</li>
+                  <li>Wacht op wederzijdse interesse</li>
+                  <li>Contact wordt mogelijk bij mutual match</li>
+                </ul>
+                <p className="info-box-text highlight-text">
+                  Geen sollicitatie. Pas als beide partijen interesse tonen, wordt contact mogelijk.
+                </p>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div className="row mt-5 justify-content-center">
+          <div className="col-auto">
+            <a href="/candidates/submit-resume" className="crumina-button button--yellow button--xl button--hover-primary">
+              Start je profiel
+            </a>
           </div>
         </div>
       </div>

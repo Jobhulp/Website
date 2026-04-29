@@ -101,8 +101,8 @@ const Jobs: React.FC = () => {
 	const tabItems = [
 		{
 			id: 'jobs' as TabId,
-			label: 'Op zoek naar een job',
-			count: '69.368 Open Posities',
+			label: 'Openstaande Jobs',
+			count: '69.368 Matches mogelijk',
 			icon: {
 				dark: 'img/svg/11_employer_dark_tab.svg',
 				light: 'img/svg/12_employer_white_tab.svg',
@@ -111,8 +111,8 @@ const Jobs: React.FC = () => {
 		},
 		{
 			id: 'candidates' as TabId,
-			label: 'Neem een werknemer aan',
-			count: '238.900 Kandidaten',
+			label: 'Beschikbare Kandidaten',
+			count: '238.900 Profielen',
 			icon: {
 				dark: 'img/svg/09_freelancer_dark_tab.svg',
 				light: 'img/svg/10_freelancer_white_tab.svg',
@@ -137,10 +137,10 @@ const Jobs: React.FC = () => {
 							<div className={`tab-pane ${activeTab === 'jobs' ? 'active' : ''}`} id="home" role="tabpanel" aria-labelledby="home-tab">
 								<div className="d-flex justify-content-between align-items-center flex-wrap mb60">
 									<button type="button" className="crumina-button button--dark button--m button--with-icon button--icon-left my-2">
-										<i className="puzzle-icon far fa-pencil" />Meld u aan als werknemer
+										<i className="puzzle-icon far fa-pencil" />Maak je profiel aan
 									</button>
 									<button type="button" className="crumina-button button--dark button--m button--bordered button--with-icon button--icon-left my-2">
-										<i className="puzzle-icon far fa-at" />E-mail me banen zoals deze
+										<i className="puzzle-icon far fa-at" />Ontvang matches per e-mail
 									</button>
 								</div>
 
@@ -159,7 +159,7 @@ const Jobs: React.FC = () => {
 											data-container="vacancies-grid"
 											onClick={handleLoadMore}
 										>
-											Load More Listings
+											Meer jobs laden
 										</a>
 									</div>
 								</div>

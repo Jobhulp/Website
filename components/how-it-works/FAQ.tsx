@@ -14,23 +14,33 @@ const FAQ: React.FC = () => {
   const faqItems: FAQItem[] = [
     {
       id: 'collapseOne',
-      question: 'Lorem ipsum dolor sit amet, consectetur adipiscing?',
-      answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.'
+      question: 'Hoe werkt de matching bij Jobhulp?',
+      answer: 'Jobhulp matcht kandidaten en jobs op basis van skills, werkstijl, persoonlijkheid en voorkeuren. Je krijgt een matchscore (bv. 82%) en ziet precies waarom je wel of niet past. Dit gaat veel verder dan alleen zoekwoorden matchen.'
     },
     {
       id: 'collapseTwo',
-      question: 'Ut enim ad minim veniam?',
-      answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.'
+      question: 'Wat is een "mutual match"?',
+      answer: 'Bij Jobhulp werk je niet met sollicitaties, maar met wederzijdse interesse. Pas als zowel de kandidaat als de werkgever interesse toont in elkaar, wordt contact mogelijk. Dit voorkomt nutteloze gesprekken en zorgt ervoor dat je alleen spreekt met mensen die echt passen.'
     },
     {
       id: 'collapseThree',
-      question: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum?',
-      answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.'
+      question: 'Moet ik een CV uploaden?',
+      answer: 'Nee, bij Jobhulp heb je geen klassiek CV nodig. In plaats daarvan vul je gestructureerd je skills, werkstijl en voorkeuren in. Het platform leert je kennen via deze structuur, niet via tekst. Dit zorgt voor veel betere matches.'
     },
     {
       id: 'collapseFour',
-      question: 'Excepteur sint occaecat cupidatat non proident?',
-      answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.'
+      question: 'Wat kost Jobhulp?',
+      answer: 'Voor kandidaten is Jobhulp volledig gratis. Werkgevers betalen alleen voor daadwerkelijke matches. Zo zorgen we ervoor dat het platform voor iedereen toegankelijk is en werkgevers alleen betalen voor resultaat.'
+    },
+    {
+      id: 'collapseFive',
+      question: 'Waarin verschilt Jobhulp van LinkedIn of Indeed?',
+      answer: 'Jobhulp is geen jobsite of netwerk. Het is een matchmaker. Bij LinkedIn en Indeed solliciteer je massaal en moet HR alles filteren. Bij Jobhulp worden alleen sterke matches aan elkaar voorgesteld. Geen massa sollicitaties, geen overload aan informatie.'
+    },
+    {
+      id: 'collapseSix',
+      question: 'Hoe snel vind ik een match?',
+      answer: 'Dat hangt af van je profiel en de beschikbare jobs of kandidaten. Omdat Jobhulp focust op kwaliteit boven kwantiteit, kan het iets langer duren voordat je een match krijgt. Maar als je een match krijgt, weet je dat het een sterke match is.'
     }
   ];
 
@@ -42,9 +52,10 @@ const FAQ: React.FC = () => {
     <section className="medium-padding120 bg-light-grey">
       <div className="container">
         <div className="row mb60">
-          <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+          <div className="col-lg-6 col-md-8 col-sm-12 col-xs-12">
             <header className="crumina-module crumina-heading heading--h2 heading--with-decoration decoration--blue-theme mb-0">
               <h2 className="heading-title">Veel Gestelde Vragen</h2>
+              <div className="heading-text">Alles wat je wilt weten over hoe Jobhulp werkt.</div>
             </header>
           </div>
         </div>
