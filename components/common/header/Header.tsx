@@ -106,7 +106,7 @@ const Header = () => {
                       <Link href="/jobs/job-lists" onClick={handleLinkClick}>Bekijk matches</Link>
                     </li>
                     <li>
-                      <Link href="/candidates/resume-preview" onClick={handleLinkClick}>Mijn dashboard</Link>
+                      <Link href="/dashboard/candidate" onClick={handleLinkClick}>Mijn dashboard</Link>
                     </li>
                   </ul>
                 </li>
@@ -127,13 +127,13 @@ const Header = () => {
                   </a>
                   <ul className="sub-menu" style={{ display: activeSubmenu === 'werkgevers' ? 'block' : 'none' }}>
                     <li>
-                      <Link href="/jobs/company-profile" onClick={handleLinkClick}>Bedrijfsprofiel</Link>
+                      <Link href="/dashboard/employer" onClick={handleLinkClick}>Mijn dashboard</Link>
                     </li>
                     <li>
                       <Link href="/candidates/candidate-lists" onClick={handleLinkClick}>Bekijk kandidaten</Link>
                     </li>
                     <li>
-                      <Link href="/jobs/job-lists" onClick={handleLinkClick}>Maak een job</Link>
+                      <Link href="/jobs/company-profile" onClick={handleLinkClick}>Bedrijfsprofiel</Link>
                     </li>
                   </ul>
                 </li>

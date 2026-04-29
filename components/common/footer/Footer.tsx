@@ -52,7 +52,7 @@ const Footer: React.FC = () => {
 									</li>
 
 									<li>
-										<Link href="/candidates/resume-preview">Mijn dashboard</Link>
+										<Link href="/dashboard/candidate">Mijn dashboard</Link>
 									</li>
 								</ul>
 							</div>
@@ -66,7 +66,7 @@ const Footer: React.FC = () => {
 
 								<ul>
 									<li>
-										<Link href="/jobs/company-profile">Bedrijfsprofiel</Link>
+										<Link href="/dashboard/employer">Mijn dashboard</Link>
 									</li>
 
 									<li>
@@ -74,7 +74,7 @@ const Footer: React.FC = () => {
 									</li>
 
 									<li>
-										<Link href="/jobs/job-lists">Maak een job</Link>
+										<Link href="/jobs/company-profile">Bedrijfsprofiel</Link>
 									</li>
 								</ul>
 							</div>
