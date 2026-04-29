@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { demoJobMatches, demoUserProfile, demoCandidateStats } from '../../../data/demo-data';
+import { demoJobMatches, demoUserProfile, demoCandidateStats, demoPersonalityResult, demoSkillsResult, personalityTypeInfo, skillLevelInfo } from '../../../data/demo-data';
 import MatchScore from '../../common/match-score/MatchScore';
 
-type TabId = 'matches' | 'interested' | 'mutual' | 'profile';
+type TabId = 'matches' | 'interested' | 'mutual' | 'profile' | 'tests';
 
 const CandidateDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabId>('matches');
@@ -153,13 +153,190 @@ const CandidateDashboard: React.FC = () => {
                       <i className="far fa-user mr-2"></i> Mijn Profiel
                     </button>
                   </li>
+                  <li className="mb-3">
+                    <button 
+                      onClick={() => setActiveTab('tests')}
+                      className={`btn btn-link text-left w-100 p-2 ${activeTab === 'tests' ? 'bg-yellow c-dark' : ''}`}
+                      style={{ textDecoration: 'none', borderRadius: '5px', border: 'none', textAlign: 'left' }}
+                    >
+                      <i className="far fa-clipboard-check mr-2"></i> Mijn Testen
+                      {(!demoPersonalityResult.completed || !demoSkillsResult.completed) && (
+                        <span className="badge bg-red c-white ml-2" style={{ borderRadius: '10px', padding: '2px 8px' }}>!</span>
+                      )}
+                    </button>
+                  </li>
                 </ul>
               </div>
             </div>
 
             {/* Main Content Area */}
             <div className="col-lg-9 col-md-12">
-              {activeTab !== 'profile' ? (
+              {activeTab === 'tests' ? (
+                /* Tests Tab */
+                <div>
+                  <h3 className="mb-4">Mijn Testen</h3>
+                  <p className="c-grey mb-4">
+                    Je testresultaten helpen werkgevers om te begrijpen wie je bent en hoe je werkt. 
+                    Dit verbetert de kwaliteit van je matches.
+                  </p>
+
+                  <div className="row">
+                    {/* Personality Test Card */}
+                    <div className="col-md-6 mb-4">
+                      <div className="bg-white p-4 h-100" style={{ borderRadius: '10px' }}>
+                        <div className="d-flex justify-content-between align-items-start mb-3">
+                          <div className="d-flex align-items-center">
+                            <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: demoPersonalityResult.completed ? personalityTypeInfo[demoPersonalityResult.primaryType].color : '#e9ecef', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <i className={`fas ${demoPersonalityResult.completed ? personalityTypeInfo[demoPersonalityResult.primaryType].icon : 'fa-brain'} text-white`} style={{ fontSize: '20px' }}></i>
+                            </div>
+                            <div className="ml-3">
+                              <h5 className="mb-0">Persoonlijkheidstest</h5>
+                              <small className="c-grey">DISC Model</small>
+                            </div>
+                          </div>
+                          {demoPersonalityResult.completed && (
+                            <span className="badge bg-green c-white" style={{ padding: '4px 10px', borderRadius: '12px' }}>
+                              <i className="far fa-check mr-1"></i>Voltooid
+                            </span>
+                          )}
+                        </div>
+
+                        {demoPersonalityResult.completed ? (
+                          <>
+                            <div className="text-center mb-3">
+                              <h4 className="mb-1" style={{ color: personalityTypeInfo[demoPersonalityResult.primaryType].color }}>
+                                {personalityTypeInfo[demoPersonalityResult.primaryType].title}
+                              </h4>
+                              <span className="c-grey">{personalityTypeInfo[demoPersonalityResult.primaryType].name} Type</span>
+                            </div>
+
+                            <div className="mb-3">
+                              {(['D', 'I', 'S', 'C'] as const).map((type) => (
+                                <div key={type} className="mb-2">
+                                  <div className="d-flex justify-content-between mb-1" style={{ fontSize: '12px' }}>
+                                    <span><strong>{type}</strong></span>
+                                    <span>{demoPersonalityResult.scores[type]}%</span>
+                                  </div>
+                                  <div style={{ background: '#e9ecef', borderRadius: '5px', height: '8px', overflow: 'hidden' }}>
+                                    <div style={{ width: `${demoPersonalityResult.scores[type]}%`, height: '100%', background: personalityTypeInfo[type].color, borderRadius: '5px' }}></div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+
+                            <Link href="/tests/personality" className="crumina-button button--dark button--bordered button--s w-100 text-center">
+                              Test opnieuw doen
+                            </Link>
+                          </>
+                        ) : (
+                          <>
+                            <p className="c-grey mb-3" style={{ fontSize: '14px' }}>
+                              Ontdek je werkstijl en persoonlijkheidstype. Dit helpt werkgevers begrijpen hoe je in hun team past.
+                            </p>
+                            <Link href="/tests/personality" className="crumina-button button--yellow button--m w-100 text-center">
+                              Start test
+                            </Link>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Skills Test Card */}
+                    <div className="col-md-6 mb-4">
+                      <div className="bg-white p-4 h-100" style={{ borderRadius: '10px' }}>
+                        <div className="d-flex justify-content-between align-items-start mb-3">
+                          <div className="d-flex align-items-center">
+                            <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: demoSkillsResult.completed ? skillLevelInfo[demoSkillsResult.overallLevel].color : '#e9ecef', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <i className="fas fa-chart-line text-white" style={{ fontSize: '20px' }}></i>
+                            </div>
+                            <div className="ml-3">
+                              <h5 className="mb-0">Vaardighedentest</h5>
+                              <small className="c-grey">5 Categorieen</small>
+                            </div>
+                          </div>
+                          {demoSkillsResult.completed && (
+                            <span className="badge bg-green c-white" style={{ padding: '4px 10px', borderRadius: '12px' }}>
+                              <i className="far fa-check mr-1"></i>Voltooid
+                            </span>
+                          )}
+                        </div>
+
+                        {demoSkillsResult.completed ? (
+                          <>
+                            <div className="text-center mb-3">
+                              <h4 className="mb-1" style={{ color: skillLevelInfo[demoSkillsResult.overallLevel].color }}>
+                                {demoSkillsResult.overallPercentage}%
+                              </h4>
+                              <span className="c-grey">{skillLevelInfo[demoSkillsResult.overallLevel].label}</span>
+                            </div>
+
+                            <div className="mb-3">
+                              {demoSkillsResult.results.slice(0, 4).map((result) => (
+                                <div key={result.categoryId} className="mb-2">
+                                  <div className="d-flex justify-content-between mb-1" style={{ fontSize: '12px' }}>
+                                    <span>{result.categoryName}</span>
+                                    <span>{result.percentage}%</span>
+                                  </div>
+                                  <div style={{ background: '#e9ecef', borderRadius: '5px', height: '8px', overflow: 'hidden' }}>
+                                    <div style={{ width: `${result.percentage}%`, height: '100%', background: skillLevelInfo[result.level as keyof typeof skillLevelInfo]?.color || '#6c757d', borderRadius: '5px' }}></div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+
+                            <Link href="/tests/skills" className="crumina-button button--dark button--bordered button--s w-100 text-center">
+                              Test opnieuw doen
+                            </Link>
+                          </>
+                        ) : (
+                          <>
+                            <p className="c-grey mb-3" style={{ fontSize: '14px' }}>
+                              Test je niveau in communicatie, probleemoplossend denken, samenwerking en meer.
+                            </p>
+                            <Link href="/tests/skills" className="crumina-button button--blue button--m w-100 text-center">
+                              Start test
+                            </Link>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Test benefits info */}
+                  <div className="bg-white p-4 mt-2" style={{ borderRadius: '10px' }}>
+                    <h5 className="mb-3"><i className="far fa-info-circle c-blue mr-2"></i>Waarom testen belangrijk zijn</h5>
+                    <div className="row">
+                      <div className="col-md-4 mb-3 mb-md-0">
+                        <div className="d-flex align-items-start">
+                          <i className="far fa-chart-line c-green mr-2 mt-1"></i>
+                          <div>
+                            <strong>Hogere matchscores</strong>
+                            <p className="mb-0 c-grey" style={{ fontSize: '13px' }}>Testen verhogen je gemiddelde matchscore met 15-20%</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-4 mb-3 mb-md-0">
+                        <div className="d-flex align-items-start">
+                          <i className="far fa-eye c-blue mr-2 mt-1"></i>
+                          <div>
+                            <strong>Meer zichtbaarheid</strong>
+                            <p className="mb-0 c-grey" style={{ fontSize: '13px' }}>Profielen met testen worden 3x vaker bekeken</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="d-flex align-items-start">
+                          <i className="far fa-handshake c-yellow mr-2 mt-1"></i>
+                          <div>
+                            <strong>Betere fit</strong>
+                            <p className="mb-0 c-grey" style={{ fontSize: '13px' }}>Werkgevers begrijpen beter of je past bij hun team</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : activeTab !== 'profile' ? (
                 <>
                   <div className="d-flex justify-content-between align-items-center mb-4">
                     <h3 className="mb-0">

@@ -44,11 +44,11 @@ const Footer: React.FC = () => {
 									</li>
 
 									<li>
-										<Link href="/jobs/job-lists">Bekijk matches</Link>
+										<Link href="/tests">Doe de testen</Link>
 									</li>
 
 									<li>
-										<Link href="/how-it-works">Hoe het werkt</Link>
+										<Link href="/jobs/job-lists">Bekijk matches</Link>
 									</li>
 
 									<li>

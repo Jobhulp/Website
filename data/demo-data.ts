@@ -334,3 +334,72 @@ export const demoEmployerStats = {
   interestReceived: 23,
   interestSent: 18,
 };
+
+// Demo Test Resultaten
+export interface DemoPersonalityResult {
+  completed: boolean;
+  primaryType: 'D' | 'I' | 'S' | 'C';
+  secondaryType: 'D' | 'I' | 'S' | 'C';
+  scores: {
+    D: number;
+    I: number;
+    S: number;
+    C: number;
+  };
+  completedAt: string;
+}
+
+export interface DemoSkillsResult {
+  completed: boolean;
+  overallPercentage: number;
+  overallLevel: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+  results: {
+    categoryId: string;
+    categoryName: string;
+    percentage: number;
+    level: string;
+  }[];
+  completedAt: string;
+}
+
+export const demoPersonalityResult: DemoPersonalityResult = {
+  completed: true,
+  primaryType: 'I',
+  secondaryType: 'D',
+  scores: {
+    D: 25,
+    I: 42,
+    S: 17,
+    C: 16,
+  },
+  completedAt: '2026-04-25T10:30:00Z',
+};
+
+export const demoSkillsResult: DemoSkillsResult = {
+  completed: true,
+  overallPercentage: 78,
+  overallLevel: 'advanced',
+  results: [
+    { categoryId: 'communication', categoryName: 'Communicatie', percentage: 92, level: 'expert' },
+    { categoryId: 'problem_solving', categoryName: 'Probleemoplossend denken', percentage: 83, level: 'advanced' },
+    { categoryId: 'teamwork', categoryName: 'Samenwerking', percentage: 75, level: 'advanced' },
+    { categoryId: 'digital_skills', categoryName: 'Digitale vaardigheden', percentage: 67, level: 'intermediate' },
+    { categoryId: 'adaptability', categoryName: 'Aanpassingsvermogen', percentage: 73, level: 'advanced' },
+  ],
+  completedAt: '2026-04-26T14:15:00Z',
+};
+
+// Personality type info voor dashboard
+export const personalityTypeInfo: Record<string, { name: string; title: string; color: string; icon: string }> = {
+  D: { name: 'Dominant', title: 'De Doener', color: '#dc3545', icon: 'fa-bolt' },
+  I: { name: 'Invloedrijk', title: 'De Inspirator', color: '#ffc107', icon: 'fa-sun' },
+  S: { name: 'Stabiel', title: 'De Supporter', color: '#28a745', icon: 'fa-heart' },
+  C: { name: 'Conscientieus', title: 'De Analist', color: '#007bff', icon: 'fa-chart-bar' },
+};
+
+export const skillLevelInfo: Record<string, { label: string; color: string }> = {
+  beginner: { label: 'Beginner', color: '#6c757d' },
+  intermediate: { label: 'Gevorderd', color: '#ffc107' },
+  advanced: { label: 'Expert', color: '#28a745' },
+  expert: { label: 'Meester', color: '#007bff' },
+};

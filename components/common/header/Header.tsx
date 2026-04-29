@@ -103,6 +103,9 @@ const Header = () => {
                       <Link href="/candidates/submit-resume" onClick={handleLinkClick}>Maak je profiel</Link>
                     </li>
                     <li>
+                      <Link href="/tests" onClick={handleLinkClick}>Doe de testen</Link>
+                    </li>
+                    <li>
                       <Link href="/jobs/job-lists" onClick={handleLinkClick}>Bekijk matches</Link>
                     </li>
                     <li>
