@@ -65,9 +65,9 @@ const Categories: React.FC = () => {
         <div className="row mb60">
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <header className="crumina-module crumina-heading heading--h2 heading--with-decoration heading--inline mb-0">
-              <h2 className="heading-title">Bladert door vacatures op specialisme</h2>
+              <h2 className="heading-title">Vind matches per specialisme</h2>
               <div className="heading-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.
+                Ontdek jobs die passen bij jouw expertise. Jobhulp matcht je automatisch met bedrijven die op zoek zijn naar jouw specifieke vaardigheden en ervaring.
               </div>
             </header>
           </div>
@@ -84,7 +84,7 @@ const Categories: React.FC = () => {
                   <a href={category.link} className="h5 info-box-title">{category.title}</a>
                 </div>
                 <div className="info-box-content">
-                  <a href={category.link} className="info-box-link">{category.positions} open positions</a>
+                  <a href={category.link} className="info-box-link">{category.positions} matches</a>
                 </div>
               </div>
             </div>
@@ -94,7 +94,7 @@ const Categories: React.FC = () => {
         <div className="row justify-content-center">
           <div className="col-auto">
             <a href="#" className="crumina-button button--yellow button--xl load-more-button" data-load-link="category-to-load.html" data-container="category-grid">
-              Show More Categories
+              Meer specialismen tonen
             </a>
           </div>
         </div>
