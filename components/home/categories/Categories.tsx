@@ -9,52 +9,82 @@ interface Category {
 
 const categories: Category[] = [
   {
-    title: "Gezondheidszorg",
-    positions: 369,
-    icon: "puzzle-icon",
-    link: "/jobs/healthcare"
-  },
-  {
-    title: "Boekhouding en financiën",
-    positions: 309,
-    icon: "puzzle-icon",
-    link: "/jobs/finance"
-  },
-  {
-    title: "IT-aannemer",
-    positions: 260,
+    title: "IT & Development",
+    positions: 892,
     icon: "puzzle-icon",
     link: "/jobs/it"
   },
   {
-    title: "Motoren & automotive",
-    positions: 214,
+    title: "Gezondheidszorg",
+    positions: 743,
     icon: "puzzle-icon",
-    link: "/jobs/automotive"
+    link: "/jobs/healthcare"
   },
   {
-    title: "Bouw en voorzieningen",
-    positions: 168,
+    title: "Finance & Accounting",
+    positions: 651,
+    icon: "puzzle-icon",
+    link: "/jobs/finance"
+  },
+  {
+    title: "Marketing & Communicatie",
+    positions: 534,
+    icon: "puzzle-icon",
+    link: "/jobs/marketing"
+  },
+  {
+    title: "Sales & Business Dev",
+    positions: 489,
+    icon: "puzzle-icon",
+    link: "/jobs/sales"
+  },
+  {
+    title: "Bouw & Constructie",
+    positions: 412,
     icon: "puzzle-icon",
     link: "/jobs/construction"
   },
   {
-    title: "Makelaars kantoor",
-    positions: 127,
+    title: "Automotive & Techniek",
+    positions: 387,
+    icon: "puzzle-icon",
+    link: "/jobs/automotive"
+  },
+  {
+    title: "Horeca & Hospitality",
+    positions: 356,
+    icon: "puzzle-icon",
+    link: "/jobs/hospitality"
+  },
+  {
+    title: "Vastgoed & Makelaardij",
+    positions: 298,
     icon: "puzzle-icon",
     link: "/jobs/real-estate"
   },
   {
-    title: "Restaurant en voedselservice",
-    positions: 85,
+    title: "HR & Recruitment",
+    positions: 267,
     icon: "puzzle-icon",
-    link: "/jobs/food-service"
+    link: "/jobs/hr"
   },
   {
-    title: "Verkoop & Marketing",
-    positions: 42,
+    title: "Operations & Logistiek",
+    positions: 234,
     icon: "puzzle-icon",
-    link: "/jobs/sales-marketing"
+    link: "/jobs/operations"
+  },
+  {
+    title: "Design & Creative",
+    positions: 198,
+    icon: "puzzle-icon",
+    link: "/jobs/design"
+  },
+  {
+    title: "Customer Service",
+    positions: 176,
+    icon: "puzzle-icon",
+    link: "/jobs/customer-service"
   }
 ];
 

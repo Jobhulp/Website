@@ -65,36 +65,36 @@ export default function TestsOverviewPage() {
                   <div className="col-md-6 mb-4">
                     <div className="bg-white p-4 h-100" style={{ borderRadius: '10px' }}>
                       <div className="d-flex align-items-center mb-3">
-                        <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#dc3545', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <i className="fas fa-brain text-white" style={{ fontSize: '24px' }}></i>
                         </div>
                         <div className="ml-3">
                           <h4 className="mb-0">Persoonlijkheidstest</h4>
-                          <span className="c-grey">DISC Model</span>
+                          <span className="c-grey">MBTI - 16 Types</span>
                         </div>
                       </div>
                       
                       <p className="mb-3">
-                        Ontdek je persoonlijkheidstype en werkstijl. Ben je een Doener, Inspirator, 
-                        Supporter of Analist? Deze test helpt werkgevers begrijpen hoe je in hun team past.
+                        Ontdek je MBTI persoonlijkheidstype (zoals ENTJ, INFP). Begrijp je werkstijl, 
+                        communicatie en hoe je het beste samenwerkt met anderen.
                       </p>
 
                       <ul className="list-unstyled mb-4">
                         <li className="mb-2">
                           <i className="far fa-clock mr-2 c-grey"></i>
-                          Duurt 5 minuten
+                          Duurt 8-10 minuten
                         </li>
                         <li className="mb-2">
                           <i className="far fa-question-circle mr-2 c-grey"></i>
-                          12 vragen
+                          20 vragen
                         </li>
                         <li className="mb-2">
                           <i className="far fa-chart-bar mr-2 c-grey"></i>
-                          Uitgebreid resultaat
+                          16 persoonlijkheidstypes
                         </li>
                       </ul>
 
-                      <Link href="/tests/personality" className="crumina-button button--yellow button--m w-100 text-center">
+                      <Link href="/tests/personality" className="crumina-button button--m w-100 text-center" style={{ background: '#6366f1', color: '#fff' }}>
                         Start test
                       </Link>
                     </div>
@@ -103,39 +103,68 @@ export default function TestsOverviewPage() {
                   <div className="col-md-6 mb-4">
                     <div className="bg-white p-4 h-100" style={{ borderRadius: '10px' }}>
                       <div className="d-flex align-items-center mb-3">
-                        <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#007bff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <i className="fas fa-chart-line text-white" style={{ fontSize: '24px' }}></i>
+                        <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <i className="fas fa-briefcase text-white" style={{ fontSize: '24px' }}></i>
                         </div>
                         <div className="ml-3">
                           <h4 className="mb-0">Vaardighedentest</h4>
-                          <span className="c-grey">5 Categorieen</span>
+                          <span className="c-grey">Per jobrichting</span>
                         </div>
                       </div>
                       
                       <p className="mb-3">
-                        Test je niveau in communicatie, probleemoplossend denken, samenwerking, 
-                        digitale vaardigheden en aanpassingsvermogen.
+                        Kies je gewenste sector (IT, Marketing, Bouw, Horeca, etc.) en test je niveau 
+                        met vakspecifieke vragen. Bepaal of je Junior, Medior of Senior bent.
                       </p>
 
                       <ul className="list-unstyled mb-4">
                         <li className="mb-2">
                           <i className="far fa-clock mr-2 c-grey"></i>
-                          Duurt 10 minuten
+                          Duurt 10-15 minuten
                         </li>
                         <li className="mb-2">
-                          <i className="far fa-question-circle mr-2 c-grey"></i>
-                          15 vragen
+                          <i className="far fa-list mr-2 c-grey"></i>
+                          13 sectoren beschikbaar
                         </li>
                         <li className="mb-2">
                           <i className="far fa-chart-bar mr-2 c-grey"></i>
-                          Score per categorie
+                          Junior / Medior / Senior niveau
                         </li>
                       </ul>
 
-                      <Link href="/tests/skills" className="crumina-button button--blue button--m w-100 text-center">
-                        Start test
+                      <Link href="/tests/skills" className="crumina-button button--m w-100 text-center" style={{ background: '#059669', color: '#fff' }}>
+                        Kies sector en start
                       </Link>
                     </div>
+                  </div>
+                </div>
+
+                {/* Beschikbare sectoren */}
+                <div className="bg-white p-4 mb-4" style={{ borderRadius: '10px' }}>
+                  <h5 className="mb-3">Beschikbare sectoren voor de vaardighedentest</h5>
+                  <div className="row">
+                    {[
+                      { name: 'IT & Development', icon: 'fa-code', color: '#6366f1' },
+                      { name: 'Marketing & Communicatie', icon: 'fa-bullhorn', color: '#ec4899' },
+                      { name: 'Sales & Business Dev', icon: 'fa-handshake', color: '#f59e0b' },
+                      { name: 'Finance & Accounting', icon: 'fa-chart-pie', color: '#059669' },
+                      { name: 'HR & Recruitment', icon: 'fa-users-cog', color: '#8b5cf6' },
+                      { name: 'Operations & Logistiek', icon: 'fa-cogs', color: '#0891b2' },
+                      { name: 'Customer Service', icon: 'fa-headset', color: '#10b981' },
+                      { name: 'Design & Creative', icon: 'fa-paint-brush', color: '#f43f5e' },
+                      { name: 'Gezondheidszorg', icon: 'fa-heartbeat', color: '#ef4444' },
+                      { name: 'Automotive & Techniek', icon: 'fa-car', color: '#3b82f6' },
+                      { name: 'Bouw & Constructie', icon: 'fa-hard-hat', color: '#f97316' },
+                      { name: 'Vastgoed & Makelaardij', icon: 'fa-home', color: '#14b8a6' },
+                      { name: 'Horeca & Hospitality', icon: 'fa-utensils', color: '#a855f7' },
+                    ].map((sector, index) => (
+                      <div key={index} className="col-6 col-md-4 col-lg-3 mb-2">
+                        <div className="d-flex align-items-center p-2" style={{ fontSize: '13px' }}>
+                          <i className={`fas ${sector.icon} mr-2`} style={{ color: sector.color, width: '18px' }}></i>
+                          <span>{sector.name}</span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
