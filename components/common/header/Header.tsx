@@ -57,7 +57,7 @@ const Header = () => {
               <img
                 className="puzzle-icon"
                 src={logo.src}
-                alt="logo"
+                alt="Jobhulp logo"
                 width="120"
               />
             </Link>
@@ -79,109 +79,85 @@ const Header = () => {
                   <Link href="/" onClick={handleLinkClick}>Home</Link>
                 </li>
 
-                <li className="">
+                <li>
                   <Link href="/how-it-works" onClick={handleLinkClick}>Hoe het werkt</Link>
                 </li>
 
                 <li
-                  className={`menu-item-has-children ${activeSubmenu === 'jobs' ? 'active' : ''}`}
-                  onMouseEnter={() => handleMouseEnter('jobs')}
+                  className={`menu-item-has-children ${activeSubmenu === 'kandidaten' ? 'active' : ''}`}
+                  onMouseEnter={() => handleMouseEnter('kandidaten')}
                   onMouseLeave={handleMouseLeave}
                 >
                   <a href="#" onClick={(e) => {
                     e.preventDefault();
-                    handleSubmenuClick('jobs');
+                    handleSubmenuClick('kandidaten');
                   }}>
-                    Jobs
+                    Voor Kandidaten
                     <span className="show indicator">
                       <i className="puzzle-icon far fa-angle-down"></i>
                     </span>
                   </a>
 
-                  <ul className="sub-menu" style={{ display: activeSubmenu === 'jobs' ? 'block' : 'none' }}>
+                  <ul className="sub-menu" style={{ display: activeSubmenu === 'kandidaten' ? 'block' : 'none' }}>
                     <li>
-                      <Link href="/jobs/job-lists" onClick={handleLinkClick}>Job lists</Link>
+                      <Link href="/candidates/submit-resume" onClick={handleLinkClick}>Maak je profiel</Link>
                     </li>
                     <li>
-                      <Link href="/jobs/job-lists-grid" onClick={handleLinkClick}>Job lists grid</Link>
+                      <Link href="/jobs/job-lists" onClick={handleLinkClick}>Bekijk matches</Link>
                     </li>
                     <li>
-                      <Link href="/jobs/job-details" onClick={handleLinkClick}>Job details</Link>
-                    </li>
-                    <li>
-                      <Link href="/jobs/company-profile" onClick={handleLinkClick}>Company profile</Link>
-                    </li>
-                    <li>
-                      <Link href="/jobs/company-lists" onClick={handleLinkClick}>Company lists</Link>
+                      <Link href="/candidates/resume-preview" onClick={handleLinkClick}>Mijn dashboard</Link>
                     </li>
                   </ul>
                 </li>
 
                 <li
-                  className={`menu-item-has-children ${activeSubmenu === 'candidates' ? 'active' : ''}`}
-                  onMouseEnter={() => handleMouseEnter('candidates')}
+                  className={`menu-item-has-children ${activeSubmenu === 'werkgevers' ? 'active' : ''}`}
+                  onMouseEnter={() => handleMouseEnter('werkgevers')}
                   onMouseLeave={handleMouseLeave}
                 >
                   <a href="#" onClick={(e) => {
                     e.preventDefault();
-                    handleSubmenuClick('candidates');
+                    handleSubmenuClick('werkgevers');
                   }}>
-                    Candidates
+                    Voor Werkgevers
                     <span className="show indicator">
                       <i className="puzzle-icon far fa-angle-down"></i>
                     </span>
                   </a>
-                  <ul className="sub-menu" style={{ display: activeSubmenu === 'candidates' ? 'block' : 'none' }}>
+                  <ul className="sub-menu" style={{ display: activeSubmenu === 'werkgevers' ? 'block' : 'none' }}>
                     <li>
-                      <Link href="/candidates/candidate-lists" onClick={handleLinkClick}>Candidate lists</Link>
+                      <Link href="/jobs/company-profile" onClick={handleLinkClick}>Bedrijfsprofiel</Link>
                     </li>
                     <li>
-                      <Link href="/candidates/candidate-lists-grid" onClick={handleLinkClick}>Candidate lists grid</Link>
+                      <Link href="/candidates/candidate-lists" onClick={handleLinkClick}>Bekijk kandidaten</Link>
                     </li>
                     <li>
-                      <Link href="/candidates/candidate-details" onClick={handleLinkClick}>Candidate details</Link>
-                    </li>
-                    <li>
-                      <Link href="/candidates/submit-resume" onClick={handleLinkClick}>Submit resume</Link>
-                    </li>
-                    <li>
-                      <Link href="/candidates/resume-preview" onClick={handleLinkClick}>Resume preview</Link>
-                    </li>
-                    <li>
-                      <Link href="/candidates/resume-added" onClick={handleLinkClick}>Resume added</Link>
+                      <Link href="/jobs/job-lists" onClick={handleLinkClick}>Maak een job</Link>
                     </li>
                   </ul>
                 </li>
 
                 <li
-                  className={`menu-item-has-children ${activeSubmenu === 'news' ? 'active' : ''}`}
-                  onMouseEnter={() => handleMouseEnter('news')}
+                  className={`menu-item-has-children ${activeSubmenu === 'nieuws' ? 'active' : ''}`}
+                  onMouseEnter={() => handleMouseEnter('nieuws')}
                   onMouseLeave={handleMouseLeave}
                 >
                   <a href="#" onClick={(e) => {
                     e.preventDefault();
-                    handleSubmenuClick('news');
+                    handleSubmenuClick('nieuws');
                   }}>
                     Nieuws
                     <span className="show indicator">
                       <i className="puzzle-icon far fa-angle-down"></i>
                     </span>
                   </a>
-                  <ul className="sub-menu" style={{ display: activeSubmenu === 'news' ? 'block' : 'none' }}>
+                  <ul className="sub-menu" style={{ display: activeSubmenu === 'nieuws' ? 'block' : 'none' }}>
                     <li>
-                      <Link href="/news/news-page" onClick={handleLinkClick}>News page</Link>
+                      <Link href="/news/news-page" onClick={handleLinkClick}>Alle artikelen</Link>
                     </li>
                     <li>
-                      <Link href="/news/standard-news-with-sidebar" onClick={handleLinkClick}>Standard news with sidebar</Link>
-                    </li>
-                    <li>
-                      <Link href="/news/news-details-standard" onClick={handleLinkClick}>News details standard</Link>
-                    </li>
-                    <li>
-                      <Link href="/news/news-details-gallery" onClick={handleLinkClick}>News details gallery</Link>
-                    </li>
-                    <li>
-                      <Link href="/news/news-details-video" onClick={handleLinkClick}>News details with video</Link>
+                      <Link href="/news/news-details-standard" onClick={handleLinkClick}>Laatste nieuws</Link>
                     </li>
                   </ul>
                 </li>
@@ -191,7 +167,7 @@ const Header = () => {
             <nav className="login-menu">
               <ul>
                 <li>
-                  <a href="#" onClick={(e) => { e.preventDefault(); handleSignupClick(); }}>Sign Up</a>
+                  <a href="#" onClick={(e) => { e.preventDefault(); handleSignupClick(); }}>Registreer</a>
                 </li>
                 <li>
                   <a
@@ -222,29 +198,29 @@ const Header = () => {
               </div>
               <div className="modal-body">
                 <form className="form-login">
-                  <h2>My Account</h2>
-                  <div className="mb-4">For fast login use your social account.</div>
+                  <h2>Inloggen</h2>
+                  <div className="mb-4">Log in met je social account voor snelle toegang.</div>
                   <button type="button" className="crumina-button button--blue-dark button--l button--with-icon button--icon-left w-100 mb-2">
-                    <i className="puzzle-icon fab fa-facebook-square"></i>Login with the Facebook
+                    <i className="puzzle-icon fab fa-facebook-square"></i>Login met Facebook
                   </button>
                   <button type="button" className="crumina-button button--blue button--l button--with-icon button--icon-left w-100 mb-4">
-                    <i className="puzzle-icon fab fa-twitter"></i>Login with the Twitter
+                    <i className="puzzle-icon fab fa-linkedin-in"></i>Login met LinkedIn
                   </button>
-                  <label htmlFor="name">Username or Email Address *</label>
-                  <input id="name" name="name" placeholder="" type="text" />
+                  <label htmlFor="name">E-mailadres *</label>
+                  <input id="name" name="name" placeholder="jouw@email.be" type="email" />
                   <div className="d-flex align-items-center justify-content-between mb-3">
-                    <label className="mb-0" htmlFor="password">Password *</label>
-                    <a href="#">Lost your password?</a>
+                    <label className="mb-0" htmlFor="password">Wachtwoord *</label>
+                    <a href="#">Wachtwoord vergeten?</a>
                   </div>
                   <input id="password" name="password" placeholder="" type="password" />
                   <div className="checkbox checkbox--transparent mt-2 mb-4">
                     <label>
                       <input type="checkbox" name="optionsCheckboxes4" />
                       <span className="checkbox-material"><span className="check"></span></span>
-                      Remember Me
+                      Onthoud mij
                     </label>
                   </div>
-                  <button type="button" className="crumina-button button--green button--l w-100">Log In</button>
+                  <button type="button" className="crumina-button button--green button--l w-100">Inloggen</button>
                 </form>
               </div>
             </div>
@@ -264,15 +240,32 @@ const Header = () => {
               </div>
               <div className="modal-body">
                 <form className="form-login">
-                  <h2 className="mb-4">Register</h2>
-                  <label htmlFor="first_name">First Name *</label>
+                  <h2 className="mb-4">Registreren</h2>
+                  <p className="mb-4">Maak een account aan en ontdek je matches.</p>
+                  <label htmlFor="first_name">Voornaam *</label>
                   <input id="first_name" name="name" placeholder="" type="text" />
-                  <label htmlFor="last_name">Last Name *</label>
+                  <label htmlFor="last_name">Achternaam *</label>
                   <input id="last_name" name="name" placeholder="" type="text" />
-                  <label htmlFor="password1">Password *</label>
+                  <label htmlFor="email">E-mailadres *</label>
+                  <input id="email" name="email" placeholder="jouw@email.be" type="email" />
+                  <label htmlFor="password1">Wachtwoord *</label>
                   <input id="password1" name="name" placeholder="" type="password" />
-                  <button type="button" className="crumina-button button--green button--l w-100 my-3">Create an Account</button>
-                  <button type="button" className="crumina-button button--white button--l w-100" onClick={handleSwitchToLogin}>Log In</button>
+                  <div className="checkbox checkbox--transparent mt-2 mb-4">
+                    <label>
+                      <input type="checkbox" name="userType" value="candidate" defaultChecked />
+                      <span className="checkbox-material"><span className="check"></span></span>
+                      Ik ben een kandidaat
+                    </label>
+                  </div>
+                  <div className="checkbox checkbox--transparent mb-4">
+                    <label>
+                      <input type="checkbox" name="userType" value="employer" />
+                      <span className="checkbox-material"><span className="check"></span></span>
+                      Ik ben een werkgever
+                    </label>
+                  </div>
+                  <button type="button" className="crumina-button button--green button--l w-100 my-3">Account aanmaken</button>
+                  <button type="button" className="crumina-button button--white button--l w-100" onClick={handleSwitchToLogin}>Heb je al een account? Log in</button>
                 </form>
               </div>
             </div>

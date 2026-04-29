@@ -15,11 +15,11 @@ const Testimonial: React.FC = () => {
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <header className="crumina-module crumina-heading heading--h2 heading--with-decoration heading--inline mb-0">
               <h2 className="heading-title">
-                Een paar woorden van gelukkige kandidaten
+                Wat onze gebruikers zeggen
               </h2>
               <div className="heading-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Ontdek hoe Jobhulp kandidaten en werkgevers helpt om slimmer te matchen 
+                en sneller de juiste connecties te maken.
               </div>
             </header>
           </div>
