@@ -852,8 +852,7 @@ export const jobDirections: JobDirection[] = [
         ]
       }
     ]
-  }
-];
+  },
 
   // Nieuwe sectoren die overeenkomen met homepage
   {
@@ -1390,7 +1389,8 @@ export const jobDirections: JobDirection[] = [
         ]
       }
     ]
-  },
+  }
+];
 
 // Helper functions
 export interface SkillResult {
