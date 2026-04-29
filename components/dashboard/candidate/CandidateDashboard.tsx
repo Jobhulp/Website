@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { demoJobMatches, demoUserProfile, demoCandidateStats, demoPersonalityResult, demoSkillsResult, personalityTypeInfo, skillLevelInfo } from '../../../data/demo-data';
+import { demoJobMatches, demoUserProfile, demoCandidateStats, demoPersonalityResult, demoSkillsResult, mbtiTypeInfo, skillLevelInfo } from '../../../data/demo-data';
 import MatchScore from '../../common/match-score/MatchScore';
 
 type TabId = 'matches' | 'interested' | 'mutual' | 'profile' | 'tests';
@@ -181,17 +181,19 @@ const CandidateDashboard: React.FC = () => {
                   </p>
 
                   <div className="row">
-                    {/* Personality Test Card */}
+                    {/* Personality Test Card - MBTI */}
                     <div className="col-md-6 mb-4">
                       <div className="bg-white p-4 h-100" style={{ borderRadius: '10px' }}>
                         <div className="d-flex justify-content-between align-items-start mb-3">
                           <div className="d-flex align-items-center">
-                            <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: demoPersonalityResult.completed ? personalityTypeInfo[demoPersonalityResult.primaryType].color : '#e9ecef', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                              <i className={`fas ${demoPersonalityResult.completed ? personalityTypeInfo[demoPersonalityResult.primaryType].icon : 'fa-brain'} text-white`} style={{ fontSize: '20px' }}></i>
+                            <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: demoPersonalityResult.completed ? mbtiTypeInfo[demoPersonalityResult.type]?.color || '#6366f1' : '#e9ecef', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <span className="text-white" style={{ fontSize: '14px', fontWeight: '700' }}>
+                                {demoPersonalityResult.completed ? demoPersonalityResult.type : 'MBTI'}
+                              </span>
                             </div>
                             <div className="ml-3">
                               <h5 className="mb-0">Persoonlijkheidstest</h5>
-                              <small className="c-grey">DISC Model</small>
+                              <small className="c-grey">MBTI - 16 Types</small>
                             </div>
                           </div>
                           {demoPersonalityResult.completed && (
@@ -204,21 +206,27 @@ const CandidateDashboard: React.FC = () => {
                         {demoPersonalityResult.completed ? (
                           <>
                             <div className="text-center mb-3">
-                              <h4 className="mb-1" style={{ color: personalityTypeInfo[demoPersonalityResult.primaryType].color }}>
-                                {personalityTypeInfo[demoPersonalityResult.primaryType].title}
+                              <h4 className="mb-1" style={{ color: mbtiTypeInfo[demoPersonalityResult.type]?.color || '#6366f1', fontSize: '28px', letterSpacing: '4px' }}>
+                                {demoPersonalityResult.type}
                               </h4>
-                              <span className="c-grey">{personalityTypeInfo[demoPersonalityResult.primaryType].name} Type</span>
+                              <span className="c-grey">{mbtiTypeInfo[demoPersonalityResult.type]?.name || 'Onbekend type'}</span>
                             </div>
 
                             <div className="mb-3">
-                              {(['D', 'I', 'S', 'C'] as const).map((type) => (
-                                <div key={type} className="mb-2">
+                              {[
+                                { key: 'EI', left: 'E', right: 'I', value: demoPersonalityResult.percentages.EI },
+                                { key: 'SN', left: 'S', right: 'N', value: demoPersonalityResult.percentages.SN },
+                                { key: 'TF', left: 'T', right: 'F', value: demoPersonalityResult.percentages.TF },
+                                { key: 'JP', left: 'J', right: 'P', value: demoPersonalityResult.percentages.JP },
+                              ].map((dim) => (
+                                <div key={dim.key} className="mb-2">
                                   <div className="d-flex justify-content-between mb-1" style={{ fontSize: '12px' }}>
-                                    <span><strong>{type}</strong></span>
-                                    <span>{demoPersonalityResult.scores[type]}%</span>
+                                    <span style={{ fontWeight: dim.value >= 50 ? '700' : '400' }}>{dim.left}</span>
+                                    <span style={{ fontWeight: dim.value < 50 ? '700' : '400' }}>{dim.right}</span>
                                   </div>
-                                  <div style={{ background: '#e9ecef', borderRadius: '5px', height: '8px', overflow: 'hidden' }}>
-                                    <div style={{ width: `${demoPersonalityResult.scores[type]}%`, height: '100%', background: personalityTypeInfo[type].color, borderRadius: '5px' }}></div>
+                                  <div style={{ background: '#e9ecef', borderRadius: '5px', height: '8px', overflow: 'hidden', position: 'relative' }}>
+                                    <div style={{ position: 'absolute', left: 0, width: `${dim.value}%`, height: '100%', background: '#dc2626', borderRadius: '5px 0 0 5px' }}></div>
+                                    <div style={{ position: 'absolute', right: 0, width: `${100 - dim.value}%`, height: '100%', background: '#6366f1', borderRadius: '0 5px 5px 0' }}></div>
                                   </div>
                                 </div>
                               ))}
@@ -231,7 +239,7 @@ const CandidateDashboard: React.FC = () => {
                         ) : (
                           <>
                             <p className="c-grey mb-3" style={{ fontSize: '14px' }}>
-                              Ontdek je werkstijl en persoonlijkheidstype. Dit helpt werkgevers begrijpen hoe je in hun team past.
+                              Ontdek je MBTI type (zoals ENTJ, INFP). Dit helpt werkgevers begrijpen hoe je in hun team past.
                             </p>
                             <Link href="/tests/personality" className="crumina-button button--yellow button--m w-100 text-center">
                               Start test

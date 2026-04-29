@@ -335,16 +335,15 @@ export const demoEmployerStats = {
   interestSent: 18,
 };
 
-// Demo Test Resultaten
+// Demo Test Resultaten - MBTI
 export interface DemoPersonalityResult {
   completed: boolean;
-  primaryType: 'D' | 'I' | 'S' | 'C';
-  secondaryType: 'D' | 'I' | 'S' | 'C';
-  scores: {
-    D: number;
-    I: number;
-    S: number;
-    C: number;
+  type: string; // e.g., 'ENTJ', 'INFP'
+  percentages: {
+    EI: number; // E percentage (100 = full E, 0 = full I)
+    SN: number;
+    TF: number;
+    JP: number;
   };
   completedAt: string;
 }
@@ -364,13 +363,12 @@ export interface DemoSkillsResult {
 
 export const demoPersonalityResult: DemoPersonalityResult = {
   completed: true,
-  primaryType: 'I',
-  secondaryType: 'D',
-  scores: {
-    D: 25,
-    I: 42,
-    S: 17,
-    C: 16,
+  type: 'ENTJ',
+  percentages: {
+    EI: 72, // 72% Extravert
+    SN: 35, // 35% Sensing, 65% Intuitive
+    TF: 68, // 68% Thinking
+    JP: 81, // 81% Judging
   },
   completedAt: '2026-04-25T10:30:00Z',
 };
@@ -389,12 +387,24 @@ export const demoSkillsResult: DemoSkillsResult = {
   completedAt: '2026-04-26T14:15:00Z',
 };
 
-// Personality type info voor dashboard
-export const personalityTypeInfo: Record<string, { name: string; title: string; color: string; icon: string }> = {
-  D: { name: 'Dominant', title: 'De Doener', color: '#dc3545', icon: 'fa-bolt' },
-  I: { name: 'Invloedrijk', title: 'De Inspirator', color: '#ffc107', icon: 'fa-sun' },
-  S: { name: 'Stabiel', title: 'De Supporter', color: '#28a745', icon: 'fa-heart' },
-  C: { name: 'Conscientieus', title: 'De Analist', color: '#007bff', icon: 'fa-chart-bar' },
+// MBTI type info voor dashboard
+export const mbtiTypeInfo: Record<string, { name: string; nickname: string; color: string }> = {
+  'INTJ': { name: 'De Architect', nickname: 'Strategisch Denker', color: '#6366f1' },
+  'INTP': { name: 'De Denker', nickname: 'Logisch Analist', color: '#8b5cf6' },
+  'ENTJ': { name: 'De Commandant', nickname: 'Besluitvaardige Leider', color: '#dc2626' },
+  'ENTP': { name: 'De Debater', nickname: 'Visionair Innovator', color: '#f59e0b' },
+  'INFJ': { name: 'De Advocaat', nickname: 'Inzichtvolle Idealist', color: '#059669' },
+  'INFP': { name: 'De Bemiddelaar', nickname: 'Idealist met Empathie', color: '#10b981' },
+  'ENFJ': { name: 'De Protagonist', nickname: 'Charismatische Leider', color: '#0891b2' },
+  'ENFP': { name: 'De Campagnevoerder', nickname: 'Enthousiaste Inspirator', color: '#ec4899' },
+  'ISTJ': { name: 'De Logisticus', nickname: 'Betrouwbare Organisator', color: '#475569' },
+  'ISFJ': { name: 'De Beschermer', nickname: 'Toegewijde Helper', color: '#64748b' },
+  'ESTJ': { name: 'De Directeur', nickname: 'Efficiente Organisator', color: '#78716c' },
+  'ESFJ': { name: 'De Consul', nickname: 'Zorgzame Coordinator', color: '#a1a1aa' },
+  'ISTP': { name: 'De Virtuoos', nickname: 'Praktische Probleemoplosser', color: '#71717a' },
+  'ISFP': { name: 'De Avonturier', nickname: 'Creatieve Kunstenaar', color: '#a3a3a3' },
+  'ESTP': { name: 'De Ondernemer', nickname: 'Energieke Doener', color: '#ef4444' },
+  'ESFP': { name: 'De Entertainer', nickname: 'Spontane Performer', color: '#f97316' },
 };
 
 export const skillLevelInfo: Record<string, { label: string; color: string }> = {
