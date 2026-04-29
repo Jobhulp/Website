@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { demoJobMatches, demoUserProfile, demoCandidateStats, demoPersonalityResult, demoSkillsResult, mbtiTypeInfo } from '../../../data/demo-data';
+import { demoJobMatches, demoUserProfile, demoCandidateStats, demoPersonalityResult, demoSkillsData, mbtiTypeInfo } from '../../../data/demo-data';
 import MatchScore from '../../common/match-score/MatchScore';
 
 type TabId = 'matches' | 'interested' | 'mutual' | 'profile' | 'tests';
@@ -160,7 +160,7 @@ const CandidateDashboard: React.FC = () => {
                       style={{ textDecoration: 'none', borderRadius: '5px', border: 'none', textAlign: 'left' }}
                     >
                       <i className="far fa-clipboard-check mr-2"></i> Mijn Testen
-                      {(!demoPersonalityResult.completed || !demoSkillsResult.completed) && (
+                      {(!demoPersonalityResult.completed || demoSkillsData.testedSkills.length < demoSkillsData.selectedSkills.length) && (
                         <span className="badge bg-red c-white ml-2" style={{ borderRadius: '10px', padding: '2px 8px' }}>!</span>
                       )}
                     </button>
@@ -249,70 +249,75 @@ const CandidateDashboard: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Skills Test Card - Job Direction */}
+                    {/* Skills Test Card - Per Skill */}
                     <div className="col-md-6 mb-4">
                       <div className="bg-white p-4 h-100" style={{ borderRadius: '10px' }}>
                         <div className="d-flex justify-content-between align-items-start mb-3">
                           <div className="d-flex align-items-center">
-                            <div style={{ width: '50px', height: '50px', borderRadius: '10px', background: demoSkillsResult.completed ? demoSkillsResult.directionColor : '#e9ecef', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                              <i className={`fas ${demoSkillsResult.completed ? demoSkillsResult.directionIcon : 'fa-briefcase'} text-white`} style={{ fontSize: '20px' }}></i>
+                            <div style={{ width: '50px', height: '50px', borderRadius: '10px', background: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <i className="fas fa-lightbulb text-white" style={{ fontSize: '20px' }}></i>
                             </div>
                             <div className="ml-3">
-                              <h5 className="mb-0">Vaardighedentest</h5>
-                              <small className="c-grey">{demoSkillsResult.completed ? demoSkillsResult.directionName : 'Kies je richting'}</small>
+                              <h5 className="mb-0">Mijn Skills</h5>
+                              <small className="c-grey">{demoSkillsData.testedSkills.length}/{demoSkillsData.selectedSkills.length} getest</small>
                             </div>
                           </div>
-                          {demoSkillsResult.completed && (
-                            <span className="badge bg-green c-white" style={{ padding: '4px 10px', borderRadius: '12px' }}>
-                              <i className="far fa-check mr-1"></i>Voltooid
+                          {demoSkillsData.testedSkills.length > 0 && (
+                            <span className="badge c-white" style={{ padding: '4px 10px', borderRadius: '12px', background: demoSkillsData.testedSkills.length === demoSkillsData.selectedSkills.length ? '#059669' : '#f59e0b' }}>
+                              {demoSkillsData.testedSkills.length === demoSkillsData.selectedSkills.length ? (
+                                <><i className="far fa-check mr-1"></i>Compleet</>
+                              ) : (
+                                <><i className="far fa-clock mr-1"></i>Bezig</>
+                              )}
                             </span>
                           )}
                         </div>
 
-                        {demoSkillsResult.completed ? (
+                        {demoSkillsData.testedSkills.length > 0 ? (
                           <>
-                            <div className="text-center mb-3">
-                              <h4 className="mb-1" style={{ color: demoSkillsResult.directionColor }}>
-                                {demoSkillsResult.overallPercentage}%
-                              </h4>
-                              <span 
-                                className="badge" 
-                                style={{ 
-                                  background: demoSkillsResult.overallLevel === 'senior' ? '#059669' : demoSkillsResult.overallLevel === 'medior' ? '#f59e0b' : '#6c757d',
-                                  color: '#fff',
-                                  padding: '4px 12px',
-                                  borderRadius: '12px'
-                                }}
-                              >
-                                {demoSkillsResult.overallLevel === 'senior' ? 'Senior' : demoSkillsResult.overallLevel === 'medior' ? 'Medior' : 'Junior'}
-                              </span>
-                            </div>
-
                             <div className="mb-3">
-                              {demoSkillsResult.results.map((result) => (
-                                <div key={result.categoryId} className="mb-2">
-                                  <div className="d-flex justify-content-between mb-1" style={{ fontSize: '12px' }}>
-                                    <span>{result.categoryName}</span>
-                                    <span>{result.percentage}%</span>
+                              {demoSkillsData.testedSkills.slice(0, 3).map((skill) => {
+                                const levelColors = { junior: '#6c757d', medior: '#f59e0b', senior: '#059669' };
+                                const levelLabels = { junior: 'Junior', medior: 'Medior', senior: 'Senior' };
+                                return (
+                                  <div key={skill.skillId} className="d-flex align-items-center justify-content-between mb-2 p-2" style={{ background: '#f8f9fa', borderRadius: '8px' }}>
+                                    <div className="d-flex align-items-center">
+                                      <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: skill.categoryColor, marginRight: '10px' }}></div>
+                                      <span style={{ fontSize: '14px' }}>{skill.skillName}</span>
+                                    </div>
+                                    <span 
+                                      className="badge"
+                                      style={{ 
+                                        background: levelColors[skill.level], 
+                                        color: '#fff',
+                                        padding: '3px 8px',
+                                        borderRadius: '8px',
+                                        fontSize: '11px'
+                                      }}
+                                    >
+                                      {levelLabels[skill.level]}
+                                    </span>
                                   </div>
-                                  <div style={{ background: '#e9ecef', borderRadius: '5px', height: '8px', overflow: 'hidden' }}>
-                                    <div style={{ width: `${result.percentage}%`, height: '100%', background: demoSkillsResult.directionColor, borderRadius: '5px' }}></div>
-                                  </div>
+                                );
+                              })}
+                              {demoSkillsData.selectedSkills.length - demoSkillsData.testedSkills.length > 0 && (
+                                <div className="text-center c-grey" style={{ fontSize: '13px', marginTop: '8px' }}>
+                                  + {demoSkillsData.selectedSkills.length - demoSkillsData.testedSkills.length} skills nog te testen
                                 </div>
-                              ))}
+                              )}
                             </div>
 
-                            <Link href="/tests/skills" className="crumina-button button--dark button--bordered button--s w-100 text-center">
-                              Andere richting testen
+                            <Link href="/tests/skills" className="crumina-button button--s w-100 text-center" style={{ background: '#059669', color: '#fff' }}>
+                              {demoSkillsData.testedSkills.length < demoSkillsData.selectedSkills.length ? 'Verder testen' : 'Skills beheren'}
                             </Link>
                           </>
                         ) : (
                           <>
                             <p className="c-grey mb-3" style={{ fontSize: '14px' }}>
-                              Kies je gewenste jobrichting (IT, Marketing, Sales, etc.) en test je niveau met vakspecifieke vragen.
+                              Selecteer skills in je profiel en test je niveau. Werkgevers matchen op basis van je echte vaardigheden.
                             </p>
-                            <Link href="/tests/skills" className="crumina-button button--m w-100 text-center" style={{ background: '#6366f1', color: '#fff' }}>
-                              Kies richting en start
+                            <Link href="/candidates/submit-resume" className="crumina-button button--m w-100 text-center" style={{ background: '#059669', color: '#fff' }}>
+                              Skills selecteren
                             </Link>
                           </>
                         )}

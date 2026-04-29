@@ -348,21 +348,21 @@ export interface DemoPersonalityResult {
   completedAt: string;
 }
 
-export interface DemoSkillsResult {
-  completed: boolean;
-  directionId: string;
-  directionName: string;
-  directionIcon: string;
-  directionColor: string;
-  overallPercentage: number;
-  overallLevel: 'junior' | 'medior' | 'senior';
-  results: {
-    categoryId: string;
-    categoryName: string;
-    percentage: number;
-    level: string;
-  }[];
-  completedAt: string;
+// Nieuwe skill-gebaseerde resultaten (per individuele skill)
+export interface SkillTestResultDemo {
+  skillId: string;
+  skillName: string;
+  categoryId: string;
+  categoryName: string;
+  categoryColor: string;
+  percentage: number;
+  level: 'junior' | 'medior' | 'senior';
+  testedAt: string;
+}
+
+export interface DemoSkillsData {
+  selectedSkills: string[]; // Skills die kandidaat heeft geselecteerd
+  testedSkills: SkillTestResultDemo[]; // Skills die getest zijn met resultaten
 }
 
 export const demoPersonalityResult: DemoPersonalityResult = {
@@ -377,19 +377,41 @@ export const demoPersonalityResult: DemoPersonalityResult = {
   completedAt: '2026-04-25T10:30:00Z',
 };
 
-export const demoSkillsResult: DemoSkillsResult = {
-  completed: true,
-  directionId: 'it_development',
-  directionName: 'IT & Development',
-  directionIcon: 'fa-code',
-  directionColor: '#6366f1',
-  overallPercentage: 78,
-  overallLevel: 'medior',
-  results: [
-    { categoryId: 'programming', categoryName: 'Programmeren', percentage: 85, level: 'senior' },
-    { categoryId: 'problem_solving_it', categoryName: 'Probleemoplossing', percentage: 71, level: 'medior' },
-  ],
-  completedAt: '2026-04-26T14:15:00Z',
+// Demo: kandidaat heeft 5 skills geselecteerd en 3 getest
+export const demoSkillsData: DemoSkillsData = {
+  selectedSkills: ['javascript', 'react', 'seo', 'b2b_sales', 'project_management'],
+  testedSkills: [
+    {
+      skillId: 'javascript',
+      skillName: 'JavaScript',
+      categoryId: 'programming',
+      categoryName: 'Programmeren & Development',
+      categoryColor: '#6366f1',
+      percentage: 85,
+      level: 'senior',
+      testedAt: '2026-04-26T10:30:00Z'
+    },
+    {
+      skillId: 'react',
+      skillName: 'React',
+      categoryId: 'programming',
+      categoryName: 'Programmeren & Development',
+      categoryColor: '#6366f1',
+      percentage: 72,
+      level: 'medior',
+      testedAt: '2026-04-26T10:45:00Z'
+    },
+    {
+      skillId: 'seo',
+      skillName: 'SEO',
+      categoryId: 'marketing_skills',
+      categoryName: 'Marketing & Communicatie',
+      categoryColor: '#ec4899',
+      percentage: 58,
+      level: 'medior',
+      testedAt: '2026-04-26T11:00:00Z'
+    }
+  ]
 };
 
 // MBTI type info voor dashboard

@@ -1,51 +1,70 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
-  jobDirections,
-  JobDirection,
-  calculateDirectionResult,
-  levelLabels,
-  DirectionResult
-} from '../../data/skills-test-data';
+  skillCategories, 
+  getAllSkills, 
+  calculateSkillResult,
+  skillLevelLabels,
+  Skill,
+  SkillTestResult
+} from '../../data/candidate-skills-data';
+
+// Simulatie: in productie komt dit uit de database
+const getSelectedSkillsFromProfile = (): string[] => {
+  // Demo: return enkele skills alsof kandidaat deze geselecteerd heeft
+  return ['javascript', 'react', 'seo', 'b2b_sales', 'project_management'];
+};
 
 const SkillsTest: React.FC = () => {
-  const [selectedDirection, setSelectedDirection] = useState<JobDirection | null>(null);
-  const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
+  const [selectedSkills] = useState<string[]>(getSelectedSkillsFromProfile());
+  const [currentSkillIndex, setCurrentSkillIndex] = useState<number | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
-  const [result, setResult] = useState<DirectionResult | null>(null);
-  const [showIntro, setShowIntro] = useState(true);
-
-  const totalQuestions = selectedDirection 
-    ? selectedDirection.categories.reduce((sum, cat) => sum + cat.questions.length, 0)
-    : 0;
-  const answeredQuestions = Object.keys(answers).length;
-  const progress = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
-
-  const currentCategory = selectedDirection?.categories[currentCategoryIndex];
-  const currentQuestion = currentCategory?.questions[currentQuestionIndex];
-
-  const handleSelectDirection = (direction: JobDirection) => {
-    setSelectedDirection(direction);
-    setShowIntro(false);
+  const [completedSkills, setCompletedSkills] = useState<SkillTestResult[]>([]);
+  const [showOverview, setShowOverview] = useState(true);
+  
+  const allSkills = getAllSkills();
+  
+  // Get skill objects for selected skill IDs
+  const skillsToTest = selectedSkills.map(id => allSkills.find(s => s.id === id)).filter(Boolean) as (Skill & { categoryId: string; categoryName: string; categoryColor: string })[];
+  
+  const currentSkill = currentSkillIndex !== null ? skillsToTest[currentSkillIndex] : null;
+  const currentQuestion = currentSkill?.questions[currentQuestionIndex];
+  
+  const handleStartSkill = (skillIndex: number) => {
+    setCurrentSkillIndex(skillIndex);
+    setCurrentQuestionIndex(0);
+    setAnswers({});
+    setShowOverview(false);
   };
 
   const handleAnswer = (points: number) => {
-    if (!currentQuestion || !selectedDirection) return;
+    if (!currentQuestion || !currentSkill) return;
     
     const newAnswers = { ...answers, [currentQuestion.id]: points };
     setAnswers(newAnswers);
 
     setTimeout(() => {
-      if (currentQuestionIndex < currentCategory!.questions.length - 1) {
+      if (currentQuestionIndex < currentSkill.questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
-      } else if (currentCategoryIndex < selectedDirection.categories.length - 1) {
-        setCurrentCategoryIndex(currentCategoryIndex + 1);
-        setCurrentQuestionIndex(0);
       } else {
-        const directionResult = calculateDirectionResult(selectedDirection, newAnswers);
-        setResult(directionResult);
+        // Skill test completed
+        const result = calculateSkillResult(currentSkill, newAnswers);
+        result.categoryId = currentSkill.categoryId;
+        
+        setCompletedSkills(prev => {
+          const existing = prev.findIndex(r => r.skillId === currentSkill.id);
+          if (existing >= 0) {
+            const updated = [...prev];
+            updated[existing] = result;
+            return updated;
+          }
+          return [...prev, result];
+        });
+        
+        setCurrentSkillIndex(null);
+        setShowOverview(true);
       }
     }, 300);
   };
@@ -53,42 +72,27 @@ const SkillsTest: React.FC = () => {
   const handleBack = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
-    } else if (currentCategoryIndex > 0) {
-      setCurrentCategoryIndex(currentCategoryIndex - 1);
-      const prevCategory = selectedDirection!.categories[currentCategoryIndex - 1];
-      setCurrentQuestionIndex(prevCategory.questions.length - 1);
     }
   };
 
-  const handleRestart = () => {
-    setSelectedDirection(null);
-    setCurrentCategoryIndex(0);
-    setCurrentQuestionIndex(0);
+  const handleQuit = () => {
+    setCurrentSkillIndex(null);
+    setShowOverview(true);
     setAnswers({});
-    setResult(null);
-    setShowIntro(true);
-  };
-
-  const handleChangeDirection = () => {
-    setCurrentCategoryIndex(0);
     setCurrentQuestionIndex(0);
-    setAnswers({});
-    setResult(null);
-    setShowIntro(true);
-    setSelectedDirection(null);
   };
 
-  const getGlobalQuestionNumber = () => {
-    if (!selectedDirection) return 0;
-    let count = 0;
-    for (let i = 0; i < currentCategoryIndex; i++) {
-      count += selectedDirection.categories[i].questions.length;
-    }
-    return count + currentQuestionIndex + 1;
+  const getSkillResult = (skillId: string) => {
+    return completedSkills.find(r => r.skillId === skillId);
   };
 
-  // Direction Selection Screen
-  if (showIntro) {
+  const progress = currentSkill ? ((currentQuestionIndex + 1) / currentSkill.questions.length) * 100 : 0;
+
+  // Overview Screen
+  if (showOverview) {
+    const testedCount = completedSkills.length;
+    const totalCount = skillsToTest.length;
+
     return (
       <div className="main-content-wrapper">
         <div className="header--spacer" style={{ height: '142px', backgroundColor: '#121214' }}></div>
@@ -97,9 +101,9 @@ const SkillsTest: React.FC = () => {
           <div className="container">
             <div className="row">
               <div className="col-lg-8 offset-lg-2 text-center">
-                <h1 className="text-white mb-3">Vaardighedentest</h1>
+                <h1 className="text-white mb-3">Test Je Skills</h1>
                 <p className="text-white" style={{ opacity: 0.8 }}>
-                  Kies je gewenste jobrichting en test je niveau
+                  Test je niveau per geselecteerde skill. Werkgevers kunnen zo matchen op je echte vaardigheden.
                 </p>
               </div>
             </div>
@@ -109,284 +113,300 @@ const SkillsTest: React.FC = () => {
         <section className="medium-padding120 bg-light-grey">
           <div className="container">
             <div className="row">
-              <div className="col-lg-10 offset-lg-1">
-                <div className="bg-white p-5 mb-4" style={{ borderRadius: '10px' }}>
-                  <h2 className="mb-3">Welke richting zoek je?</h2>
-                  <p className="c-grey mb-4">
-                    Selecteer de jobrichting waarin je aan de slag wilt. Je krijgt dan specifieke vragen 
-                    om je niveau te testen. Werkgevers kunnen zo beter matchen met jouw vaardigheden.
-                  </p>
+              <div className="col-lg-8">
+                {/* Progress overview */}
+                <div className="bg-white p-4 mb-4" style={{ borderRadius: '10px' }}>
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h4 className="mb-0">Jouw Skills</h4>
+                    <span className="c-grey">{testedCount} van {totalCount} getest</span>
+                  </div>
+                  
+                  <div style={{ background: '#e9ecef', borderRadius: '10px', height: '8px', overflow: 'hidden', marginBottom: '16px' }}>
+                    <div 
+                      style={{ 
+                        width: `${totalCount > 0 ? (testedCount / totalCount) * 100 : 0}%`, 
+                        height: '100%', 
+                        background: '#059669',
+                        borderRadius: '10px',
+                        transition: 'width 0.3s ease'
+                      }}
+                    ></div>
+                  </div>
 
-                  <div className="row">
-                    {jobDirections.map((direction) => (
-                      <div key={direction.id} className="col-md-6 col-lg-4 mb-4">
-                        <button
-                          onClick={() => handleSelectDirection(direction)}
-                          className="w-100 text-left p-4 h-100"
-                          style={{ 
-                            border: '2px solid #e9ecef',
-                            borderRadius: '10px',
-                            background: '#fff',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            minHeight: '160px'
-                          }}
-                          onMouseOver={(e) => {
-                            e.currentTarget.style.borderColor = direction.color;
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                          }}
-                          onMouseOut={(e) => {
-                            e.currentTarget.style.borderColor = '#e9ecef';
-                            e.currentTarget.style.transform = 'translateY(0)';
-                          }}
-                        >
+                  {skillsToTest.length === 0 ? (
+                    <div className="text-center py-5">
+                      <i className="far fa-exclamation-circle mb-3" style={{ fontSize: '48px', color: '#6c757d' }}></i>
+                      <h5>Geen skills geselecteerd</h5>
+                      <p className="c-grey">Ga naar je profiel om skills te selecteren die je wilt testen.</p>
+                      <Link href="/candidates/submit-resume" className="crumina-button button--yellow button--m">
+                        Naar profiel
+                      </Link>
+                    </div>
+                  ) : (
+                    <div className="skill-list">
+                      {skillsToTest.map((skill, index) => {
+                        const result = getSkillResult(skill.id);
+                        const levelInfo = result ? skillLevelLabels[result.level] : null;
+
+                        return (
                           <div 
-                            className="mb-3" 
+                            key={skill.id} 
+                            className="d-flex align-items-center justify-content-between p-3 mb-2"
                             style={{ 
-                              width: '50px', 
-                              height: '50px', 
-                              borderRadius: '10px', 
-                              background: direction.color,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center'
+                              background: result ? '#f0fdf4' : '#f8f9fa', 
+                              borderRadius: '10px',
+                              border: result ? '1px solid #bbf7d0' : '1px solid #e9ecef'
                             }}
                           >
-                            <i className={`fas ${direction.icon} text-white`} style={{ fontSize: '20px' }}></i>
+                            <div className="d-flex align-items-center">
+                              <div 
+                                style={{ 
+                                  width: '44px', 
+                                  height: '44px', 
+                                  borderRadius: '10px', 
+                                  background: skill.categoryColor,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  marginRight: '14px'
+                                }}
+                              >
+                                {result ? (
+                                  <i className="fas fa-check text-white"></i>
+                                ) : (
+                                  <span className="text-white" style={{ fontSize: '14px', fontWeight: '700' }}>
+                                    {skill.questions.length}
+                                  </span>
+                                )}
+                              </div>
+                              <div>
+                                <strong>{skill.name}</strong>
+                                <div className="c-grey" style={{ fontSize: '13px' }}>
+                                  {skill.categoryName} • {skill.questions.length} vragen
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="d-flex align-items-center" style={{ gap: '12px' }}>
+                              {result ? (
+                                <>
+                                  <div className="text-right mr-2">
+                                    <div style={{ fontWeight: '700', color: levelInfo?.color, fontSize: '18px' }}>
+                                      {result.percentage}%
+                                    </div>
+                                    <span 
+                                      className="badge"
+                                      style={{ 
+                                        background: levelInfo?.color, 
+                                        color: '#fff',
+                                        padding: '2px 8px',
+                                        borderRadius: '8px',
+                                        fontSize: '11px'
+                                      }}
+                                    >
+                                      {levelInfo?.label}
+                                    </span>
+                                  </div>
+                                  <button
+                                    onClick={() => handleStartSkill(index)}
+                                    className="crumina-button button--dark button--bordered button--s"
+                                  >
+                                    Opnieuw
+                                  </button>
+                                </>
+                              ) : (
+                                <button
+                                  onClick={() => handleStartSkill(index)}
+                                  className="crumina-button button--s"
+                                  style={{ background: skill.categoryColor, color: '#fff' }}
+                                >
+                                  Start test
+                                </button>
+                              )}
+                            </div>
                           </div>
-                          <h5 className="mb-2">{direction.name}</h5>
-                          <p className="c-grey mb-0" style={{ fontSize: '13px' }}>
-                            {direction.description}
-                          </p>
-                          <div className="mt-auto pt-3">
-                            <small className="c-grey">
-                              {direction.categories.reduce((sum, cat) => sum + cat.questions.length, 0)} vragen
-                            </small>
-                          </div>
-                        </button>
-                      </div>
-                    ))}
-                  </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
 
-                <div className="bg-white p-4" style={{ borderRadius: '10px' }}>
-                  <div className="d-flex align-items-start">
-                    <i className="far fa-info-circle mr-3 c-blue" style={{ fontSize: '24px', marginTop: '3px' }}></i>
+                {/* Completed skills summary */}
+                {completedSkills.length > 0 && (
+                  <div className="bg-white p-4 mb-4" style={{ borderRadius: '10px' }}>
+                    <h5 className="mb-3">Je geteste skills</h5>
+                    <p className="c-grey mb-4" style={{ fontSize: '14px' }}>
+                      Deze resultaten zijn zichtbaar voor werkgevers en worden gebruikt voor matching.
+                    </p>
+
+                    <div className="row">
+                      {completedSkills.map(result => {
+                        const skill = allSkills.find(s => s.id === result.skillId);
+                        const levelInfo = skillLevelLabels[result.level];
+                        
+                        return (
+                          <div key={result.skillId} className="col-md-6 mb-3">
+                            <div className="p-3" style={{ background: '#f8f9fa', borderRadius: '10px' }}>
+                              <div className="d-flex align-items-center justify-content-between mb-2">
+                                <strong style={{ fontSize: '14px' }}>{result.skillName}</strong>
+                                <span 
+                                  className="badge"
+                                  style={{ 
+                                    background: levelInfo.color, 
+                                    color: '#fff',
+                                    padding: '4px 10px',
+                                    borderRadius: '10px',
+                                    fontSize: '12px'
+                                  }}
+                                >
+                                  {levelInfo.label}
+                                </span>
+                              </div>
+                              <div style={{ background: '#e9ecef', borderRadius: '8px', height: '8px', overflow: 'hidden' }}>
+                                <div 
+                                  style={{ 
+                                    width: `${result.percentage}%`, 
+                                    height: '100%', 
+                                    background: levelInfo.color,
+                                    borderRadius: '8px'
+                                  }}
+                                ></div>
+                              </div>
+                              <div className="text-right mt-1">
+                                <small className="c-grey">{result.percentage}%</small>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Sidebar */}
+              <div className="col-lg-4">
+                <div className="bg-white p-4 mb-4" style={{ borderRadius: '10px' }}>
+                  <h5 className="mb-3">Hoe werkt het?</h5>
+                  
+                  <div className="d-flex align-items-start mb-3">
+                    <div 
+                      style={{ 
+                        width: '28px', 
+                        height: '28px', 
+                        borderRadius: '50%', 
+                        background: '#6366f1',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: '12px',
+                        flexShrink: 0,
+                        color: '#fff',
+                        fontSize: '13px',
+                        fontWeight: '600'
+                      }}
+                    >
+                      1
+                    </div>
                     <div>
-                      <strong>Hoe werkt het?</strong>
-                      <p className="mb-0 c-grey" style={{ fontSize: '14px' }}>
-                        Na het kiezen van je richting krijg je vakspecifieke vragen op junior, medior en senior niveau. 
-                        Je score wordt gebruikt om te matchen met werkgevers die zoeken naar jouw niveau in die richting. 
-                        Je kunt later ook andere richtingen testen.
+                      <strong style={{ fontSize: '14px' }}>Selecteer een skill</strong>
+                      <p className="c-grey mb-0" style={{ fontSize: '13px' }}>
+                        Kies welke skill je wilt testen
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="d-flex align-items-start mb-3">
+                    <div 
+                      style={{ 
+                        width: '28px', 
+                        height: '28px', 
+                        borderRadius: '50%', 
+                        background: '#6366f1',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: '12px',
+                        flexShrink: 0,
+                        color: '#fff',
+                        fontSize: '13px',
+                        fontWeight: '600'
+                      }}
+                    >
+                      2
+                    </div>
+                    <div>
+                      <strong style={{ fontSize: '14px' }}>Beantwoord vragen</strong>
+                      <p className="c-grey mb-0" style={{ fontSize: '13px' }}>
+                        Elke skill heeft 3-4 vragen op verschillende niveaus
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="d-flex align-items-start">
+                    <div 
+                      style={{ 
+                        width: '28px', 
+                        height: '28px', 
+                        borderRadius: '50%', 
+                        background: '#6366f1',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: '12px',
+                        flexShrink: 0,
+                        color: '#fff',
+                        fontSize: '13px',
+                        fontWeight: '600'
+                      }}
+                    >
+                      3
+                    </div>
+                    <div>
+                      <strong style={{ fontSize: '14px' }}>Ontvang je niveau</strong>
+                      <p className="c-grey mb-0" style={{ fontSize: '13px' }}>
+                        Junior, Medior of Senior - werkgevers matchen hierop
                       </p>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    );
-  }
 
-  // Results Screen
-  if (result) {
-    const levelInfo = levelLabels[result.overallLevel];
-
-    return (
-      <div className="main-content-wrapper">
-        <div className="header--spacer" style={{ height: '142px', backgroundColor: '#121214' }}></div>
-        
-        <section className="py-5" style={{ background: selectedDirection?.color || '#121214' }}>
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-8 offset-lg-2 text-center">
-                <div className="d-flex align-items-center justify-content-center mb-3">
-                  <div 
-                    className="mr-3" 
-                    style={{ 
-                      width: '50px', 
-                      height: '50px', 
-                      borderRadius: '10px', 
-                      background: 'rgba(255,255,255,0.2)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}
-                  >
-                    <i className={`fas ${selectedDirection?.icon} text-white`} style={{ fontSize: '20px' }}></i>
-                  </div>
-                  <div className="text-left">
-                    <h6 className="text-white mb-0" style={{ opacity: 0.8 }}>Resultaten voor</h6>
-                    <h3 className="text-white mb-0">{result.directionName}</h3>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="medium-padding120 bg-light-grey">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-8 offset-lg-2">
-                {/* Overall Score */}
-                <div className="bg-white p-5 mb-4" style={{ borderRadius: '10px' }}>
-                  <div className="text-center mb-4">
-                    <div 
-                      className="mx-auto mb-3" 
-                      style={{ 
-                        width: '140px', 
-                        height: '140px', 
-                        borderRadius: '50%', 
-                        background: `conic-gradient(${levelInfo.color} ${result.overallPercentage}%, #e9ecef ${result.overallPercentage}%)`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      <div 
+                <div className="bg-white p-4" style={{ borderRadius: '10px' }}>
+                  <h6 className="mb-3">Niveaus uitleg</h6>
+                  
+                  {Object.entries(skillLevelLabels).map(([key, info]) => (
+                    <div key={key} className="d-flex align-items-center mb-2">
+                      <span 
+                        className="badge mr-2"
                         style={{ 
-                          width: '115px', 
-                          height: '115px', 
-                          borderRadius: '50%', 
-                          background: '#fff',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexDirection: 'column'
+                          background: info.color, 
+                          color: '#fff',
+                          padding: '4px 10px',
+                          borderRadius: '8px',
+                          fontSize: '12px',
+                          minWidth: '60px',
+                          textAlign: 'center'
                         }}
                       >
-                        <span style={{ fontSize: '32px', fontWeight: '700', color: levelInfo.color }}>
-                          {result.overallPercentage}%
-                        </span>
-                      </div>
+                        {info.label}
+                      </span>
+                      <small className="c-grey">{info.description}</small>
                     </div>
-                    <h2 className="mb-2">Jouw niveau</h2>
-                    <span 
-                      className="badge" 
-                      style={{ 
-                        background: levelInfo.color, 
-                        color: '#fff', 
-                        padding: '10px 24px', 
-                        borderRadius: '20px',
-                        fontSize: '16px',
-                        fontWeight: '600'
-                      }}
+                  ))}
+                </div>
+
+                {completedSkills.length > 0 && (
+                  <div className="mt-4">
+                    <Link 
+                      href="/dashboard/candidate" 
+                      className="crumina-button button--xl w-100 text-center"
+                      style={{ background: '#059669', color: '#fff' }}
                     >
-                      {levelInfo.label}
-                    </span>
-                    <p className="c-grey mt-2 mb-0">{levelInfo.description}</p>
+                      <i className="far fa-check mr-2"></i>
+                      Naar dashboard
+                    </Link>
                   </div>
-
-                  {/* Category Results */}
-                  <h4 className="mb-4">Score per onderdeel</h4>
-                  {result.results.map((categoryResult) => {
-                    const catLevelInfo = levelLabels[categoryResult.level];
-                    
-                    return (
-                      <div key={categoryResult.categoryId} className="mb-4 p-4" style={{ background: '#f8f9fa', borderRadius: '10px' }}>
-                        <div className="d-flex justify-content-between align-items-center mb-2">
-                          <div>
-                            <h6 className="mb-1">{categoryResult.categoryName}</h6>
-                            <span 
-                              className="badge" 
-                              style={{ 
-                                background: catLevelInfo.color, 
-                                color: '#fff', 
-                                padding: '3px 10px',
-                                borderRadius: '10px',
-                                fontSize: '11px'
-                              }}
-                            >
-                              {catLevelInfo.label}
-                            </span>
-                          </div>
-                          <span style={{ fontWeight: '700', color: catLevelInfo.color, fontSize: '24px' }}>
-                            {categoryResult.percentage}%
-                          </span>
-                        </div>
-                        <div style={{ background: '#e9ecef', borderRadius: '10px', height: '12px', overflow: 'hidden' }}>
-                          <div 
-                            style={{ 
-                              width: `${categoryResult.percentage}%`, 
-                              height: '100%', 
-                              background: catLevelInfo.color,
-                              borderRadius: '10px',
-                              transition: 'width 0.5s ease'
-                            }}
-                          ></div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* What employers see */}
-                <div className="bg-white p-4 mb-4" style={{ borderRadius: '10px' }}>
-                  <h5 className="mb-3">
-                    <i className="far fa-building mr-2" style={{ color: selectedDirection?.color }}></i>
-                    Wat werkgevers zien
-                  </h5>
-                  <p className="mb-3" style={{ fontSize: '15px' }}>
-                    Werkgevers die zoeken naar <strong>{result.directionName}</strong> profielen zien jouw niveau 
-                    en kunnen zo inschatten of je past bij hun vacature-eisen.
-                  </p>
-                  <div className="p-3" style={{ background: '#f8f9fa', borderRadius: '8px' }}>
-                    <div className="d-flex align-items-center justify-content-between">
-                      <div className="d-flex align-items-center">
-                        <div 
-                          style={{ 
-                            width: '40px', 
-                            height: '40px', 
-                            borderRadius: '8px', 
-                            background: selectedDirection?.color,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginRight: '12px'
-                          }}
-                        >
-                          <i className={`fas ${selectedDirection?.icon} text-white`} style={{ fontSize: '16px' }}></i>
-                        </div>
-                        <div>
-                          <strong>{result.directionName}</strong>
-                          <div className="c-grey" style={{ fontSize: '13px' }}>Getest op {new Date().toLocaleDateString('nl-BE')}</div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <span 
-                          className="badge" 
-                          style={{ 
-                            background: levelInfo.color, 
-                            color: '#fff', 
-                            padding: '6px 14px',
-                            borderRadius: '12px',
-                            fontSize: '13px'
-                          }}
-                        >
-                          {levelInfo.label} - {result.overallPercentage}%
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Actions */}
-                <div className="d-flex flex-wrap" style={{ gap: '12px' }}>
-                  <Link href="/dashboard/candidate" className="crumina-button button--yellow button--xl">
-                    Naar dashboard
-                  </Link>
-                  <button onClick={handleChangeDirection} className="crumina-button button--dark button--xl">
-                    Andere richting testen
-                  </button>
-                  <button onClick={handleRestart} className="crumina-button button--dark button--bordered button--xl">
-                    Test opnieuw doen
-                  </button>
-                </div>
+                )}
               </div>
             </div>
           </div>
@@ -395,27 +415,28 @@ const SkillsTest: React.FC = () => {
     );
   }
 
-  if (!currentQuestion || !selectedDirection) {
-    return null;
-  }
+  // Question Screen
+  if (!currentSkill || !currentQuestion) return null;
 
   const selectedAnswer = answers[currentQuestion.id];
-  const globalQuestionNumber = getGlobalQuestionNumber();
+  const difficultyColors = {
+    junior: { bg: '#f3f4f6', text: '#6b7280' },
+    medior: { bg: '#fef3c7', text: '#92400e' },
+    senior: { bg: '#fee2e2', text: '#991b1b' }
+  };
 
-  // Question Screen
   return (
     <div className="main-content-wrapper">
       <div className="header--spacer" style={{ height: '142px', backgroundColor: '#121214' }}></div>
       
-      <section className="py-5" style={{ background: selectedDirection.color }}>
+      <section className="py-4" style={{ background: currentSkill.categoryColor }}>
         <div className="container">
           <div className="row">
             <div className="col-lg-8 offset-lg-2">
-              {/* Direction & Category indicator */}
+              {/* Skill & question indicator */}
               <div className="d-flex align-items-center justify-content-between mb-3">
                 <div className="d-flex align-items-center">
                   <div 
-                    className="mr-3" 
                     style={{ 
                       width: '40px', 
                       height: '40px', 
@@ -423,32 +444,32 @@ const SkillsTest: React.FC = () => {
                       background: 'rgba(255,255,255,0.2)',
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'center'
+                      justifyContent: 'center',
+                      marginRight: '12px'
                     }}
                   >
-                    <i className={`fas ${selectedDirection.icon} text-white`} style={{ fontSize: '16px' }}></i>
+                    <span className="text-white" style={{ fontWeight: '700' }}>
+                      {currentQuestionIndex + 1}
+                    </span>
                   </div>
                   <div>
-                    <h6 className="text-white mb-0">{currentCategory?.name}</h6>
-                    <small className="text-white" style={{ opacity: 0.7 }}>
-                      {selectedDirection.name}
+                    <h5 className="text-white mb-0">{currentSkill.name}</h5>
+                    <small className="text-white" style={{ opacity: 0.8 }}>
+                      Vraag {currentQuestionIndex + 1} van {currentSkill.questions.length}
                     </small>
                   </div>
                 </div>
                 <button 
-                  onClick={handleChangeDirection}
+                  onClick={handleQuit}
                   className="text-white"
                   style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '13px', opacity: 0.8 }}
                 >
-                  <i className="far fa-exchange-alt mr-1"></i> Andere richting
+                  <i className="far fa-times mr-1"></i> Stoppen
                 </button>
               </div>
               
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <span className="text-white">Vraag {globalQuestionNumber} van {totalQuestions}</span>
-                <span className="text-white">{Math.round(progress)}% voltooid</span>
-              </div>
-              <div style={{ background: 'rgba(255,255,255,0.2)', borderRadius: '10px', height: '8px', overflow: 'hidden' }}>
+              {/* Progress bar */}
+              <div style={{ background: 'rgba(255,255,255,0.2)', borderRadius: '10px', height: '6px', overflow: 'hidden' }}>
                 <div 
                   style={{ 
                     width: `${progress}%`, 
@@ -469,84 +490,108 @@ const SkillsTest: React.FC = () => {
           <div className="row">
             <div className="col-lg-8 offset-lg-2">
               <div className="bg-white p-5" style={{ borderRadius: '10px' }}>
-                <div className="d-flex align-items-center mb-3" style={{ gap: '8px' }}>
+                {/* Difficulty badge */}
+                <div className="mb-3">
                   <span 
-                    className="badge" 
+                    className="badge"
                     style={{ 
-                      background: currentQuestion.difficulty === 'junior' ? '#6c757d' : currentQuestion.difficulty === 'medior' ? '#f59e0b' : '#059669',
-                      color: '#fff',
+                      background: difficultyColors[currentQuestion.difficulty].bg,
+                      color: difficultyColors[currentQuestion.difficulty].text,
                       padding: '4px 12px',
                       borderRadius: '12px',
-                      fontSize: '11px',
-                      textTransform: 'uppercase',
-                      fontWeight: '600'
+                      fontSize: '12px',
+                      textTransform: 'capitalize'
                     }}
                   >
-                    {currentQuestion.difficulty}
-                  </span>
-                  <span 
-                    className="badge" 
-                    style={{ 
-                      background: '#e9ecef',
-                      color: '#6c757d',
-                      padding: '4px 12px',
-                      borderRadius: '12px',
-                      fontSize: '11px'
-                    }}
-                  >
-                    {currentQuestion.type === 'scenario' ? 'Scenario' : currentQuestion.type === 'self_assessment' ? 'Zelfbeoordeling' : 'Kennisvraag'}
+                    {currentQuestion.difficulty} niveau
                   </span>
                 </div>
 
-                <h3 className="mb-4" style={{ lineHeight: '1.4' }}>{currentQuestion.question}</h3>
+                {/* Question */}
+                <h3 className="mb-4" style={{ lineHeight: 1.4 }}>
+                  {currentQuestion.question}
+                </h3>
 
-                <div className="mb-4">
-                  {currentQuestion.options.map((option, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => handleAnswer(option.points)}
-                      className="w-100 text-left p-4 mb-3"
-                      style={{ 
-                        border: selectedAnswer === option.points ? `2px solid ${selectedDirection.color}` : '1px solid #e9ecef',
-                        borderRadius: '10px',
-                        background: selectedAnswer === option.points ? `${selectedDirection.color}10` : '#fff',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease'
-                      }}
-                    >
-                      <div className="d-flex align-items-center">
+                {/* Options */}
+                <div className="options-list">
+                  {currentQuestion.options.map((option, index) => {
+                    const isSelected = selectedAnswer === option.points;
+                    const letters = ['A', 'B', 'C', 'D'];
+                    
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => handleAnswer(option.points)}
+                        disabled={selectedAnswer !== undefined}
+                        className="w-100 text-left p-4 mb-3 d-flex align-items-start"
+                        style={{
+                          border: isSelected ? `2px solid ${currentSkill.categoryColor}` : '2px solid #e9ecef',
+                          borderRadius: '10px',
+                          background: isSelected ? `${currentSkill.categoryColor}10` : '#fff',
+                          cursor: selectedAnswer !== undefined ? 'default' : 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
                         <div 
-                          className="mr-3" 
                           style={{ 
-                            width: '28px', 
-                            height: '28px', 
-                            borderRadius: '50%', 
-                            border: selectedAnswer === option.points ? `2px solid ${selectedDirection.color}` : '2px solid #e9ecef',
-                            background: selectedAnswer === option.points ? selectedDirection.color : '#fff',
+                            width: '32px', 
+                            height: '32px', 
+                            borderRadius: '8px', 
+                            background: isSelected ? currentSkill.categoryColor : '#f3f4f6',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
+                            marginRight: '14px',
                             flexShrink: 0
                           }}
                         >
-                          {selectedAnswer === option.points && (
-                            <i className="fas fa-check text-white" style={{ fontSize: '12px' }}></i>
-                          )}
+                          <span style={{ 
+                            fontWeight: '600', 
+                            color: isSelected ? '#fff' : '#6b7280',
+                            fontSize: '14px'
+                          }}>
+                            {letters[index]}
+                          </span>
                         </div>
-                        <span style={{ fontSize: '15px' }}>{option.text}</span>
-                      </div>
-                    </button>
-                  ))}
+                        <span style={{ paddingTop: '4px' }}>{option.text}</span>
+                      </button>
+                    );
+                  })}
                 </div>
 
-                {(currentCategoryIndex > 0 || currentQuestionIndex > 0) && (
-                  <button 
+                {/* Navigation */}
+                <div className="d-flex justify-content-between align-items-center mt-4 pt-4" style={{ borderTop: '1px solid #e9ecef' }}>
+                  <button
                     onClick={handleBack}
-                    className="crumina-button button--dark button--bordered"
+                    disabled={currentQuestionIndex === 0}
+                    className="crumina-button button--dark button--bordered button--m"
+                    style={{ opacity: currentQuestionIndex === 0 ? 0.5 : 1 }}
                   >
-                    <i className="far fa-arrow-left mr-2"></i>Vorige vraag
+                    <i className="far fa-arrow-left mr-2"></i> Vorige
                   </button>
-                )}
+                  
+                  <div className="d-flex align-items-center">
+                    {currentSkill.questions.map((_, qIndex) => (
+                      <div 
+                        key={qIndex}
+                        style={{
+                          width: '10px',
+                          height: '10px',
+                          borderRadius: '50%',
+                          background: qIndex < currentQuestionIndex 
+                            ? currentSkill.categoryColor 
+                            : qIndex === currentQuestionIndex 
+                              ? currentSkill.categoryColor 
+                              : '#e9ecef',
+                          margin: '0 4px',
+                          opacity: qIndex === currentQuestionIndex ? 1 : 0.5
+                        }}
+                      ></div>
+                    ))}
+                  </div>
+                  
+                  <div style={{ width: '120px' }}></div>
+                </div>
               </div>
             </div>
           </div>
