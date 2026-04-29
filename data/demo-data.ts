@@ -350,8 +350,12 @@ export interface DemoPersonalityResult {
 
 export interface DemoSkillsResult {
   completed: boolean;
+  directionId: string;
+  directionName: string;
+  directionIcon: string;
+  directionColor: string;
   overallPercentage: number;
-  overallLevel: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+  overallLevel: 'junior' | 'medior' | 'senior';
   results: {
     categoryId: string;
     categoryName: string;
@@ -375,14 +379,15 @@ export const demoPersonalityResult: DemoPersonalityResult = {
 
 export const demoSkillsResult: DemoSkillsResult = {
   completed: true,
+  directionId: 'it_development',
+  directionName: 'IT & Development',
+  directionIcon: 'fa-code',
+  directionColor: '#6366f1',
   overallPercentage: 78,
-  overallLevel: 'advanced',
+  overallLevel: 'medior',
   results: [
-    { categoryId: 'communication', categoryName: 'Communicatie', percentage: 92, level: 'expert' },
-    { categoryId: 'problem_solving', categoryName: 'Probleemoplossend denken', percentage: 83, level: 'advanced' },
-    { categoryId: 'teamwork', categoryName: 'Samenwerking', percentage: 75, level: 'advanced' },
-    { categoryId: 'digital_skills', categoryName: 'Digitale vaardigheden', percentage: 67, level: 'intermediate' },
-    { categoryId: 'adaptability', categoryName: 'Aanpassingsvermogen', percentage: 73, level: 'advanced' },
+    { categoryId: 'programming', categoryName: 'Programmeren', percentage: 85, level: 'senior' },
+    { categoryId: 'problem_solving_it', categoryName: 'Probleemoplossing', percentage: 71, level: 'medior' },
   ],
   completedAt: '2026-04-26T14:15:00Z',
 };

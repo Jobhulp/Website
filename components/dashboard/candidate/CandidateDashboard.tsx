@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { demoJobMatches, demoUserProfile, demoCandidateStats, demoPersonalityResult, demoSkillsResult, mbtiTypeInfo, skillLevelInfo } from '../../../data/demo-data';
+import { demoJobMatches, demoUserProfile, demoCandidateStats, demoPersonalityResult, demoSkillsResult, mbtiTypeInfo } from '../../../data/demo-data';
 import MatchScore from '../../common/match-score/MatchScore';
 
 type TabId = 'matches' | 'interested' | 'mutual' | 'profile' | 'tests';
@@ -249,17 +249,17 @@ const CandidateDashboard: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Skills Test Card */}
+                    {/* Skills Test Card - Job Direction */}
                     <div className="col-md-6 mb-4">
                       <div className="bg-white p-4 h-100" style={{ borderRadius: '10px' }}>
                         <div className="d-flex justify-content-between align-items-start mb-3">
                           <div className="d-flex align-items-center">
-                            <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: demoSkillsResult.completed ? skillLevelInfo[demoSkillsResult.overallLevel].color : '#e9ecef', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                              <i className="fas fa-chart-line text-white" style={{ fontSize: '20px' }}></i>
+                            <div style={{ width: '50px', height: '50px', borderRadius: '10px', background: demoSkillsResult.completed ? demoSkillsResult.directionColor : '#e9ecef', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <i className={`fas ${demoSkillsResult.completed ? demoSkillsResult.directionIcon : 'fa-briefcase'} text-white`} style={{ fontSize: '20px' }}></i>
                             </div>
                             <div className="ml-3">
                               <h5 className="mb-0">Vaardighedentest</h5>
-                              <small className="c-grey">5 Categorieen</small>
+                              <small className="c-grey">{demoSkillsResult.completed ? demoSkillsResult.directionName : 'Kies je richting'}</small>
                             </div>
                           </div>
                           {demoSkillsResult.completed && (
@@ -272,37 +272,47 @@ const CandidateDashboard: React.FC = () => {
                         {demoSkillsResult.completed ? (
                           <>
                             <div className="text-center mb-3">
-                              <h4 className="mb-1" style={{ color: skillLevelInfo[demoSkillsResult.overallLevel].color }}>
+                              <h4 className="mb-1" style={{ color: demoSkillsResult.directionColor }}>
                                 {demoSkillsResult.overallPercentage}%
                               </h4>
-                              <span className="c-grey">{skillLevelInfo[demoSkillsResult.overallLevel].label}</span>
+                              <span 
+                                className="badge" 
+                                style={{ 
+                                  background: demoSkillsResult.overallLevel === 'senior' ? '#059669' : demoSkillsResult.overallLevel === 'medior' ? '#f59e0b' : '#6c757d',
+                                  color: '#fff',
+                                  padding: '4px 12px',
+                                  borderRadius: '12px'
+                                }}
+                              >
+                                {demoSkillsResult.overallLevel === 'senior' ? 'Senior' : demoSkillsResult.overallLevel === 'medior' ? 'Medior' : 'Junior'}
+                              </span>
                             </div>
 
                             <div className="mb-3">
-                              {demoSkillsResult.results.slice(0, 4).map((result) => (
+                              {demoSkillsResult.results.map((result) => (
                                 <div key={result.categoryId} className="mb-2">
                                   <div className="d-flex justify-content-between mb-1" style={{ fontSize: '12px' }}>
                                     <span>{result.categoryName}</span>
                                     <span>{result.percentage}%</span>
                                   </div>
                                   <div style={{ background: '#e9ecef', borderRadius: '5px', height: '8px', overflow: 'hidden' }}>
-                                    <div style={{ width: `${result.percentage}%`, height: '100%', background: skillLevelInfo[result.level as keyof typeof skillLevelInfo]?.color || '#6c757d', borderRadius: '5px' }}></div>
+                                    <div style={{ width: `${result.percentage}%`, height: '100%', background: demoSkillsResult.directionColor, borderRadius: '5px' }}></div>
                                   </div>
                                 </div>
                               ))}
                             </div>
 
                             <Link href="/tests/skills" className="crumina-button button--dark button--bordered button--s w-100 text-center">
-                              Test opnieuw doen
+                              Andere richting testen
                             </Link>
                           </>
                         ) : (
                           <>
                             <p className="c-grey mb-3" style={{ fontSize: '14px' }}>
-                              Test je niveau in communicatie, probleemoplossend denken, samenwerking en meer.
+                              Kies je gewenste jobrichting (IT, Marketing, Sales, etc.) en test je niveau met vakspecifieke vragen.
                             </p>
-                            <Link href="/tests/skills" className="crumina-button button--blue button--m w-100 text-center">
-                              Start test
+                            <Link href="/tests/skills" className="crumina-button button--m w-100 text-center" style={{ background: '#6366f1', color: '#fff' }}>
+                              Kies richting en start
                             </Link>
                           </>
                         )}
