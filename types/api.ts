@@ -391,3 +391,66 @@ export interface NotificationPreferences {
   jobLifecycle: boolean;
   profileReminders: boolean;
 }
+
+// Chat
+export type ChatSenderSide = 'candidate' | 'employer' | 'system';
+export type ChatRoomStatus = 'locked' | 'open' | 'archived';
+
+export interface ChatRoom {
+  id: string;
+  matchInterestId: string;
+  candidateUserId: string;
+  employerUserId: string;
+  status: ChatRoomStatus;
+  lastMessageAt: string | null;
+  lastMessagePreview: string | null;
+  candidateUnreadCount: number;
+  employerUnreadCount: number;
+  unlockedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  chatRoomId: string;
+  senderUserId: string | null;
+  senderSide: ChatSenderSide;
+  body: string;
+  readByCandidateAt: string | null;
+  readByEmployerAt: string | null;
+  createdAt: string;
+}
+
+export interface ChatRoomCounterpart {
+  userId: string;
+  side: 'candidate' | 'employer';
+  displayName: string;
+  avatarUrl: string | null;
+}
+
+export interface ChatGatingTest {
+  employerSkillTestId: string;
+  title: string;
+  skillName: string;
+}
+
+export interface ChatRoomView {
+  room: ChatRoom;
+  job: { id: string; title: string; status: string };
+  counterpart: ChatRoomCounterpart;
+  myUnreadCount: number;
+  gating: {
+    pendingTests: ChatGatingTest[];
+    failedTests: ChatGatingTest[];
+  };
+}
+
+export interface ChatRoomDetailView extends ChatRoomView {
+  messages: ChatMessage[];
+}
+
+export interface ChatPollResponse {
+  room: ChatRoom;
+  messages: ChatMessage[];
+}
