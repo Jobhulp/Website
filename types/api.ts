@@ -147,6 +147,45 @@ export interface PersonalitySubmitResponse {
   breakdown: PersonalityResultBreakdown;
 }
 
+// Skill test
+export interface SkillTestStatus {
+  skillName: string;
+  sectorName: string;
+  currentLevel: ProficiencyLevel;
+  canTake: Record<ProficiencyLevel, boolean>;
+  cooldowns: Record<ProficiencyLevel, string | null>;
+  attemptsThisMonth: number;
+}
+
+export interface SkillTestQuestion {
+  id: string;
+  text: string;
+  options: {
+    id: string;
+    text: string;
+  }[];
+}
+
+export interface SkillTestAttempt {
+  id: string;
+  skillId: string;
+  attemptedLevel: ProficiencyLevel;
+  startedAt: string;
+  expiresAt: string;
+}
+
+export interface SkillTestStartResponse {
+  attempt: SkillTestAttempt;
+  questions: SkillTestQuestion[];
+}
+
+export interface SkillTestSubmitResponse {
+  passed: boolean;
+  score: number;
+  achievedLevel: ProficiencyLevel;
+  attemptedLevel: ProficiencyLevel;
+}
+
 // Employer profile
 export interface EmployerProfile {
   id: string;
