@@ -232,13 +232,69 @@ export interface EmployerProfile {
   id: string;
   userId: string;
   companyName: string;
-  companyLogoUrl: string | null;
-  companySize: '1-10' | '11-50' | '51-200' | '201-500' | '500+' | null;
-  industry: string | null;
-  website: string | null;
+  vatNumber: string | null;
+  sectorId: string | null;
+  websiteUrl: string | null;
+  linkedinUrl: string | null;
+  streetAddress: string | null;
+  postalCode: string | null;
+  city: string | null;
+  country: string | null;
+  latitude: number | null;
+  longitude: number | null;
   description: string | null;
-  location: string | null;
-  isVerified: boolean;
+  cultureDescription: string | null;
+  logoUrl: string | null;
+  coverImageUrl: string | null;
+  updatedAt: string;
+}
+
+export type JobStatus = 'draft' | 'active' | 'paused' | 'closed';
+
+export interface Job {
+  id: string;
+  employerId: string;
+  title: string;
+  description: string;
+  sectorId: string;
+  city: string | null;
+  country: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  workType: WorkType;
+  experienceLevel: ExperienceLevel;
+  salaryMin: number | null;
+  salaryMax: number | null;
+  status: JobStatus;
+  publishedAt: string | null;
+  closesAt: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface JobSkill {
+  id: string;
+  jobId: string;
+  skillId: string;
+  skillName: string;
+  requiredLevel: ProficiencyLevel;
+  weight: number;
+}
+
+export interface JobWithSkills extends Job {
+  skills: JobSkill[];
+}
+
+export interface EmployerSkillTest {
+  id: string;
+  employerId: string;
+  jobId: string;
+  skillId: string;
+  skillName: string;
+  title: string;
+  description: string | null;
+  passThreshold: number;
+  isActive: boolean;
+  questionCount: number;
+  createdAt: string;
 }
