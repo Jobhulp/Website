@@ -32,9 +32,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { MatchDisplay } from '@/components/match-display';
 
 const workTypeLabels: Record<WorkType, string> = {
-  full_time: 'Voltijds',
-  part_time: 'Deeltijds',
+  fulltime: 'Voltijds',
+  parttime: 'Deeltijds',
   freelance: 'Freelance',
+  internship: 'Stage',
   temporary: 'Tijdelijk',
 };
 

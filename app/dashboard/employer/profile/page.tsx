@@ -240,8 +240,8 @@ export default function EmployerProfilePage() {
       setCompanyInfoSaved(true);
       setTimeout(() => setCompanyInfoSaved(false), 2000);
     } catch (err) {
-      if (err instanceof ApiError && err.details) {
-        err.details.forEach((d) => {
+      if (err instanceof ApiError && err.fieldErrors) {
+        err.fieldErrors.forEach((d) => {
           companyInfoForm.setError(d.field as keyof CompanyInfoForm, { message: d.message });
         });
       } else {

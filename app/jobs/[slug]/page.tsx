@@ -9,7 +9,7 @@ import { trackSectorClick, getRecentSectorsParam, getFeedSeed } from '@/lib/sect
 import { JobFeedCard } from '@/components/job-feed-card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select-shadcn';
 import type {
   HomepageFeedItem,
   HomepageFeedResponse,
@@ -67,7 +67,7 @@ export default function SectorJobsPage() {
         // Track sector click for personalization
         trackSectorClick(res.sector.id, !!user);
       } catch (err) {
-        if (err instanceof ApiError && err.statusCode === 404) {
+        if (err instanceof ApiError && err.status === 404) {
           setSectorError('not_found');
         } else {
           setSectorError('error');
@@ -168,7 +168,9 @@ export default function SectorJobsPage() {
 
   // Get dynamic icon component
   const getIconComponent = (iconName: string) => {
-    const IconComponent = (LucideIcons as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[iconName];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const icons = LucideIcons as Record<string, any>;
+    const IconComponent = icons[iconName];
     return IconComponent || LucideIcons.Briefcase;
   };
 

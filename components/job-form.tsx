@@ -34,7 +34,7 @@ const jobFormSchema = z.object({
   sectorId: z.string().uuid('Selecteer een sector'),
   city: z.string().min(2, 'Stad moet minstens 2 karakters zijn'),
   country: z.string().min(1, 'Selecteer een land'),
-  workType: z.enum(['full_time', 'part_time', 'freelance', 'temporary']),
+  workType: z.enum(['fulltime', 'parttime', 'freelance', 'internship', 'temporary']),
   experienceLevel: z.enum(['junior', 'medior', 'senior']),
   salaryMin: z.number().min(0).optional().nullable(),
   salaryMax: z.number().min(0).optional().nullable(),
@@ -81,9 +81,10 @@ interface JobFormProps {
 
 // Dutch labels
 const WORK_TYPE_LABELS: Record<WorkType, string> = {
-  full_time: 'Voltijds',
-  part_time: 'Deeltijds',
+  fulltime: 'Voltijds',
+  parttime: 'Deeltijds',
   freelance: 'Freelance',
+  internship: 'Stage',
   temporary: 'Tijdelijk',
 };
 
@@ -112,7 +113,7 @@ export function JobForm({ mode, defaultValues, onSubmit, onCancel }: JobFormProp
   const getDefaultValues = (): Partial<JobFormData> => {
     if (!defaultValues) {
       return {
-        workType: 'full_time',
+        workType: 'fulltime',
         experienceLevel: 'medior',
         country: 'BE',
         skills: [],
@@ -125,7 +126,7 @@ export function JobForm({ mode, defaultValues, onSubmit, onCancel }: JobFormProp
       sectorId: defaultValues.sectorId || '',
       city: defaultValues.city || '',
       country: defaultValues.country || 'BE',
-      workType: defaultValues.workType || 'full_time',
+      workType: defaultValues.workType || 'fulltime',
       experienceLevel: defaultValues.experienceLevel || 'medior',
       salaryMin: defaultValues.salaryMin,
       salaryMax: defaultValues.salaryMax,
