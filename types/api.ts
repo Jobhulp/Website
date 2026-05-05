@@ -186,6 +186,47 @@ export interface SkillTestSubmitResponse {
   attemptedLevel: ProficiencyLevel;
 }
 
+export type SkillTestAttemptStatus = 'in_progress' | 'submitted' | 'abandoned' | 'expired';
+export type SkillTestOutcome = 'failed' | 'passed_lower' | 'passed_attempted' | 'passed_higher';
+
+export interface SkillTestAttemptFull {
+  id: string;
+  skillId: string;
+  skillName: string;
+  sectorName: string;
+  attemptedLevel: ProficiencyLevel;
+  status: SkillTestAttemptStatus;
+  startedAt: string;
+  deadlineAt: string;
+  submittedAt: string | null;
+  scorePercent: number | null;
+  outcome: SkillTestOutcome | null;
+  achievedLevel: ProficiencyLevel | null;
+}
+
+export interface SkillTestAttemptResponse {
+  attempt: SkillTestAttemptFull;
+  questions: SkillTestQuestion[];
+}
+
+export interface SkillTestPerQuestion {
+  questionId: string;
+  questionText: string;
+  selectedOptionId: string | null;
+  selectedOptionText: string | null;
+  correctOptionId: string;
+  correctOptionText: string;
+  isCorrect: boolean;
+}
+
+export interface SkillTestSubmitFullResponse {
+  attempt: SkillTestAttemptFull;
+  scorePercent: number;
+  outcome: SkillTestOutcome;
+  attemptedLevel: ProficiencyLevel;
+  perQuestion: SkillTestPerQuestion[];
+}
+
 // Employer profile
 export interface EmployerProfile {
   id: string;
