@@ -339,6 +339,22 @@ export interface JobMatch {
   chatRoomId: string | null;
 }
 
+export interface JobWithEmployer extends Job {
+  employerName: string;
+  employerLogoUrl: string | null;
+  sectorName: string;
+}
+
+export interface CandidateMatch {
+  job: JobWithEmployer;
+  matchScore: MatchScore;
+  interestState: {
+    candidate: InterestState;
+    employer: InterestState;
+  };
+  chatRoomId: string | null;
+}
+
 // Notifications
 export interface NotificationPreferences {
   emailEnabled: boolean;
