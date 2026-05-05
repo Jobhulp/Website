@@ -52,9 +52,29 @@ const jobFormSchema = z.object({
 
 export type JobFormData = z.infer<typeof jobFormSchema>;
 
+// Type for default values that can come from API (JobWithSkills) or be partial form data
+type JobFormDefaultValues = {
+  title?: string;
+  description?: string;
+  sectorId?: string;
+  city?: string | null;
+  country?: string | null;
+  workType?: WorkType;
+  experienceLevel?: ExperienceLevel;
+  salaryMin?: number | null;
+  salaryMax?: number | null;
+  closesAt?: string | null;
+  skills?: Array<{
+    skillId: string;
+    skillName?: string;
+    requiredLevel: ProficiencyLevel;
+    weight: number;
+  }>;
+};
+
 interface JobFormProps {
   mode: 'create' | 'edit';
-  defaultValues?: Partial<JobWithSkills>;
+  defaultValues?: JobFormDefaultValues;
   onSubmit: (data: JobFormData, status: 'draft' | 'active') => Promise<void>;
   onCancel: () => void;
 }

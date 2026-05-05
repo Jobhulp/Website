@@ -24,7 +24,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { JobForm, type JobFormData } from '@/components/job-form';
+import { JobForm } from '@/components/job-form';
 
 const statusLabels: Record<JobStatus, string> = {
   draft: 'Concept',
@@ -158,23 +158,23 @@ export default function JobDetailPage() {
 
   if (!job) return null;
 
-  const formDefaultValues: JobFormData = {
+  const formDefaultValues = {
     title: job.title,
     sectorId: job.sectorId,
     description: job.description,
     city: job.city || '',
-    country: job.country || 'België',
+    country: job.country || 'BE',
     workType: job.workType,
     experienceLevel: job.experienceLevel,
-    salaryMin: job.salaryMin || undefined,
-    salaryMax: job.salaryMax || undefined,
+    salaryMin: job.salaryMin,
+    salaryMax: job.salaryMax,
     skills: job.skills.map((s) => ({
       skillId: s.skillId,
       skillName: s.skillName,
       requiredLevel: s.requiredLevel,
       weight: s.weight,
     })),
-    closesAt: job.closesAt ? job.closesAt.split('T')[0] : undefined,
+    closesAt: job.closesAt,
   };
 
   return (
