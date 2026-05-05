@@ -590,3 +590,7 @@ export interface HomepageSectorsResponse {
 export interface HomepageCitiesResponse {
   cities: string[];
 }
+
+export interface SectorBySlugResponse {
+  sector: HomepageSector;
+}
