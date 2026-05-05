@@ -113,6 +113,40 @@ export interface Skill {
   slug: string;
 }
 
+// Personality test
+export interface PersonalityQuestion {
+  id: string;
+  text: string;
+  dimension: 'EI' | 'SN' | 'TF' | 'JP';
+  polarity: 'positive' | 'negative';
+}
+
+export interface PersonalityStatus {
+  canTake: boolean;
+  cooldownUntil: string | null;
+  lastResult: {
+    mbtiType: MbtiType;
+    completedAt: string;
+  } | null;
+}
+
+export interface PersonalityStartResponse {
+  questions: PersonalityQuestion[];
+  attemptId: string;
+}
+
+export interface PersonalityResultBreakdown {
+  EI: number; // percentage towards E (0-100)
+  SN: number; // percentage towards S (0-100)
+  TF: number; // percentage towards T (0-100)
+  JP: number; // percentage towards J (0-100)
+}
+
+export interface PersonalitySubmitResponse {
+  mbtiType: MbtiType;
+  breakdown: PersonalityResultBreakdown;
+}
+
 // Employer profile
 export interface EmployerProfile {
   id: string;
