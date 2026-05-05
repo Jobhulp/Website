@@ -1,11 +1,7 @@
 'use client';
 
-export const dynamic = 'force-dynamic';
-
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/lib/auth-context';
-import { useRouter } from 'next/navigation';
 import { api, ApiError } from '@/lib/api-client';
 import type { AdminJobListItem, PaginatedResult, JobStatus } from '@/types/api';
 import { Card, CardContent } from '@/components/ui/card';
@@ -50,9 +46,6 @@ const statusColors: Record<JobStatus, string> = {
 type ActionType = 'pause' | 'resume' | 'close';
 
 export default function AdminJobsPage() {
-  const { user } = useAuth();
-  const router = useRouter();
-
   const [jobs, setJobs] = useState<AdminJobListItem[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -70,13 +63,6 @@ export default function AdminJobsPage() {
   }>({ open: false, type: 'pause', job: null });
   const [actionReason, setActionReason] = useState('');
   const [actionLoading, setActionLoading] = useState(false);
-
-  // Redirect non-admins
-  useEffect(() => {
-    if (user && !user.isAdmin) {
-      router.replace('/dashboard');
-    }
-  }, [user, router]);
 
   // Fetch jobs
   useEffect(() => {
@@ -106,10 +92,8 @@ export default function AdminJobsPage() {
       }
     };
 
-    if (user?.isAdmin) {
-      fetchJobs();
-    }
-  }, [user, statusFilter, offset]);
+    fetchJobs();
+  }, [statusFilter, offset]);
 
   // Reset offset when filter changes
   useEffect(() => {
@@ -185,10 +169,6 @@ export default function AdminJobsPage() {
         };
     }
   };
-
-  if (!user?.isAdmin) {
-    return null;
-  }
 
   const totalPages = Math.ceil(total / LIMIT);
   const currentPage = Math.floor(offset / LIMIT) + 1;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
@@ -10,6 +10,7 @@ import { api, ApiError } from '@/lib/api-client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Card,
   CardContent,
@@ -31,6 +32,32 @@ const resetPasswordSchema = z
 type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
 export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<ResetPasswordSkeleton />}>
+      <ResetPasswordContent />
+    </Suspense>
+  );
+}
+
+function ResetPasswordSkeleton() {
+  return (
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <Card className="w-full max-w-[400px]">
+        <CardHeader className="text-center">
+          <Skeleton className="h-8 w-48 mx-auto mb-2" />
+          <Skeleton className="h-4 w-64 mx-auto" />
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function ResetPasswordContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get('token');

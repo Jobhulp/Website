@@ -1,11 +1,7 @@
 'use client';
 
-export const dynamic = 'force-dynamic';
-
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/auth-context';
 import { api, ApiError } from '@/lib/api-client';
 import type { AuditLogEntry, AuditAction, PaginatedResult } from '@/types/api';
 import { Card, CardContent } from '@/components/ui/card';
@@ -178,21 +174,11 @@ function AuditEntry({ entry }: AuditEntryProps) {
 }
 
 export default function AdminAuditLogPage() {
-  const { user } = useAuth();
-  const router = useRouter();
-
   const [entries, setEntries] = useState<AuditLogEntry[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Redirect non-admin users
-  useEffect(() => {
-    if (user && !user.isAdmin) {
-      router.replace('/dashboard');
-    }
-  }, [user, router]);
 
   // Fetch audit log
   useEffect(() => {
@@ -218,14 +204,8 @@ export default function AdminAuditLogPage() {
       }
     }
 
-    if (user?.isAdmin) {
-      fetchAuditLog();
-    }
-  }, [user, page]);
-
-  if (!user || !user.isAdmin) {
-    return null;
-  }
+    fetchAuditLog();
+  }, [page]);
 
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
   const startItem = (page - 1) * ITEMS_PER_PAGE + 1;

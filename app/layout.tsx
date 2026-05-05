@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { IBM_Plex_Sans } from 'next/font/google'
 import '../styles/globals.css'
 import Layout from '../components/layout/Layout'
+import { AuthProvider } from '@/lib/auth-context'
 
 const ibmPlexSans = IBM_Plex_Sans({
   weight: ['300', '400', '500', '600', '700'],
@@ -37,7 +38,9 @@ export default function RootLayout({
   return (
     <html lang="nl">
       <body className={ibmPlexSans.className}>
-        <Layout>{children}</Layout>
+        <AuthProvider>
+          <Layout>{children}</Layout>
+        </AuthProvider>
       </body>
     </html>
   )
