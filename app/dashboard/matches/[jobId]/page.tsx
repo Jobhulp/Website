@@ -212,7 +212,7 @@ export default function MatchDetailPage() {
 
       {/* Match score */}
       <div className="mb-8">
-        <MatchDisplay score={matchScore} />
+        <MatchDisplay matchScore={matchScore} />
       </div>
 
       {/* Interest actions */}
