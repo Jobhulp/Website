@@ -26,6 +26,7 @@ export interface ApiErrorBody {
 
 // Enums
 export type ProficiencyLevel = 'informed' | 'beginner' | 'advanced' | 'expert' | 'master';
+export type AttemptOutcome = ProficiencyLevel | 'failed';
 export type ExperienceLevel = 'junior' | 'medior' | 'senior';
 export type WorkType = 'full_time' | 'part_time' | 'freelance' | 'temporary';
 export type MbtiType =
