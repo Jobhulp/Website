@@ -298,3 +298,43 @@ export interface EmployerSkillTest {
   questionCount: number;
   createdAt: string;
 }
+
+// Matching
+export interface SkillMatchDetail {
+  skillId: string;
+  skillName: string;
+  requiredLevel: ProficiencyLevel;
+  candidateLevel: ProficiencyLevel | null;
+  isTested: boolean;
+  score: number; // 0-100
+}
+
+export interface MatchScore {
+  overall: number; // 0-100
+  skillsScore: number;
+  personalityScore: number;
+  preferencesScore: number;
+  skillDetails: SkillMatchDetail[];
+}
+
+export type InterestState = 'pending' | 'interested' | 'not_interested' | null;
+
+export interface MatchPublicProfile {
+  firstName: string | null;
+  city: string | null;
+  bio: string | null;
+  avatarUrl: string | null;
+  mbtiType: MbtiType | null;
+  profileCompleteness: number;
+}
+
+export interface JobMatch {
+  candidateProfileId: string;
+  matchScore: MatchScore;
+  publicProfile: MatchPublicProfile;
+  interestState: {
+    candidate: InterestState;
+    employer: InterestState;
+  };
+  chatRoomId: string | null;
+}
