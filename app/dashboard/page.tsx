@@ -8,6 +8,7 @@ import type { CandidateProfile } from '@/types/api';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ProfileCompleteness } from '@/components/profile-completeness';
 
 interface QuickAction {
   title: string;
@@ -143,45 +144,16 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           ) : profile ? (
-            <Card
-              className={
-                profile.profileCompleteness >= 100
-                  ? 'border-green-200 bg-green-50'
-                  : 'border-amber-200 bg-amber-50'
-              }
-            >
-              <CardContent className="py-4">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium">
-                        {profile.profileCompleteness >= 100
-                          ? 'Je profiel is volledig!'
-                          : `Je profiel is ${profile.profileCompleteness}% volledig`}
-                      </span>
-                      <span className="text-sm font-semibold">
-                        {profile.profileCompleteness}%
-                      </span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className={`h-2 rounded-full transition-all ${
-                          profile.profileCompleteness >= 100
-                            ? 'bg-green-500'
-                            : 'bg-amber-500'
-                        }`}
-                        style={{ width: `${Math.min(profile.profileCompleteness, 100)}%` }}
-                      />
-                    </div>
-                  </div>
-                  {profile.profileCompleteness < 100 && (
-                    <Button asChild size="sm">
-                      <Link href="/dashboard/profile">Profiel aanvullen</Link>
-                    </Button>
-                  )}
+            <div className="space-y-4">
+              <ProfileCompleteness completeness={profile.profileCompleteness} />
+              {profile.profileCompleteness < 100 && (
+                <div className="flex justify-end">
+                  <Button asChild size="sm">
+                    <Link href="/dashboard/profile">Profiel aanvullen</Link>
+                  </Button>
                 </div>
-              </CardContent>
-            </Card>
+              )}
+            </div>
           ) : null}
         </div>
       )}
