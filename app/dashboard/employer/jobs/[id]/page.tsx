@@ -125,7 +125,7 @@ export default function JobDetailPage() {
     }
   };
 
-  const handleFormSubmit = async (data: JobFormData) => {
+  const handleFormSubmit = async (data: Record<string, unknown>) => {
     await api.patch(`/employer/jobs/${jobId}`, data);
     await fetchJob();
     setIsEditMode(false);
