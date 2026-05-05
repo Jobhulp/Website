@@ -9,8 +9,18 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 
+// Keys that are boolean preferences (not metadata fields)
+type BooleanPreferenceKey = 
+  | 'employerInterest'
+  | 'candidateInterest'
+  | 'mutualInterest'
+  | 'chatMessages'
+  | 'testResults'
+  | 'jobLifecycle'
+  | 'profileReminders';
+
 interface PreferenceConfig {
-  key: keyof Omit<NotificationPreferences, 'emailEnabled'>;
+  key: BooleanPreferenceKey;
   title: string;
   description: string;
 }
@@ -226,7 +236,7 @@ export default function NotificationPreferencesPage() {
                     </div>
                     <Switch
                       id={config.key}
-                      checked={preferences[config.key]}
+                      checked={preferences[config.key] as boolean}
                       onCheckedChange={(checked) => updatePreference(config.key, checked)}
                     />
                   </div>

@@ -1,11 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/lib/auth-context';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Users, Briefcase, ScrollText, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const adminCards = [
@@ -30,36 +26,6 @@ const adminCards = [
 ];
 
 export default function AdminPage() {
-  const { user } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (user && !user.isAdmin) {
-      router.replace('/dashboard');
-    }
-  }, [user, router]);
-
-  // Loading state
-  if (!user) {
-    return (
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <Skeleton className="h-6 w-32 mb-6" />
-        <Skeleton className="h-10 w-48 mb-2" />
-        <Skeleton className="h-5 w-96 mb-8" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Skeleton className="h-32" />
-          <Skeleton className="h-32" />
-          <Skeleton className="h-32" />
-        </div>
-      </div>
-    );
-  }
-
-  // Not admin - will redirect
-  if (!user.isAdmin) {
-    return null;
-  }
-
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       {/* Back link */}

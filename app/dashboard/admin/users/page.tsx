@@ -2,8 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/lib/auth-context';
-import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api-client';
 import type { AdminUserListItem, PaginatedResult, UserType } from '@/types/api';
 import { Card, CardContent } from '@/components/ui/card';
@@ -41,9 +39,6 @@ function useDebounce<T>(value: T, delay: number): T {
 }
 
 export default function AdminUsersPage() {
-  const { user } = useAuth();
-  const router = useRouter();
-
   // Filters
   const [search, setSearch] = useState('');
   const [userTypeFilter, setUserTypeFilter] = useState<'all' | UserType>('all');
@@ -56,13 +51,6 @@ export default function AdminUsersPage() {
   const [error, setError] = useState<string | null>(null);
 
   const debouncedSearch = useDebounce(search, 300);
-
-  // Redirect non-admin users
-  useEffect(() => {
-    if (user && !user.isAdmin) {
-      router.push('/dashboard');
-    }
-  }, [user, router]);
 
   // Reset offset when filters change
   useEffect(() => {
@@ -94,14 +82,8 @@ export default function AdminUsersPage() {
   }, [debouncedSearch, userTypeFilter, includeDeleted, offset]);
 
   useEffect(() => {
-    if (user?.isAdmin) {
-      fetchUsers();
-    }
-  }, [user?.isAdmin, fetchUsers]);
-
-  if (!user?.isAdmin) {
-    return null;
-  }
+    fetchUsers();
+  }, [fetchUsers]);
 
   const startIndex = offset + 1;
   const endIndex = Math.min(offset + PAGE_SIZE, data?.total ?? 0);
