@@ -50,7 +50,7 @@ const jobFormSchema = z.object({
   path: ['salaryMax'],
 });
 
-type JobFormData = z.infer<typeof jobFormSchema>;
+export type JobFormData = z.infer<typeof jobFormSchema>;
 
 interface JobFormProps {
   mode: 'create' | 'edit';
