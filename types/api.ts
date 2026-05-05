@@ -381,8 +381,34 @@ export interface MatchDetail {
 }
 
 // Notifications
+export type NotificationType =
+  | 'employer_showed_interest'
+  | 'candidate_showed_interest'
+  | 'mutual_interest'
+  | 'chat_first_message_received'
+  | 'chat_unlocked'
+  | 'employer_test_passed'
+  | 'employer_test_failed'
+  | 'personality_test_completed'
+  | 'job_closing_soon'
+  | 'job_auto_closed'
+  | 'profile_incomplete_reminder';
+
+export interface Notification {
+  id: string;
+  userId: string;
+  type: NotificationType;
+  data: Record<string, unknown>;
+  title: string;
+  body: string | null;
+  linkUrl: string | null;
+  readAt: string | null;
+  emailSentAt: string | null;
+  createdAt: string;
+}
+
 export interface NotificationPreferences {
-  emailEnabled: boolean;
+  userId: string;
   employerInterest: boolean;
   candidateInterest: boolean;
   mutualInterest: boolean;
@@ -390,6 +416,8 @@ export interface NotificationPreferences {
   testResults: boolean;
   jobLifecycle: boolean;
   profileReminders: boolean;
+  emailEnabled: boolean;
+  updatedAt: string;
 }
 
 // Chat
