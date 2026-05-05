@@ -24,6 +24,16 @@ export interface ApiErrorBody {
   details?: Array<{ field: string; message: string }>;
 }
 
+// Enums
+export type ProficiencyLevel = 'informed' | 'beginner' | 'advanced' | 'expert' | 'master';
+export type ExperienceLevel = 'junior' | 'medior' | 'senior';
+export type WorkType = 'full_time' | 'part_time' | 'freelance' | 'temporary';
+export type MbtiType =
+  | 'INTJ' | 'INTP' | 'ENTJ' | 'ENTP'
+  | 'INFJ' | 'INFP' | 'ENFJ' | 'ENFP'
+  | 'ISTJ' | 'ISFJ' | 'ESTJ' | 'ESFJ'
+  | 'ISTP' | 'ISFP' | 'ESTP' | 'ESFP';
+
 // Candidate profile
 export interface CandidateProfile {
   id: string;
@@ -31,20 +41,76 @@ export interface CandidateProfile {
   firstName: string | null;
   lastName: string | null;
   phone: string | null;
-  location: string | null;
+  dateOfBirth: string | null;
+  streetAddress: string | null;
+  postalCode: string | null;
+  city: string | null;
+  country: string | null;
+  latitude: number | null;
+  longitude: number | null;
   bio: string | null;
   avatarUrl: string | null;
+  cvUrl: string | null;
+  linkedinUrl: string | null;
+  portfolioUrl: string | null;
   desiredSalaryMin: number | null;
   desiredSalaryMax: number | null;
-  workTypes: ('fulltime' | 'parttime' | 'freelance' | 'internship')[];
-  remotePreference: 'onsite' | 'hybrid' | 'remote' | 'flexible' | null;
-  availableFrom: string | null;
-  mbtiType: string | null;
-  mbtiPercentages: Record<string, number> | null;
-  mbtiCompletedAt: string | null;
+  workTypes: WorkType[];
+  maxCommuteKm: number | null;
+  isSearchable: boolean;
+  mbtiType: MbtiType | null;
   profileCompleteness: number;
-  createdAt: string;
   updatedAt: string;
+}
+
+export interface CandidateSkill {
+  id: string;
+  candidateId: string;
+  skillId: string;
+  skillName: string;
+  sectorId: string;
+  sectorName: string;
+  proficiencyLevel: ProficiencyLevel;
+  yearsExperience: number | null;
+  testedAt: string | null;
+  lastTestScore: number | null;
+}
+
+export interface CandidateExperience {
+  id: string;
+  candidateId: string;
+  companyName: string;
+  jobTitle: string;
+  experienceLevel: ExperienceLevel;
+  startDate: string;
+  endDate: string | null;
+  description: string | null;
+  isCurrent: boolean;
+}
+
+export interface CandidateEducation {
+  id: string;
+  candidateId: string;
+  institutionName: string;
+  degree: string;
+  fieldOfStudy: string | null;
+  startDate: string;
+  endDate: string | null;
+  description: string | null;
+}
+
+export interface Sector {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+export interface Skill {
+  id: string;
+  sectorId: string;
+  sectorName: string;
+  name: string;
+  slug: string;
 }
 
 // Employer profile
