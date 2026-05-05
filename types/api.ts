@@ -482,3 +482,63 @@ export interface ChatPollResponse {
   room: ChatRoom;
   messages: ChatMessage[];
 }
+
+// Admin
+export interface AdminUserListItem {
+  id: string;
+  email: string;
+  userType: UserType;
+  isVerified: boolean;
+  isActive: boolean;
+  isAdmin: boolean;
+  deletedAt: string | null;
+  createdAt: string;
+  lastLogin: string | null;
+  displayName: string | null;
+}
+
+export interface AdminUserDetail {
+  user: AdminUserListItem;
+  candidate: Record<string, unknown> | null;
+  employer: Record<string, unknown> | null;
+}
+
+export interface AdminJobListItem {
+  id: string;
+  title: string;
+  status: JobStatus;
+  employerId: string;
+  employerName: string | null;
+  city: string | null;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string | null;
+}
+
+export type AuditAction =
+  | 'admin_user_deactivate'
+  | 'admin_user_reactivate'
+  | 'admin_user_force_delete'
+  | 'admin_job_pause'
+  | 'admin_job_resume'
+  | 'admin_job_close'
+  | 'admin_grant_admin'
+  | 'admin_revoke_admin'
+  | 'user_data_export'
+  | 'user_account_delete'
+  | 'user_account_restore';
+
+export interface AuditLogEntry {
+  id: string;
+  actorUserId: string | null;
+  action: AuditAction;
+  targetType: string | null;
+  targetId: string | null;
+  metadata: Record<string, unknown>;
+  createdAt: string;
+}
+
+export interface PaginatedResult<T> {
+  items: T[];
+  total: number;
+}
