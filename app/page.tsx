@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 import Banner from '../components/home/banner/Banner';
 import { JobFilters } from '../components/home/jobs-filters/JobFilters';
 import Jobs from '../components/home/jobs/Jobs';
-import Categories from '../components/home/categories/Categories';
+import { SectorsGrid } from '../components/homepage/sectors-grid';
 import Testimonial from '../components/common/testimonial/Testimonial';
 import SignupCta from '../components/signup-cta/SignupCta';
 import Footer from '../components/common/footer/Footer';
@@ -44,7 +44,7 @@ export default function Home() {
         city={filters.city || undefined}
         onClearFilters={handleClearFilters}
       />
-      <Categories />
+      <SectorsGrid />
       <Testimonial />
       <SignupCta />
       <Footer />
