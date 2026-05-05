@@ -28,7 +28,7 @@ export interface ApiErrorBody {
 export type ProficiencyLevel = 'informed' | 'beginner' | 'advanced' | 'expert' | 'master';
 export type AttemptOutcome = ProficiencyLevel | 'failed';
 export type ExperienceLevel = 'junior' | 'medior' | 'senior';
-export type WorkType = 'full_time' | 'part_time' | 'freelance' | 'temporary';
+export type WorkType = 'fulltime' | 'parttime' | 'freelance' | 'internship' | 'temporary';
 export type MbtiType =
   | 'INTJ' | 'INTP' | 'ENTJ' | 'ENTP'
   | 'INFJ' | 'INFP' | 'ENFJ' | 'ENFP'
@@ -542,4 +542,51 @@ export interface AuditLogEntry {
 export interface PaginatedResult<T> {
   items: T[];
   total: number;
+}
+
+// ===========================================================================
+// Homepage feed types
+// ===========================================================================
+
+export type FeedItemReason = 'random' | 'sector_click' | 'profile_match' | 'recent';
+
+export type RemotePreference = 'onsite' | 'hybrid' | 'remote';
+
+export interface HomepageFeedItem {
+  id: string;
+  title: string;
+  city: string | null;
+  workType: WorkType;
+  remotePreference: RemotePreference;
+  publishedAt: string | null;
+  primarySectorId: string | null;
+  primarySectorName: string | null;
+  employerName: string;
+  employerLogoUrl: string | null;
+  matchScore: number | null;
+  reason: FeedItemReason;
+}
+
+export interface HomepageFeedResponse {
+  items: HomepageFeedItem[];
+  mode: 'anonymous' | 'candidate' | 'employer';
+}
+
+export interface HomepageSector {
+  id: string;
+  name: string;
+  homepageSlug: string;
+  color: string;
+  icon: string;
+  activeJobsCount: number;
+  matchedJobsCount: number | null;
+}
+
+export interface HomepageSectorsResponse {
+  items: HomepageSector[];
+  mode: 'anonymous' | 'candidate' | 'employer';
+}
+
+export interface HomepageCitiesResponse {
+  cities: string[];
 }
