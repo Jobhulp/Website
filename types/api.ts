@@ -355,6 +355,31 @@ export interface CandidateMatch {
   chatRoomId: string | null;
 }
 
+export interface JobWithEmployerFull extends JobWithSkills {
+  employerName: string;
+  employerLogoUrl: string | null;
+  employerCity: string | null;
+  sectorName: string;
+}
+
+export interface EmployerSkillTestWithStatus extends EmployerSkillTest {
+  candidateStatus: 'not_started' | 'passed' | 'failed';
+  lastAttemptAt: string | null;
+  lastScore: number | null;
+}
+
+export interface MatchDetail {
+  job: JobWithEmployerFull;
+  matchScore: MatchScore;
+  interestState: {
+    candidate: InterestState;
+    employer: InterestState;
+  };
+  candidateInterestedAt: string | null;
+  chatRoomId: string | null;
+  employerSkillTests: EmployerSkillTestWithStatus[];
+}
+
 // Notifications
 export interface NotificationPreferences {
   emailEnabled: boolean;
