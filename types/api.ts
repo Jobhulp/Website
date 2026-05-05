@@ -338,3 +338,15 @@ export interface JobMatch {
   };
   chatRoomId: string | null;
 }
+
+// Notifications
+export interface NotificationPreferences {
+  emailEnabled: boolean;
+  employerInterest: boolean;
+  candidateInterest: boolean;
+  mutualInterest: boolean;
+  chatMessages: boolean;
+  testResults: boolean;
+  jobLifecycle: boolean;
+  profileReminders: boolean;
+}
