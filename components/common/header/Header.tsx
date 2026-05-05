@@ -1,14 +1,19 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import "./style.css";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import logo from '@/assets/img/svg/01_logo_white.svg';
 import { useMegaMenu } from './useMegaMenu';
+import { useAuth } from '@/lib/auth-context';
+import { User, LogOut, LayoutDashboard, Settings, Bell, ChevronDown } from 'lucide-react';
 
 const Header = () => {
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showSignupModal, setShowSignupModal] = useState(false);
+  const router = useRouter();
+  const { user, loading, logout } = useAuth();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   const {
     isMenuOpen,
@@ -19,30 +24,43 @@ const Header = () => {
     handleMouseLeave
   } = useMegaMenu();
 
-  const handleLoginClick = () => {
-    setShowLoginModal(true);
-    setShowSignupModal(false);
-  };
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
 
-  const handleSignupClick = () => {
-    setShowSignupModal(true);
-    setShowLoginModal(false);
-  };
-
-  const handleCloseModals = () => {
-    setShowLoginModal(false);
-    setShowSignupModal(false);
-  };
-
-  const handleSwitchToLogin = () => {
-    setShowSignupModal(false);
-    setShowLoginModal(true);
-  };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleLinkClick = () => {
     if (isMenuOpen) {
       toggleMenu();
     }
+    setUserMenuOpen(false);
+  };
+
+  const handleLogout = async () => {
+    setUserMenuOpen(false);
+    await logout();
+    router.push('/');
+  };
+
+  // Get user initials for avatar fallback
+  const getUserInitials = () => {
+    if (!user) return '';
+    const email = user.email || '';
+    return email.charAt(0).toUpperCase();
+  };
+
+  // Get dashboard link based on user type
+  const getDashboardLink = () => {
+    if (!user) return '/dashboard';
+    if (user.userType === 'employer') return '/dashboard/employer';
+    return '/dashboard';
   };
 
   return (
@@ -109,7 +127,7 @@ const Header = () => {
                       <Link href="/jobs/job-lists" onClick={handleLinkClick}>Bekijk matches</Link>
                     </li>
                     <li>
-                      <Link href="/dashboard/candidate" onClick={handleLinkClick}>Mijn dashboard</Link>
+                      <Link href="/dashboard" onClick={handleLinkClick}>Mijn dashboard</Link>
                     </li>
                   </ul>
                 </li>
@@ -136,7 +154,7 @@ const Header = () => {
                       <Link href="/candidates/candidate-lists" onClick={handleLinkClick}>Bekijk kandidaten</Link>
                     </li>
                     <li>
-                      <Link href="/jobs/company-profile" onClick={handleLinkClick}>Bedrijfsprofiel</Link>
+                      <Link href="/dashboard/employer/profile" onClick={handleLinkClick}>Bedrijfsprofiel</Link>
                     </li>
                   </ul>
                 </li>
@@ -168,118 +186,113 @@ const Header = () => {
             </nav>
 
             <nav className="login-menu">
-              <ul>
-                <li>
-                  <a href="#" onClick={(e) => { e.preventDefault(); handleSignupClick(); }}>Registreer</a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="crumina-button button--primary button--s button--hover-primary"
-                    onClick={(e) => { e.preventDefault(); handleLoginClick(); }}
+              {loading ? (
+                // Loading state - show skeleton
+                <div className="flex items-center gap-2">
+                  <div className="w-20 h-8 bg-white/20 rounded animate-pulse" />
+                </div>
+              ) : user ? (
+                // Logged in - show user menu
+                <div className="user-menu-wrapper" ref={userMenuRef}>
+                  <button
+                    className="user-menu-trigger"
+                    onClick={() => setUserMenuOpen(!userMenuOpen)}
+                    aria-expanded={userMenuOpen}
+                    aria-haspopup="true"
                   >
-                    Login
-                  </a>
-                </li>
-              </ul>
+                    <div className="user-avatar">
+                      {getUserInitials()}
+                    </div>
+                    <ChevronDown 
+                      size={16} 
+                      className={`user-menu-chevron ${userMenuOpen ? 'rotated' : ''}`}
+                    />
+                  </button>
+
+                  {userMenuOpen && (
+                    <div className="user-dropdown">
+                      <div className="user-dropdown-header">
+                        <span className="user-dropdown-email">{user.email}</span>
+                        <span className="user-dropdown-type">
+                          {user.userType === 'employer' ? 'Werkgever' : 'Kandidaat'}
+                          {user.isAdmin && ' (Admin)'}
+                        </span>
+                      </div>
+                      
+                      <div className="user-dropdown-divider" />
+                      
+                      <Link 
+                        href={getDashboardLink()} 
+                        className="user-dropdown-item"
+                        onClick={handleLinkClick}
+                      >
+                        <LayoutDashboard size={18} />
+                        <span>Dashboard</span>
+                      </Link>
+                      
+                      <Link 
+                        href="/dashboard/notifications" 
+                        className="user-dropdown-item"
+                        onClick={handleLinkClick}
+                      >
+                        <Bell size={18} />
+                        <span>Meldingen</span>
+                      </Link>
+                      
+                      <Link 
+                        href="/dashboard/account" 
+                        className="user-dropdown-item"
+                        onClick={handleLinkClick}
+                      >
+                        <Settings size={18} />
+                        <span>Instellingen</span>
+                      </Link>
+                      
+                      {user.isAdmin && (
+                        <Link 
+                          href="/dashboard/admin" 
+                          className="user-dropdown-item"
+                          onClick={handleLinkClick}
+                        >
+                          <User size={18} />
+                          <span>Admin</span>
+                        </Link>
+                      )}
+                      
+                      <div className="user-dropdown-divider" />
+                      
+                      <button 
+                        className="user-dropdown-item user-dropdown-logout"
+                        onClick={handleLogout}
+                      >
+                        <LogOut size={18} />
+                        <span>Uitloggen</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                // Not logged in - show login/register links
+                <ul>
+                  <li>
+                    <Link href="/register">Registreer</Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/login"
+                      className="crumina-button button--primary button--s button--hover-primary"
+                    >
+                      Login
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </nav>
 
             <LanguageSwitcher />
           </div>
         </div>
       </header>
-
-      {/* Login Modal */}
-      {showLoginModal && (
-        <div className="modal fade window-popup show" style={{ display: 'block' }} tabIndex={-1} role="dialog" aria-hidden="true">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <button type="button" className="close" onClick={handleCloseModals} aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <form className="form-login">
-                  <h2>Inloggen</h2>
-                  <div className="mb-4">Log in met je social account voor snelle toegang.</div>
-                  <button type="button" className="crumina-button button--blue-dark button--l button--with-icon button--icon-left w-100 mb-2">
-                    <i className="puzzle-icon fab fa-facebook-square"></i>Login met Facebook
-                  </button>
-                  <button type="button" className="crumina-button button--blue button--l button--with-icon button--icon-left w-100 mb-4">
-                    <i className="puzzle-icon fab fa-linkedin-in"></i>Login met LinkedIn
-                  </button>
-                  <label htmlFor="name">E-mailadres *</label>
-                  <input id="name" name="name" placeholder="jouw@email.be" type="email" />
-                  <div className="d-flex align-items-center justify-content-between mb-3">
-                    <label className="mb-0" htmlFor="password">Wachtwoord *</label>
-                    <a href="#">Wachtwoord vergeten?</a>
-                  </div>
-                  <input id="password" name="password" placeholder="" type="password" />
-                  <div className="checkbox checkbox--transparent mt-2 mb-4">
-                    <label>
-                      <input type="checkbox" name="optionsCheckboxes4" />
-                      <span className="checkbox-material"><span className="check"></span></span>
-                      Onthoud mij
-                    </label>
-                  </div>
-                  <button type="button" className="crumina-button button--green button--l w-100">Inloggen</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Signup Modal */}
-      {showSignupModal && (
-        <div className="modal fade window-popup show" style={{ display: 'block' }} tabIndex={-1} role="dialog" aria-hidden="true">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <button type="button" className="close" onClick={handleCloseModals} aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <form className="form-login">
-                  <h2 className="mb-4">Registreren</h2>
-                  <p className="mb-4">Maak een account aan en ontdek je matches.</p>
-                  <label htmlFor="first_name">Voornaam *</label>
-                  <input id="first_name" name="name" placeholder="" type="text" />
-                  <label htmlFor="last_name">Achternaam *</label>
-                  <input id="last_name" name="name" placeholder="" type="text" />
-                  <label htmlFor="email">E-mailadres *</label>
-                  <input id="email" name="email" placeholder="jouw@email.be" type="email" />
-                  <label htmlFor="password1">Wachtwoord *</label>
-                  <input id="password1" name="name" placeholder="" type="password" />
-                  <div className="checkbox checkbox--transparent mt-2 mb-4">
-                    <label>
-                      <input type="checkbox" name="userType" value="candidate" defaultChecked />
-                      <span className="checkbox-material"><span className="check"></span></span>
-                      Ik ben een kandidaat
-                    </label>
-                  </div>
-                  <div className="checkbox checkbox--transparent mb-4">
-                    <label>
-                      <input type="checkbox" name="userType" value="employer" />
-                      <span className="checkbox-material"><span className="check"></span></span>
-                      Ik ben een werkgever
-                    </label>
-                  </div>
-                  <button type="button" className="crumina-button button--green button--l w-100 my-3">Account aanmaken</button>
-                  <button type="button" className="crumina-button button--white button--l w-100" onClick={handleSwitchToLogin}>Heb je al een account? Log in</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal Backdrop */}
-      {(showLoginModal || showSignupModal) && (
-        <div className="modal-backdrop fade show" style={{ opacity: 0.5 }}></div>
-      )}
     </>
   );
 };

@@ -55,9 +55,10 @@ type LocationForm = z.infer<typeof locationSchema>;
 type PreferencesForm = z.infer<typeof preferencesSchema>;
 
 const WORK_TYPE_LABELS: Record<WorkType, string> = {
-  full_time: 'Voltijds',
-  part_time: 'Deeltijds',
+  fulltime: 'Voltijds',
+  parttime: 'Deeltijds',
   freelance: 'Freelance',
+  internship: 'Stage',
   temporary: 'Tijdelijk',
 };
 

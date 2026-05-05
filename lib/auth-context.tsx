@@ -37,7 +37,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setUser(response.user);
       } catch (error) {
         // 401 means not logged in - not an error, just no user
-        if (error instanceof ApiError && error.statusCode === 401) {
+        if (error instanceof ApiError && error.status === 401) {
           setUser(null);
         } else {
           // Other errors: still set user to null but could log

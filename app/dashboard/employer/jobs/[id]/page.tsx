@@ -41,9 +41,10 @@ const statusColors: Record<JobStatus, string> = {
 };
 
 const workTypeLabels: Record<string, string> = {
-  full_time: 'Voltijds',
-  part_time: 'Deeltijds',
+  fulltime: 'Voltijds',
+  parttime: 'Deeltijds',
   freelance: 'Freelance',
+  internship: 'Stage',
   temporary: 'Tijdelijk',
 };
 

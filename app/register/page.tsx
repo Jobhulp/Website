@@ -204,9 +204,10 @@ function RegistrationForm({
     } catch (error) {
       if (error instanceof ApiError) {
         setApiError(error.message);
-        if (error.details) {
+        const details = error.fieldErrors;
+        if (details) {
           const newFieldErrors: Record<string, string> = {};
-          error.details.forEach((detail) => {
+          details.forEach((detail) => {
             if (detail.field) {
               newFieldErrors[detail.field] = detail.message;
             }
