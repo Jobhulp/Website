@@ -10,11 +10,9 @@ import type { Job } from '@/types/api';
 export default function NewJobPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (data: JobFormData, status: 'draft' | 'active') => {
     setError(null);
-    setIsSubmitting(true);
 
     try {
       const payload = {
@@ -44,7 +42,6 @@ export default function NewJobPage() {
       } else {
         setError('Er ging iets mis. Probeer het opnieuw.');
       }
-      setIsSubmitting(false);
     }
   };
 
@@ -90,7 +87,6 @@ export default function NewJobPage() {
         mode="create"
         onSubmit={handleSubmit}
         onCancel={handleCancel}
-        isSubmitting={isSubmitting}
       />
     </div>
   );
