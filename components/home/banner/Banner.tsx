@@ -71,7 +71,7 @@ const Banner = () => (
               <h2 className="h1 main-slider-title">Vind de perfecte match voor je team</h2>
               <h3 className="main-slider-sub-title title--small">Geen lange vacatureteksten. Structureer wat je zoekt en ontvang automatisch passende kandidaten.</h3>
               <div className="universal-btn-wrapper">
-                <a href="/jobs/job-lists" className="crumina-button button--red button--xl button--hover-primary">Start als werkgever</a>
+                <a href="/register?type=employer" className="crumina-button button--red button--xl button--hover-primary">Start als werkgever</a>
                 <a href="/how-it-works" className="arrow--white link--bold link--with-icon link--icon-right">Hoe het werkt<i className="puzzle-icon far fa-angle-right"></i></a>
               </div>
             </div>
