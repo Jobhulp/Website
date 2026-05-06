@@ -16,5 +16,11 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*'],
+  matcher: [
+    '/dashboard/:path*',
+    '/candidates/submit-resume',
+    '/candidates/resume-preview',
+    '/candidates/resume-added',
+    '/tests/:path*',
+  ],
 };
