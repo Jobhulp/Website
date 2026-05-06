@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
-import type { StaticImageData } from 'next/image';
+import React, { useState, useEffect } from 'react';
 import Tabs from './Tabs';
 import { JobFeedSection } from '@/components/homepage/job-feed-section';
-import author2 from '@/assets/img/author2.jpg';
-import author3 from '@/assets/img/author3.jpg';
-import type { WorkType } from '@/types/api';
+import { CandidatesFeedSection } from '@/components/homepage/candidates-feed-section';
+import { api } from '@/lib/api-client';
+import type { WorkType, CandidatesCountResponse } from '@/types/api';
 
 type TabId = 'jobs' | 'candidates';
 
@@ -14,84 +13,70 @@ interface JobsProps {
   workTypes?: WorkType[];
   city?: string;
   onClearFilters?: () => void;
+  onTabChange?: (tab: 'jobs' | 'candidates') => void;
 }
 
-interface CandidateCardProps {
-  candidate: {
-    id: string;
-    name: string;
-    location: string;
-    avatar: StaticImageData;
-    role: string;
-    rate: string;
-  };
-}
-
-const CandidateCard: React.FC<CandidateCardProps> = ({ candidate }) => (
-  <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-    <div className="ui-card featured-vacancies">
-      <div className="ui-card-content">
-        <div className="vacancies-title-location">
-          <a href={`10_candidate_details.html?id=${candidate.id}`} className="vacancies-title h6">{candidate.name}</a>
-          <div className="vacancies-location">{candidate.location}</div>
-        </div>
-        <a href={`10_candidate_details.html?id=${candidate.id}`} className="avatar avatar--80">
-          <img src={candidate.avatar.src} title="user" alt="user avatar" />
-        </a>
-      </div>
-      <div className="ui-card-footer">
-        <a href="#" className="link--uppercase-wide fs-12">{candidate.role}</a>
-        <a href="#" className="link--uppercase-wide link--uppercase-wide link--bold fs-12">{candidate.rate}</a>
-      </div>
-    </div>
-  </div>
-);
-
-// Hardcoded candidates for now
-const candidates = [
-  {
-    id: '1',
-    name: 'Jerry Thomas',
-    location: 'London, United Kingdom',
-    avatar: author2,
-    role: 'Web Developer',
-    rate: '$45 / hour'
-  },
-  {
-    id: '2',
-    name: 'Catherine White',
-    location: 'New York, USA',
-    avatar: author3,
-    role: 'UX/UI Designer',
-    rate: '$60 / Hour'
-  }
-];
-
-const Jobs: React.FC<JobsProps> = ({ workTypes = [], city, onClearFilters }) => {
+const Jobs: React.FC<JobsProps> = ({ workTypes = [], city, onClearFilters, onTabChange }) => {
   const [activeTab, setActiveTab] = useState<TabId>('jobs');
+  const [jobsCount, setJobsCount] = useState<number | null>(null);
+  const [candidatesCount, setCandidatesCount] = useState<{ count: number; isFloor: boolean } | null>(null);
+
+  // Notify parent of tab changes
+  useEffect(() => {
+    onTabChange?.(activeTab);
+  }, [activeTab, onTabChange]);
+
+  // Fetch candidates count on mount
+  useEffect(() => {
+    async function fetchCandidatesCount() {
+      try {
+        const response = await api.get<CandidatesCountResponse>('/homepage/candidates-count');
+        setCandidatesCount({ count: response.count, isFloor: response.isFloor });
+      } catch {
+        // Silently fail - count is optional
+      }
+    }
+    fetchCandidatesCount();
+  }, []);
+
+  // Format count labels
+  const jobsCountLabel = jobsCount !== null 
+    ? `${jobsCount.toLocaleString('nl-NL')} actief`
+    : 'Jobs laden...';
+  
+  const candidatesCountLabel = candidatesCount !== null
+    ? candidatesCount.isFloor
+      ? `${candidatesCount.count.toLocaleString('nl-NL')}+ Profielen`
+      : `${candidatesCount.count.toLocaleString('nl-NL')} Profielen`
+    : 'Profielen laden...';
 
   const tabItems = [
     {
       id: 'jobs' as TabId,
       label: 'Openstaande Jobs',
-      count: '69.368 Matches mogelijk',
+      count: jobsCountLabel,
       icon: {
         dark: 'img/svg/11_employer_dark_tab.svg',
         light: 'img/svg/12_employer_white_tab.svg',
-        alt: 'man'
+        alt: 'briefcase'
       }
     },
     {
       id: 'candidates' as TabId,
       label: 'Beschikbare Kandidaten',
-      count: '238.900 Profielen',
+      count: candidatesCountLabel,
       icon: {
         dark: 'img/svg/09_freelancer_dark_tab.svg',
         light: 'img/svg/10_freelancer_white_tab.svg',
-        alt: 'man'
+        alt: 'person'
       }
     }
   ];
+
+  // Callback to update jobs count from JobFeedSection
+  const handleJobsLoaded = (count: number) => {
+    setJobsCount(count);
+  };
 
   return (
     <section>
@@ -106,7 +91,14 @@ const Jobs: React.FC<JobsProps> = ({ workTypes = [], city, onClearFilters }) => 
           <div className="container">
             <div className="row pb80">
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div className={`tab-pane ${activeTab === 'jobs' ? 'active' : ''}`} id="home" role="tabpanel" aria-labelledby="home-tab">
+                {/* Jobs Tab */}
+                <div 
+                  className={`tab-pane ${activeTab === 'jobs' ? 'active' : ''}`} 
+                  id="jobs-tab" 
+                  role="tabpanel" 
+                  aria-labelledby="jobs-tab"
+                  style={{ display: activeTab === 'jobs' ? 'block' : 'none' }}
+                >
                   <div className="d-flex justify-content-between align-items-center flex-wrap mb60">
                     <button type="button" className="crumina-button button--dark button--m button--with-icon button--icon-left my-2">
                       <i className="puzzle-icon far fa-pencil" />Maak je profiel aan
@@ -121,15 +113,33 @@ const Jobs: React.FC<JobsProps> = ({ workTypes = [], city, onClearFilters }) => 
                     city={city} 
                     limit={6}
                     onClearFilters={onClearFilters}
+                    onItemsLoaded={handleJobsLoaded}
                   />
                 </div>
 
-                <div className={`tab-pane ${activeTab === 'candidates' ? 'active' : ''}`} id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                  <div className="row">
-                    {candidates.map(candidate => (
-                      <CandidateCard key={candidate.id} candidate={candidate} />
-                    ))}
+                {/* Candidates Tab */}
+                <div 
+                  className={`tab-pane ${activeTab === 'candidates' ? 'active' : ''}`} 
+                  id="candidates-tab" 
+                  role="tabpanel" 
+                  aria-labelledby="candidates-tab"
+                  style={{ display: activeTab === 'candidates' ? 'block' : 'none' }}
+                >
+                  <div className="d-flex justify-content-between align-items-center flex-wrap mb60">
+                    <button type="button" className="crumina-button button--dark button--m button--with-icon button--icon-left my-2">
+                      <i className="puzzle-icon far fa-building" />Plaats een vacature
+                    </button>
+                    <button type="button" className="crumina-button button--dark button--m button--bordered button--with-icon button--icon-left my-2">
+                      <i className="puzzle-icon far fa-search" />Zoek kandidaten
+                    </button>
                   </div>
+
+                  <CandidatesFeedSection 
+                    workTypes={workTypes} 
+                    city={city} 
+                    limit={6}
+                    onClearFilters={onClearFilters}
+                  />
                 </div>
               </div>
             </div>

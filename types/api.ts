@@ -316,6 +316,8 @@ export interface MatchScore {
   personalityScore: number;
   preferencesScore: number;
   skillDetails: SkillMatchDetail[];
+  isCareerSwitcher: boolean;
+  willingnessScore: number | null;
 }
 
 export type InterestState = 'pending' | 'interested' | 'not_interested' | null;
@@ -593,4 +595,61 @@ export interface HomepageCitiesResponse {
 
 export interface SectorBySlugResponse {
   sector: HomepageSector;
+}
+
+// ===========================================================================
+// Candidates feed types (slice 12)
+// ===========================================================================
+
+export type CandidateFeedReason = 'random' | 'sector_match' | 'new_profile' | 'recent';
+
+export interface CandidateFeedItem {
+  id: string;
+  displayTitle: string;
+  yearsExperience: number;
+  region: string | null;
+  topSkills: Array<{
+    skillId: string;
+    skillName: string;
+    sectorName: string;
+    proficiencyLevel: ProficiencyLevel;
+  }>;
+  primarySectorId: string | null;
+  primarySectorName: string | null;
+  mbtiType: MbtiType | null;
+  workTypes: WorkType[];
+  profileAgeLabel: string;
+  reason: CandidateFeedReason;
+}
+
+export interface CandidatesFeedResponse {
+  items: CandidateFeedItem[];
+  mode: 'anonymous' | 'candidate' | 'employer';
+}
+
+export interface CandidatesSectorOverviewItem {
+  id: string;
+  name: string;
+  homepageSlug: string;
+  color: string;
+  icon: string;
+  candidatesCount: number;
+}
+
+export interface CandidatesSectorOverviewResponse {
+  items: CandidatesSectorOverviewItem[];
+}
+
+export interface CandidatesCountResponse {
+  count: number;
+  isFloor: boolean;
+}
+
+// ===========================================================================
+// Match breakdown types
+// ===========================================================================
+
+export interface MatchBreakdown {
+  isCareerSwitcher: boolean;
+  willingnessScore: number | null;
 }

@@ -179,6 +179,28 @@ export default function MatchDetailPage() {
         </div>
       )}
 
+      {/* Career switcher banner */}
+      {matchScore.isCareerSwitcher && (
+        <div className="mb-6 p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+              <svg className="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-semibold text-indigo-900">
+                Career switcher — je zoekt richting dit vakgebied
+              </h3>
+              <p className="text-sm text-indigo-700 mt-1">
+                Je match-score is gebaseerd op motivatie, persoonlijkheid en voorkeuren in plaats van alleen ervaring. 
+                Dit helpt werkgevers je potentieel te zien, ook als je skills nog in ontwikkeling zijn.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-start gap-4 mb-4">
