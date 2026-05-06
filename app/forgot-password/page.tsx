@@ -6,16 +6,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { api, ApiError } from '@/lib/api-client';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import Header from '@/components/common/header/Header';
+import Footer from '@/components/common/footer/Footer';
+import logo from '@/assets/img/svg/01_logo_white.svg';
 
 const forgotPasswordSchema = z.object({
   email: z.string().email('Ongeldig e-mailadres'),
@@ -53,74 +46,140 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gray-50">
-      <Card className="w-full max-w-[400px]">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">
-            Wachtwoord vergeten
-          </CardTitle>
-          <CardDescription>
-            Vul je e-mailadres in en we sturen je een link om je wachtwoord te resetten.
-          </CardDescription>
-        </CardHeader>
-
-        <CardContent>
-          {isSubmitted ? (
-            <div className="space-y-4">
-              <div className="rounded-md bg-green-50 border border-green-200 p-4">
-                <p className="text-sm text-green-800">
-                  Als dit e-mailadres bij ons bekend is, hebben we je een reset-link gestuurd. Check je inbox (en spam-folder).
-                </p>
-              </div>
-
-              <Link
-                href="/login"
-                className="flex items-center justify-center gap-2 text-sm text-gray-600 hover:text-gray-900"
-              >
-                <span aria-hidden="true">&larr;</span>
-                Terug naar inloggen
-              </Link>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {error && (
-                <div className="rounded-md bg-red-50 border border-red-200 p-3">
-                  <p className="text-sm text-red-600">{error}</p>
+    <>
+      <Header />
+      <div className="header--spacer" style={{ height: '80px' }} />
+      <section className="crumina-module bg-dark-themes" style={{ minHeight: '60vh', paddingTop: '80px', paddingBottom: '80px' }}>
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-5 col-md-8">
+              <div className="card" style={{ 
+                background: 'rgba(255,255,255,0.05)', 
+                borderRadius: '16px', 
+                padding: '40px',
+                border: '1px solid rgba(255,255,255,0.1)'
+              }}>
+                {/* Logo */}
+                <div className="text-center mb-4">
+                  <Link href="/">
+                    <img src={logo.src} alt="Jobhulp" width="150" />
+                  </Link>
                 </div>
-              )}
 
-              <div className="space-y-2">
-                <Label htmlFor="email">E-mailadres</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="naam@voorbeeld.be"
-                  {...register('email')}
-                />
-                {errors.email && (
-                  <p className="text-sm text-red-600">{errors.email.message}</p>
+                {/* Title */}
+                <div className="text-center mb-4">
+                  <h2 className="h3 c-white mb-2">Wachtwoord vergeten</h2>
+                  <p className="c-grey" style={{ fontSize: '14px' }}>
+                    Vul je e-mailadres in en we sturen je een link om je wachtwoord te resetten.
+                  </p>
+                </div>
+
+                {isSubmitted ? (
+                  <div>
+                    {/* Success message */}
+                    <div className="alert mb-4" style={{ 
+                      background: 'rgba(40, 167, 69, 0.15)', 
+                      border: '1px solid rgba(40, 167, 69, 0.3)',
+                      borderRadius: '8px',
+                      padding: '16px'
+                    }}>
+                      <p className="mb-0 c-green" style={{ fontSize: '14px' }}>
+                        <i className="far fa-check-circle mr-2"></i>
+                        Als dit e-mailadres bij ons bekend is, hebben we je een reset-link gestuurd. Check je inbox (en spam-folder).
+                      </p>
+                    </div>
+
+                    <div className="text-center">
+                      <Link 
+                        href="/login" 
+                        className="c-grey d-inline-flex align-items-center"
+                        style={{ fontSize: '14px', textDecoration: 'none' }}
+                      >
+                        <i className="far fa-arrow-left mr-2"></i>
+                        Terug naar inloggen
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    {/* Error message */}
+                    {error && (
+                      <div className="alert mb-4" style={{ 
+                        background: 'rgba(220, 53, 69, 0.15)', 
+                        border: '1px solid rgba(220, 53, 69, 0.3)',
+                        borderRadius: '8px',
+                        padding: '12px 16px'
+                      }}>
+                        <p className="mb-0 c-red" style={{ fontSize: '14px' }}>
+                          <i className="far fa-exclamation-circle mr-2"></i>
+                          {error}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="mb-4">
+                      <label className="c-white mb-2 d-block" style={{ fontSize: '14px', fontWeight: 500 }}>
+                        E-mailadres
+                      </label>
+                      <input
+                        type="email"
+                        className="form-control"
+                        placeholder="jouw@email.be"
+                        style={{
+                          background: 'rgba(255,255,255,0.08)',
+                          border: errors.email ? '1px solid #dc3545' : '1px solid rgba(255,255,255,0.15)',
+                          borderRadius: '8px',
+                          padding: '12px 16px',
+                          color: '#fff',
+                          fontSize: '15px'
+                        }}
+                        {...register('email')}
+                      />
+                      {errors.email && (
+                        <p className="c-red mt-1 mb-0" style={{ fontSize: '12px' }}>{errors.email.message}</p>
+                      )}
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="crumina-button button--yellow button--xl w-100 mb-4"
+                      style={{ 
+                        borderRadius: '8px',
+                        padding: '14px 24px',
+                        fontSize: '16px',
+                        fontWeight: 600,
+                        opacity: isSubmitting ? 0.7 : 1
+                      }}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <i className="far fa-spinner fa-spin mr-2"></i>
+                          Versturen...
+                        </>
+                      ) : (
+                        'Stuur reset-link'
+                      )}
+                    </button>
+
+                    <div className="text-center">
+                      <Link 
+                        href="/login" 
+                        className="c-grey d-inline-flex align-items-center"
+                        style={{ fontSize: '14px', textDecoration: 'none' }}
+                      >
+                        <i className="far fa-arrow-left mr-2"></i>
+                        Terug naar inloggen
+                      </Link>
+                    </div>
+                  </form>
                 )}
               </div>
-
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Versturen...' : 'Stuur reset-link'}
-              </Button>
-
-              <Link
-                href="/login"
-                className="flex items-center justify-center gap-2 text-sm text-gray-600 hover:text-gray-900"
-              >
-                <span aria-hidden="true">&larr;</span>
-                Terug naar inloggen
-              </Link>
-            </form>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <Footer />
+    </>
   );
 }
