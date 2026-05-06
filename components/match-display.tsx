@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Info } from 'lucide-react';
 import type { MatchScore, ProficiencyLevel } from '@/types/api';
 
 interface MatchDisplayProps {
@@ -40,7 +41,52 @@ function getProgressColor(score: number): string {
   return 'bg-red-500';
 }
 
+// Progress bar component with optional tooltip
+function ScoreProgressBar({ 
+  label, 
+  score, 
+  weight,
+  showWeight,
+  tooltip
+}: { 
+  label: string; 
+  score: number; 
+  weight?: string;
+  showWeight?: boolean;
+  tooltip?: string;
+}) {
+  return (
+    <div className="space-y-2 group relative">
+      <div className="flex items-center justify-between text-sm">
+        <span className="flex items-center gap-1">
+          {label}
+          {showWeight && weight && (
+            <span className="text-gray-400 text-xs">({weight})</span>
+          )}
+          {tooltip && (
+            <span className="relative">
+              <Info className="w-3.5 h-3.5 text-gray-400 cursor-help" />
+              <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 max-w-xs">
+                {tooltip}
+              </span>
+            </span>
+          )}
+        </span>
+        <span className="font-medium">{score}%</span>
+      </div>
+      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+        <div 
+          className={`h-full rounded-full transition-all ${getProgressColor(score)}`}
+          style={{ width: `${score}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export function MatchDisplay({ matchScore, compact = false }: MatchDisplayProps) {
+  const isCareerSwitcher = matchScore.isCareerSwitcher;
+  
   if (compact) {
     return (
       <div className="flex items-center gap-3">
@@ -66,6 +112,13 @@ export function MatchDisplay({ matchScore, compact = false }: MatchDisplayProps)
             <Progress value={matchScore.preferencesScore} className="flex-1 h-1.5" />
             <span className="w-8 text-right">{matchScore.preferencesScore}%</span>
           </div>
+          {isCareerSwitcher && matchScore.willingnessScore !== null && (
+            <div className="flex items-center gap-2 text-xs">
+              <span className="w-16 text-gray-500">Motivatie</span>
+              <Progress value={matchScore.willingnessScore} className="flex-1 h-1.5" />
+              <span className="w-8 text-right">{matchScore.willingnessScore}%</span>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -82,48 +135,58 @@ export function MatchDisplay({ matchScore, compact = false }: MatchDisplayProps)
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* Career Switcher Banner */}
+        {isCareerSwitcher && (
+          <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4 flex items-start gap-3">
+            <div className="flex-shrink-0 w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
+              <Info className="w-4 h-4 text-indigo-600" />
+            </div>
+            <div>
+              <p className="font-medium text-indigo-900">
+                Career switcher — kandidaat zoekt richting deze functie
+              </p>
+              <p className="text-sm text-indigo-700 mt-0.5">
+                Beoordeling op motivatie + persoonlijkheid + voorkeuren i.p.v. ervaring
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Score breakdown */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium text-gray-700">Score breakdown</h4>
           
-          <div className="space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <span>Skills match</span>
-              <span className="font-medium">{matchScore.skillsScore}%</span>
-            </div>
-            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-              <div 
-                className={`h-full rounded-full transition-all ${getProgressColor(matchScore.skillsScore)}`}
-                style={{ width: `${matchScore.skillsScore}%` }}
-              />
-            </div>
-          </div>
+          <ScoreProgressBar
+            label="Skills match"
+            score={matchScore.skillsScore}
+            weight={isCareerSwitcher ? "30% gewicht" : "50% gewicht"}
+            showWeight={isCareerSwitcher}
+          />
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <span>Persoonlijkheid match</span>
-              <span className="font-medium">{matchScore.personalityScore}%</span>
-            </div>
-            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-              <div 
-                className={`h-full rounded-full transition-all ${getProgressColor(matchScore.personalityScore)}`}
-                style={{ width: `${matchScore.personalityScore}%` }}
-              />
-            </div>
-          </div>
+          <ScoreProgressBar
+            label="Persoonlijkheid match"
+            score={matchScore.personalityScore}
+            weight={isCareerSwitcher ? "30% gewicht" : "25% gewicht"}
+            showWeight={isCareerSwitcher}
+          />
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <span>Voorkeuren match</span>
-              <span className="font-medium">{matchScore.preferencesScore}%</span>
-            </div>
-            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-              <div 
-                className={`h-full rounded-full transition-all ${getProgressColor(matchScore.preferencesScore)}`}
-                style={{ width: `${matchScore.preferencesScore}%` }}
-              />
-            </div>
-          </div>
+          <ScoreProgressBar
+            label="Voorkeuren match"
+            score={matchScore.preferencesScore}
+            weight={isCareerSwitcher ? "30% gewicht" : "25% gewicht"}
+            showWeight={isCareerSwitcher}
+          />
+
+          {/* Motivation score - only for career switchers */}
+          {isCareerSwitcher && matchScore.willingnessScore !== null && (
+            <ScoreProgressBar
+              label="Motivatie"
+              score={matchScore.willingnessScore}
+              weight="10% gewicht"
+              showWeight={true}
+              tooltip="Persoonlijkheidstest gedaan, bio ingevuld, skills toegevoegd in interesse-sectoren — alle gemeten signalen van inzet."
+            />
+          )}
         </div>
 
         {/* Skill details */}

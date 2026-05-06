@@ -316,6 +316,8 @@ export interface MatchScore {
   personalityScore: number;
   preferencesScore: number;
   skillDetails: SkillMatchDetail[];
+  isCareerSwitcher: boolean;
+  willingnessScore: number | null;
 }
 
 export type InterestState = 'pending' | 'interested' | 'not_interested' | null;
