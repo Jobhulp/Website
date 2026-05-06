@@ -76,6 +76,7 @@ export interface CandidateSkill {
   testedAt: string | null;
   lastTestScore: number | null;
   useForMatching: boolean;
+  hasAvailableTest: boolean;
 }
 
 export interface CandidateExperience {
@@ -123,6 +124,7 @@ export interface Skill {
   name: string;
   slug: string;
   description?: string;
+  hasAvailableTest?: boolean;
 }
 
 export interface SkillsBySectorResponse {

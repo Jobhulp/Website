@@ -18,7 +18,17 @@ import { PROFICIENCY_LABELS } from '@/lib/proficiency';
 interface SelectedSkillData {
   useForMatching: boolean;
   proficiencyLevel: ProficiencyLevel | null;
+  hasAvailableTest: boolean;
 }
+
+// Proficiency level colors for badges
+const PROFICIENCY_COLORS: Record<ProficiencyLevel, { bg: string; text: string }> = {
+  informed: { bg: '#e5e7eb', text: '#374151' },
+  beginner: { bg: '#dbeafe', text: '#1d4ed8' },
+  advanced: { bg: '#dcfce7', text: '#166534' },
+  expert: { bg: '#f3e8ff', text: '#7c3aed' },
+  master: { bg: '#fef3c7', text: '#b45309' },
+};
 
 const SubmitResume = () => {
   const router = useRouter();
@@ -69,6 +79,7 @@ const SubmitResume = () => {
           newSelectedSkills.set(skill.skillId, {
             useForMatching: skill.useForMatching ?? true,
             proficiencyLevel: skill.proficiencyLevel ?? null,
+            hasAvailableTest: skill.hasAvailableTest ?? false,
           });
         });
         
@@ -115,13 +126,13 @@ const SubmitResume = () => {
   }, [expandedCategoryId, loadSkillsForCategory]);
 
   // Toggle skill selection
-  const toggleSkill = useCallback((skillId: string) => {
+  const toggleSkill = useCallback((skillId: string, hasAvailableTest: boolean = false) => {
     setSelectedSkills(prev => {
       const newMap = new Map(prev);
       if (newMap.has(skillId)) {
         newMap.delete(skillId);
       } else {
-        newMap.set(skillId, { useForMatching: true, proficiencyLevel: null });
+        newMap.set(skillId, { useForMatching: true, proficiencyLevel: null, hasAvailableTest });
       }
       return newMap;
     });
@@ -135,7 +146,8 @@ const SubmitResume = () => {
       if (current) {
         newMap.set(skillId, { 
           useForMatching: !current.useForMatching,
-          proficiencyLevel: current.proficiencyLevel
+          proficiencyLevel: current.proficiencyLevel,
+          hasAvailableTest: current.hasAvailableTest
         });
       }
       return newMap;
@@ -413,7 +425,7 @@ const SubmitResume = () => {
                                           }}
                                         >
                                           <button
-                                            onClick={() => toggleSkill(skill.id)}
+                                            onClick={() => toggleSkill(skill.id, skill.hasAvailableTest ?? false)}
                                             className="w-100 d-flex align-items-center p-3"
                                             style={{
                                               border: 'none',
@@ -491,7 +503,7 @@ const SubmitResume = () => {
                                                 </button>
                                               </div>
                                               
-                                              {/* Test button/badge section */}
+                                              {/* Test Affordance section */}
                                               <div 
                                                 className="px-3 py-2"
                                                 style={{ 
@@ -499,68 +511,103 @@ const SubmitResume = () => {
                                                   background: '#f8fafc'
                                                 }}
                                               >
-                                                {!user ? (
-                                                  // Anonymous user - show account prompt
-                                                  <p className="mb-0 c-grey" style={{ fontSize: '12px' }}>
-                                                    <i className="far fa-lock mr-1"></i>
-                                                    <Link href="/register" style={{ color: '#6366f1' }}>
-                                                      Maak een account aan
-                                                    </Link>{' '}
-                                                    om je skills te testen.
-                                                  </p>
-                                                ) : !useForMatching ? (
-                                                  // Interest skill - no test available
-                                                  <p className="mb-0" style={{ fontSize: '12px', color: '#9ca3af' }}>
-                                                    <i className="far fa-info-circle mr-1"></i>
-                                                    Test pas mogelijk wanneer je deze skill voor matching gebruikt.
-                                                  </p>
-                                                ) : skillData?.proficiencyLevel ? (
-                                                  // Has proficiency - show badge and upgrade link
-                                                  <div className="d-flex align-items-center justify-content-between">
-                                                    <span 
-                                                      className="badge"
-                                                      style={{ 
-                                                        background: '#dbeafe', 
-                                                        color: '#1d4ed8',
-                                                        padding: '4px 10px',
-                                                        borderRadius: '6px',
-                                                        fontSize: '12px'
-                                                      }}
-                                                    >
-                                                      <i className="far fa-check-circle mr-1"></i>
-                                                      {PROFICIENCY_LABELS[skillData.proficiencyLevel]} getest
-                                                    </span>
-                                                    <Link 
-                                                      href={`/dashboard/profile/test/${skill.id}`}
-                                                      onClick={(e) => e.stopPropagation()}
-                                                      style={{ 
-                                                        fontSize: '12px', 
-                                                        color: '#6366f1',
-                                                        textDecoration: 'none'
-                                                      }}
-                                                    >
-                                                      Hoger niveau testen <i className="far fa-arrow-right ml-1"></i>
-                                                    </Link>
-                                                  </div>
-                                                ) : (
-                                                  // No proficiency yet - show test button
-                                                  <Link 
-                                                    href={`/dashboard/profile/test/${skill.id}`}
-                                                    onClick={(e) => e.stopPropagation()}
-                                                    className="d-inline-flex align-items-center"
-                                                    style={{ 
-                                                      background: '#6366f1',
-                                                      color: '#fff',
-                                                      padding: '6px 12px',
-                                                      borderRadius: '6px',
-                                                      fontSize: '12px',
-                                                      textDecoration: 'none'
-                                                    }}
-                                                  >
-                                                    <i className="far fa-clipboard-check mr-2"></i>
-                                                    Test afleggen
-                                                  </Link>
-                                                )}
+                                                {(() => {
+                                                  const hasTest = skillData?.hasAvailableTest ?? skill.hasAvailableTest ?? false;
+                                                  const proficiency = skillData?.proficiencyLevel;
+                                                  const levelColors = proficiency ? PROFICIENCY_COLORS[proficiency] : null;
+
+                                                  // Case: useForMatching is false (interesse)
+                                                  if (!useForMatching) {
+                                                    return (
+                                                      <p className="mb-0" style={{ fontSize: '12px', color: '#9ca3af', fontStyle: 'italic' }}>
+                                                        <i className="far fa-info-circle mr-1"></i>
+                                                        Schakel &apos;Wordt gebruikt voor matching&apos; aan om deze skill te kunnen testen.
+                                                      </p>
+                                                    );
+                                                  }
+
+                                                  // Case: Anonymous user (useForMatching = true)
+                                                  if (!user) {
+                                                    return (
+                                                      <p className="mb-0" style={{ fontSize: '12px', color: '#6b7280' }}>
+                                                        <i className="far fa-lock mr-1"></i>
+                                                        <Link href="/register" style={{ color: '#6366f1' }}>
+                                                          Maak een account aan
+                                                        </Link>{' '}
+                                                        om je skills te testen — kandidaten met geteste skills komen vaker in matches.
+                                                      </p>
+                                                    );
+                                                  }
+
+                                                  // Case: Has proficiency (tested)
+                                                  if (proficiency) {
+                                                    return (
+                                                      <div className="d-flex align-items-center justify-content-between">
+                                                        <span 
+                                                          className="badge"
+                                                          style={{ 
+                                                            background: levelColors?.bg || '#dbeafe', 
+                                                            color: levelColors?.text || '#1d4ed8',
+                                                            padding: '4px 10px',
+                                                            borderRadius: '6px',
+                                                            fontSize: '12px'
+                                                          }}
+                                                        >
+                                                          <i className="far fa-check-circle mr-1"></i>
+                                                          {PROFICIENCY_LABELS[proficiency]} getest
+                                                        </span>
+                                                        {hasTest && (
+                                                          <Link 
+                                                            href={`/dashboard/profile/test/${skill.id}`}
+                                                            onClick={(e) => e.stopPropagation()}
+                                                            style={{ 
+                                                              fontSize: '12px', 
+                                                              color: '#6366f1',
+                                                              textDecoration: 'none'
+                                                            }}
+                                                          >
+                                                            Hoger niveau testen <i className="far fa-arrow-right ml-1"></i>
+                                                          </Link>
+                                                        )}
+                                                      </div>
+                                                    );
+                                                  }
+
+                                                  // Case: No proficiency, has test available
+                                                  if (hasTest) {
+                                                    return (
+                                                      <div>
+                                                        <Link 
+                                                          href={`/dashboard/profile/test/${skill.id}`}
+                                                          onClick={(e) => e.stopPropagation()}
+                                                          className="d-inline-flex align-items-center"
+                                                          style={{ 
+                                                            background: '#2563eb',
+                                                            color: '#fff',
+                                                            padding: '6px 12px',
+                                                            borderRadius: '6px',
+                                                            fontSize: '12px',
+                                                            textDecoration: 'none'
+                                                          }}
+                                                        >
+                                                          <i className="far fa-clipboard-check mr-2"></i>
+                                                          Test afleggen <i className="far fa-arrow-right ml-1"></i>
+                                                        </Link>
+                                                        <p className="mb-0 mt-2" style={{ fontSize: '11px', color: '#6b7280' }}>
+                                                          Test je niveau om beter te matchen met werkgevers.
+                                                        </p>
+                                                      </div>
+                                                    );
+                                                  }
+
+                                                  // Case: No proficiency, no test available
+                                                  return (
+                                                    <p className="mb-0" style={{ fontSize: '12px', color: '#9ca3af' }}>
+                                                      <i className="far fa-info-circle mr-1"></i>
+                                                      Geen test beschikbaar voor deze skill. Je profiel toont &apos;beheerst maar niet getest&apos; bij werkgevers.
+                                                    </p>
+                                                  );
+                                                })()}
                                               </div>
                                             </>
                                           )}

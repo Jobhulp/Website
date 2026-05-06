@@ -39,6 +39,7 @@ interface SelectedSkillData {
   useForMatching: boolean;
   proficiencyLevel: ProficiencyLevel | null;
   candidateSkillId: string | null; // ID from candidate_skills table for deletion
+  hasAvailableTest: boolean;
 }
 
 export default function SkillsPage() {
@@ -80,6 +81,7 @@ export default function SkillsPage() {
             useForMatching: skill.useForMatching ?? true,
             proficiencyLevel: skill.proficiencyLevel ?? null,
             candidateSkillId: skill.id,
+            hasAvailableTest: skill.hasAvailableTest ?? false,
           });
         });
         setMySkills(newMap);
@@ -137,7 +139,7 @@ export default function SkillsPage() {
   }, [expandedSectorId, loadSectorSkills]);
 
   // Toggle skill selection
-  const toggleSkill = useCallback((skillId: string) => {
+  const toggleSkill = useCallback((skillId: string, hasAvailableTest: boolean = false) => {
     setMySkills(prev => {
       const newMap = new Map(prev);
       if (newMap.has(skillId)) {
@@ -146,7 +148,8 @@ export default function SkillsPage() {
         newMap.set(skillId, { 
           useForMatching: true, 
           proficiencyLevel: null,
-          candidateSkillId: null 
+          candidateSkillId: null,
+          hasAvailableTest
         });
       }
       return newMap;
@@ -198,6 +201,7 @@ export default function SkillsPage() {
           useForMatching: skill.useForMatching ?? true,
           proficiencyLevel: skill.proficiencyLevel ?? null,
           candidateSkillId: skill.id,
+          hasAvailableTest: skill.hasAvailableTest ?? false,
         });
       });
       setMySkills(newMap);
@@ -481,7 +485,7 @@ export default function SkillsPage() {
                                         ? 'border-indigo-300 bg-indigo-50'
                                         : 'hover:border-gray-300'
                                     }`}
-                                    onClick={() => toggleSkill(skill.id)}
+                                    onClick={() => toggleSkill(skill.id, skill.hasAvailableTest ?? false)}
                                   >
                                     <div className="flex items-center justify-between">
                                       <span className={isSelected ? 'text-indigo-700 font-medium' : ''}>
@@ -499,6 +503,8 @@ export default function SkillsPage() {
                                         <MatchingToggleInline
                                           useForMatching={skillData.useForMatching}
                                           proficiencyLevel={skillData.proficiencyLevel}
+                                          hasAvailableTest={skillData.hasAvailableTest || skill.hasAvailableTest || false}
+                                          skillId={skill.id}
                                           onToggle={(e) => {
                                             e.stopPropagation();
                                             toggleSkillMatching(skill.id);
@@ -583,6 +589,7 @@ function SkillRow({
 }) {
   const isTested = !!data.proficiencyLevel;
   const isDisabled = isTested;
+  const hasTest = data.hasAvailableTest;
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border rounded-lg bg-white">
@@ -644,13 +651,34 @@ function SkillRow({
           </Tooltip>
         </TooltipProvider>
 
-        {/* Test button */}
-        {data.useForMatching && (
+        {/* Test affordance - based on state */}
+        {!data.useForMatching ? (
+          // Interest skill - show hint
+          <span className="text-xs text-gray-400 italic">
+            Zet op matching om te testen
+          </span>
+        ) : isTested && hasTest ? (
+          // Tested with higher test available
           <Button variant="outline" size="sm" asChild>
             <Link href={`/dashboard/profile/test/${skillId}`}>
-              {isTested ? 'Hoger testen' : 'Test afleggen'}
+              Hoger niveau testen &rarr;
             </Link>
           </Button>
+        ) : isTested && !hasTest ? (
+          // Tested, no higher test
+          null
+        ) : hasTest ? (
+          // Not tested, test available
+          <Button size="sm" className="bg-blue-600 hover:bg-blue-700" asChild>
+            <Link href={`/dashboard/profile/test/${skillId}`}>
+              Test afleggen &rarr;
+            </Link>
+          </Button>
+        ) : (
+          // Not tested, no test available
+          <span className="text-xs text-gray-400">
+            Geen test beschikbaar
+          </span>
         )}
 
         {/* Delete button */}
@@ -667,37 +695,103 @@ function SkillRow({
   );
 }
 
-// Inline matching toggle for skill selection
+// Inline matching toggle for skill selection with test affordance
 function MatchingToggleInline({
   useForMatching,
   proficiencyLevel,
+  hasAvailableTest,
+  skillId,
   onToggle,
 }: {
   useForMatching: boolean;
   proficiencyLevel: ProficiencyLevel | null;
+  hasAvailableTest: boolean;
+  skillId: string;
   onToggle: (e: React.MouseEvent) => void;
 }) {
   const isTested = !!proficiencyLevel;
 
   return (
-    <div className="flex items-center justify-between text-xs">
-      <span className={useForMatching ? 'text-green-600' : 'text-amber-600'}>
-        {useForMatching ? 'Voor matching' : 'Interesse'}
-      </span>
-      {!isTested && (
-        <button
-          onClick={onToggle}
-          className={`relative w-8 h-4 rounded-full transition-colors ${
-            useForMatching ? 'bg-green-500' : 'bg-amber-500'
-          }`}
-        >
-          <div
-            className={`absolute top-0.5 w-3 h-3 rounded-full bg-white shadow transition-transform ${
-              useForMatching ? 'left-4' : 'left-0.5'
+    <div className="space-y-2">
+      {/* Matching toggle row */}
+      <div className="flex items-center justify-between text-xs">
+        <span className={useForMatching ? 'text-green-600' : 'text-amber-600'}>
+          {useForMatching ? 'Voor matching' : 'Interesse'}
+        </span>
+        {isTested ? (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                className="relative w-8 h-4 rounded-full bg-gray-300 cursor-not-allowed opacity-60"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="absolute top-0.5 left-4 w-3 h-3 rounded-full bg-white shadow" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent className="max-w-xs text-xs">
+              Deze skill is getest op {PROFICIENCY_LABELS[proficiencyLevel]}. Om hem als interesse te markeren, moet je hem eerst verwijderen en opnieuw toevoegen.
+            </TooltipContent>
+          </Tooltip>
+        ) : (
+          <button
+            onClick={onToggle}
+            className={`relative w-8 h-4 rounded-full transition-colors ${
+              useForMatching ? 'bg-green-500' : 'bg-amber-500'
             }`}
-          />
-        </button>
-      )}
+          >
+            <div
+              className={`absolute top-0.5 w-3 h-3 rounded-full bg-white shadow transition-transform ${
+                useForMatching ? 'left-4' : 'left-0.5'
+              }`}
+            />
+          </button>
+        )}
+      </div>
+
+      {/* Test affordance row */}
+      <div className="text-xs">
+        {!useForMatching ? (
+          // Case: interesse (not for matching)
+          <p className="text-gray-400 italic mb-0">
+            Schakel &apos;Voor matching&apos; aan om deze skill te kunnen testen.
+          </p>
+        ) : proficiencyLevel ? (
+          // Case: tested
+          <div className="flex items-center justify-between">
+            <Badge className={proficiencyColors[proficiencyLevel]}>
+              {PROFICIENCY_LABELS[proficiencyLevel]} getest
+            </Badge>
+            {hasAvailableTest && (
+              <Link
+                href={`/dashboard/profile/test/${skillId}`}
+                onClick={(e) => e.stopPropagation()}
+                className="text-indigo-600 hover:underline"
+              >
+                Hoger niveau testen &rarr;
+              </Link>
+            )}
+          </div>
+        ) : hasAvailableTest ? (
+          // Case: not tested, test available
+          <div>
+            <Link
+              href={`/dashboard/profile/test/${skillId}`}
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+            >
+              Test afleggen &rarr;
+            </Link>
+            <p className="text-gray-500 mt-1 mb-0">
+              Test je niveau om beter te matchen met werkgevers.
+            </p>
+          </div>
+        ) : (
+          // Case: not tested, no test available
+          <p className="text-gray-400 mb-0">
+            Geen test beschikbaar. Je profiel toont &apos;beheerst maar niet getest&apos; bij werkgevers.
+          </p>
+        )}
+      </div>
     </div>
   );
 }
