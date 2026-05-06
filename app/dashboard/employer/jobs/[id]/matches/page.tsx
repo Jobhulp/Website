@@ -472,6 +472,27 @@ export default function JobMatchesPage() {
                   {/* Expanded match details */}
                   {isExpanded && (
                     <div className="mt-4 pt-4 border-t">
+                      {/* Career switcher banner */}
+                      {match.matchScore.isCareerSwitcher && (
+                        <div className="mb-6 p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
+                          <div className="flex items-start gap-3">
+                            <div className="flex-shrink-0 w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
+                              <svg className="w-4 h-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-indigo-900">
+                                Career switcher — deze kandidaat zoekt richting jouw vacature
+                              </h4>
+                              <p className="text-sm text-indigo-700 mt-1">
+                                Ondanks dat de skills nog op leer-niveau staan, toont deze kandidaat sterke motivatie. 
+                                Bekijk hun persoonlijkheid en voorkeuren voor een beter beeld.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                       <MatchDisplay matchScore={match.matchScore} />
                     </div>
                   )}
