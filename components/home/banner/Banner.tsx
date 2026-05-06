@@ -37,8 +37,8 @@ const Banner = () => (
                 <span> er gesolliciteerd wordt. Alleen relevante gesprekken.</span>
               </h3>
               <div className="universal-btn-wrapper">
-                <a href="/how-it-works" className="crumina-button button--yellow button--xl button--hover-primary">Hoe het werkt</a>
-                <a href="#voor-wie" className="arrow--white link--bold link--with-icon link--icon-right">Ontdek meer<i className="puzzle-icon far fa-angle-right"></i></a>
+                <a href="/register" className="crumina-button button--yellow button--xl button--hover-primary">Start nu gratis</a>
+                <a href="/how-it-works" className="arrow--white link--bold link--with-icon link--icon-right">Hoe het werkt<i className="puzzle-icon far fa-angle-right"></i></a>
               </div>
             </div>
             <div className="col-lg-7 col-md-6 col-sm-12 col-xs-12" data-swiper-parallax="-100">
