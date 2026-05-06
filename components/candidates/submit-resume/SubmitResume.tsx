@@ -10,11 +10,14 @@ import type {
   CandidateSkill,
   SectorCategoriesResponse,
   SkillsBySectorResponse,
-  CandidateSkillsResponse
+  CandidateSkillsResponse,
+  ProficiencyLevel
 } from '@/types/api';
+import { PROFICIENCY_LABELS } from '@/lib/proficiency';
 
 interface SelectedSkillData {
   useForMatching: boolean;
+  proficiencyLevel: ProficiencyLevel | null;
 }
 
 const SubmitResume = () => {
@@ -65,6 +68,7 @@ const SubmitResume = () => {
         response.skills.forEach((skill) => {
           newSelectedSkills.set(skill.skillId, {
             useForMatching: skill.useForMatching ?? true,
+            proficiencyLevel: skill.proficiencyLevel ?? null,
           });
         });
         
@@ -117,7 +121,7 @@ const SubmitResume = () => {
       if (newMap.has(skillId)) {
         newMap.delete(skillId);
       } else {
-        newMap.set(skillId, { useForMatching: true });
+        newMap.set(skillId, { useForMatching: true, proficiencyLevel: null });
       }
       return newMap;
     });
@@ -129,7 +133,10 @@ const SubmitResume = () => {
       const newMap = new Map(prev);
       const current = newMap.get(skillId);
       if (current) {
-        newMap.set(skillId, { useForMatching: !current.useForMatching });
+        newMap.set(skillId, { 
+          useForMatching: !current.useForMatching,
+          proficiencyLevel: current.proficiencyLevel
+        });
       }
       return newMap;
     });
@@ -433,47 +440,121 @@ const SubmitResume = () => {
                                           
                                           {/* Matching toggle - only visible when skill is selected */}
                                           {isSelected && (
-                                            <div 
-                                              className="d-flex align-items-center justify-content-between px-3 py-2"
-                                              style={{ 
-                                                borderTop: `1px solid ${category.color}30`,
-                                                background: useForMatching ? '#f0fdf4' : '#fffbeb'
-                                              }}
-                                            >
-                                              <span style={{ fontSize: '12px', color: useForMatching ? '#059669' : '#d97706' }}>
-                                                <i className={`far fa-${useForMatching ? 'search' : 'star'} mr-1`}></i>
-                                                {useForMatching ? 'Wordt gebruikt voor matching' : 'Interesse (niet voor matching)'}
-                                              </span>
-                                              <button
-                                                onClick={(e) => {
-                                                  e.stopPropagation();
-                                                  toggleSkillMatching(skill.id);
-                                                }}
-                                                className="d-flex align-items-center"
-                                                style={{
-                                                  width: '40px',
-                                                  height: '22px',
-                                                  borderRadius: '11px',
-                                                  border: 'none',
-                                                  background: useForMatching ? '#059669' : '#d97706',
-                                                  cursor: 'pointer',
-                                                  padding: '2px',
-                                                  transition: 'background 0.2s'
+                                            <>
+                                              <div 
+                                                className="d-flex align-items-center justify-content-between px-3 py-2"
+                                                style={{ 
+                                                  borderTop: `1px solid ${category.color}30`,
+                                                  background: useForMatching ? '#f0fdf4' : '#fffbeb'
                                                 }}
                                               >
-                                                <div
-                                                  style={{
-                                                    width: '18px',
-                                                    height: '18px',
-                                                    borderRadius: '50%',
-                                                    background: '#fff',
-                                                    transform: useForMatching ? 'translateX(18px)' : 'translateX(0)',
-                                                    transition: 'transform 0.2s',
-                                                    boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
+                                                <span style={{ fontSize: '12px', color: useForMatching ? '#059669' : '#d97706' }}>
+                                                  <i className={`far fa-${useForMatching ? 'search' : 'star'} mr-1`}></i>
+                                                  {useForMatching ? 'Wordt gebruikt voor matching' : 'Interesse (niet voor matching)'}
+                                                </span>
+                                                <button
+                                                  onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    toggleSkillMatching(skill.id);
                                                   }}
-                                                />
-                                              </button>
-                                            </div>
+                                                  className="d-flex align-items-center"
+                                                  style={{
+                                                    width: '40px',
+                                                    height: '22px',
+                                                    borderRadius: '11px',
+                                                    border: 'none',
+                                                    background: useForMatching ? '#059669' : '#d97706',
+                                                    cursor: 'pointer',
+                                                    padding: '2px',
+                                                    transition: 'background 0.2s'
+                                                  }}
+                                                >
+                                                  <div
+                                                    style={{
+                                                      width: '18px',
+                                                      height: '18px',
+                                                      borderRadius: '50%',
+                                                      background: '#fff',
+                                                      transform: useForMatching ? 'translateX(18px)' : 'translateX(0)',
+                                                      transition: 'transform 0.2s',
+                                                      boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
+                                                    }}
+                                                  />
+                                                </button>
+                                              </div>
+                                              
+                                              {/* Test button/badge section */}
+                                              <div 
+                                                className="px-3 py-2"
+                                                style={{ 
+                                                  borderTop: `1px solid ${category.color}20`,
+                                                  background: '#f8fafc'
+                                                }}
+                                              >
+                                                {!user ? (
+                                                  // Anonymous user - show account prompt
+                                                  <p className="mb-0 c-grey" style={{ fontSize: '12px' }}>
+                                                    <i className="far fa-lock mr-1"></i>
+                                                    <Link href="/register" style={{ color: '#6366f1' }}>
+                                                      Maak een account aan
+                                                    </Link>{' '}
+                                                    om je skills te testen.
+                                                  </p>
+                                                ) : !useForMatching ? (
+                                                  // Interest skill - no test available
+                                                  <p className="mb-0" style={{ fontSize: '12px', color: '#9ca3af' }}>
+                                                    <i className="far fa-info-circle mr-1"></i>
+                                                    Test pas mogelijk wanneer je deze skill voor matching gebruikt.
+                                                  </p>
+                                                ) : skillData?.proficiencyLevel ? (
+                                                  // Has proficiency - show badge and upgrade link
+                                                  <div className="d-flex align-items-center justify-content-between">
+                                                    <span 
+                                                      className="badge"
+                                                      style={{ 
+                                                        background: '#dbeafe', 
+                                                        color: '#1d4ed8',
+                                                        padding: '4px 10px',
+                                                        borderRadius: '6px',
+                                                        fontSize: '12px'
+                                                      }}
+                                                    >
+                                                      <i className="far fa-check-circle mr-1"></i>
+                                                      {PROFICIENCY_LABELS[skillData.proficiencyLevel]} getest
+                                                    </span>
+                                                    <Link 
+                                                      href={`/dashboard/profile/test/${skill.id}`}
+                                                      onClick={(e) => e.stopPropagation()}
+                                                      style={{ 
+                                                        fontSize: '12px', 
+                                                        color: '#6366f1',
+                                                        textDecoration: 'none'
+                                                      }}
+                                                    >
+                                                      Hoger niveau testen <i className="far fa-arrow-right ml-1"></i>
+                                                    </Link>
+                                                  </div>
+                                                ) : (
+                                                  // No proficiency yet - show test button
+                                                  <Link 
+                                                    href={`/dashboard/profile/test/${skill.id}`}
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    className="d-inline-flex align-items-center"
+                                                    style={{ 
+                                                      background: '#6366f1',
+                                                      color: '#fff',
+                                                      padding: '6px 12px',
+                                                      borderRadius: '6px',
+                                                      fontSize: '12px',
+                                                      textDecoration: 'none'
+                                                    }}
+                                                  >
+                                                    <i className="far fa-clipboard-check mr-2"></i>
+                                                    Test afleggen
+                                                  </Link>
+                                                )}
+                                              </div>
+                                            </>
                                           )}
                                         </div>
                                       </div>
