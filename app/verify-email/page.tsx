@@ -5,35 +5,42 @@ export const dynamic = 'force-dynamic';
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/lib/auth-context';
 import { api, ApiError } from '@/lib/api-client';
+import Header from '@/components/common/header/Header';
+import Footer from '@/components/common/footer/Footer';
+import logo from '@/assets/img/svg/01_logo_white.svg';
 import type { SessionUser } from '@/types/api';
 
 export default function VerifyEmailPage() {
   return (
-    <Suspense fallback={<VerifyEmailSkeleton />}>
-      <VerifyEmailContent />
-    </Suspense>
+    <>
+      <Header />
+      <div className="header--spacer" style={{ height: '80px' }} />
+      <Suspense fallback={<VerifyEmailSkeleton />}>
+        <VerifyEmailContent />
+      </Suspense>
+      <Footer />
+    </>
   );
 }
 
 function VerifyEmailSkeleton() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gray-50">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <Skeleton className="h-12 w-12 rounded-full mx-auto mb-4" />
-          <Skeleton className="h-8 w-48 mx-auto mb-2" />
-          <Skeleton className="h-4 w-64 mx-auto" />
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="h-10 w-full" />
-        </CardContent>
-      </Card>
-    </div>
+    <section className="crumina-module bg-dark-themes" style={{ minHeight: '60vh', paddingTop: '80px', paddingBottom: '80px' }}>
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-lg-5 col-md-8">
+            <div className="card" style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px', padding: '40px' }}>
+              <div className="text-center mb-4">
+                <div style={{ width: '150px', height: '40px', background: 'rgba(255,255,255,0.1)', borderRadius: '8px', margin: '0 auto' }} />
+              </div>
+              <div style={{ height: '150px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -83,69 +90,123 @@ function VerifyInstructions() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gray-50">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
-            <svg
-              className="h-6 w-6 text-blue-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-              />
-            </svg>
-          </div>
-          <CardTitle className="text-2xl font-bold">Bevestig je e-mailadres</CardTitle>
-          <CardDescription>
-            We hebben een bevestigingslink gestuurd naar{' '}
-            <span className="font-medium text-gray-900">{user?.email ?? 'je e-mailadres'}</span>.
-          </CardDescription>
-        </CardHeader>
+    <section className="crumina-module bg-dark-themes" style={{ minHeight: '60vh', paddingTop: '80px', paddingBottom: '80px' }}>
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-lg-5 col-md-8">
+            <div className="card" style={{ 
+              background: 'rgba(255,255,255,0.05)', 
+              borderRadius: '16px', 
+              padding: '40px',
+              border: '1px solid rgba(255,255,255,0.1)'
+            }}>
+              {/* Logo */}
+              <div className="text-center mb-4">
+                <Link href="/">
+                  <img src={logo.src} alt="Jobhulp" width="150" />
+                </Link>
+              </div>
 
-        <CardContent className="space-y-4">
-          <p className="text-sm text-gray-600 text-center">
-            Klik op de link in de e-mail om je account te activeren. 
-            Check ook je spam-folder als je de e-mail niet ziet.
-          </p>
+              {/* Icon */}
+              <div className="text-center mb-4">
+                <div 
+                  style={{
+                    width: '60px',
+                    height: '60px',
+                    borderRadius: '50%',
+                    background: 'rgba(0, 123, 255, 0.2)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 16px'
+                  }}
+                >
+                  <i className="far fa-envelope fa-lg c-blue"></i>
+                </div>
+                <h3 className="c-white mb-2">Bevestig je e-mailadres</h3>
+                <p className="c-grey" style={{ fontSize: '14px' }}>
+                  We hebben een bevestigingslink gestuurd naar{' '}
+                  <span className="c-white" style={{ fontWeight: 500 }}>{user?.email ?? 'je e-mailadres'}</span>.
+                </p>
+              </div>
 
-          {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-              <p className="text-sm text-red-600">{error}</p>
+              <p className="c-grey text-center mb-4" style={{ fontSize: '14px' }}>
+                Klik op de link in de e-mail om je account te activeren. 
+                Check ook je spam-folder als je de e-mail niet ziet.
+              </p>
+
+              {/* Error message */}
+              {error && (
+                <div className="alert mb-4" style={{ 
+                  background: 'rgba(220, 53, 69, 0.15)', 
+                  border: '1px solid rgba(220, 53, 69, 0.3)',
+                  borderRadius: '8px',
+                  padding: '12px 16px'
+                }}>
+                  <p className="mb-0 c-red" style={{ fontSize: '14px' }}>
+                    <i className="far fa-exclamation-circle mr-2"></i>
+                    {error}
+                  </p>
+                </div>
+              )}
+
+              {/* Success message */}
+              {resendStatus === 'success' && (
+                <div className="alert mb-4" style={{ 
+                  background: 'rgba(40, 167, 69, 0.15)', 
+                  border: '1px solid rgba(40, 167, 69, 0.3)',
+                  borderRadius: '8px',
+                  padding: '12px 16px'
+                }}>
+                  <p className="mb-0 c-green" style={{ fontSize: '14px' }}>
+                    <i className="far fa-check-circle mr-2"></i>
+                    E-mail verzonden!
+                  </p>
+                </div>
+              )}
+
+              <button
+                onClick={handleResend}
+                disabled={isResending || resendStatus === 'success'}
+                className="crumina-button button--yellow button--xl w-100 mb-4"
+                style={{ 
+                  borderRadius: '8px',
+                  padding: '14px 24px',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  opacity: (isResending || resendStatus === 'success') ? 0.7 : 1
+                }}
+              >
+                {isResending ? (
+                  <>
+                    <i className="far fa-spinner fa-spin mr-2"></i>
+                    Versturen...
+                  </>
+                ) : resendStatus === 'success' ? (
+                  <>
+                    <i className="far fa-check mr-2"></i>
+                    Verzonden
+                  </>
+                ) : (
+                  'Verstuur opnieuw'
+                )}
+              </button>
+
+              <div className="text-center">
+                <Link 
+                  href="/dashboard" 
+                  className="c-grey d-inline-flex align-items-center"
+                  style={{ fontSize: '14px', textDecoration: 'none' }}
+                >
+                  <i className="far fa-arrow-left mr-2"></i>
+                  Naar dashboard
+                </Link>
+              </div>
             </div>
-          )}
-
-          <Button
-            onClick={handleResend}
-            disabled={isResending || resendStatus === 'success'}
-            variant={resendStatus === 'success' ? 'outline' : 'default'}
-            className="w-full"
-          >
-            {isResending ? (
-              'Versturen...'
-            ) : resendStatus === 'success' ? (
-              'Verzonden'
-            ) : (
-              'Verstuur opnieuw'
-            )}
-          </Button>
-
-          <div className="text-center">
-            <Link
-              href="/dashboard"
-              className="text-sm text-gray-600 hover:text-gray-900"
-            >
-              &larr; Naar dashboard
-            </Link>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -181,92 +242,110 @@ function VerifyWithToken({ token }: { token: string }) {
   }, [token, setUser, router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gray-50">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          {status === 'loading' && (
-            <>
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center">
-                <svg
-                  className="h-8 w-8 text-gray-400 animate-spin"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                  />
-                </svg>
+    <section className="crumina-module bg-dark-themes" style={{ minHeight: '60vh', paddingTop: '80px', paddingBottom: '80px' }}>
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-lg-5 col-md-8">
+            <div className="card text-center" style={{ 
+              background: 'rgba(255,255,255,0.05)', 
+              borderRadius: '16px', 
+              padding: '40px',
+              border: '1px solid rgba(255,255,255,0.1)'
+            }}>
+              {/* Logo */}
+              <div className="mb-4">
+                <Link href="/">
+                  <img src={logo.src} alt="Jobhulp" width="150" />
+                </Link>
               </div>
-              <CardTitle className="text-2xl font-bold">Bezig met verifiëren...</CardTitle>
-              <CardDescription>Even geduld terwijl we je e-mail bevestigen.</CardDescription>
-            </>
-          )}
 
-          {status === 'success' && (
-            <>
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                <svg
-                  className="h-6 w-6 text-green-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              </div>
-              <CardTitle className="text-2xl font-bold text-green-600">E-mail bevestigd!</CardTitle>
-              <CardDescription>Je wordt doorgestuurd naar je dashboard...</CardDescription>
-            </>
-          )}
+              {status === 'loading' && (
+                <>
+                  <div 
+                    style={{
+                      width: '60px',
+                      height: '60px',
+                      borderRadius: '50%',
+                      background: 'rgba(255,255,255,0.1)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: '0 auto 16px'
+                    }}
+                  >
+                    <i className="far fa-spinner fa-spin fa-lg c-white"></i>
+                  </div>
+                  <h3 className="c-white mb-2">Bezig met verifiëren...</h3>
+                  <p className="c-grey" style={{ fontSize: '14px' }}>
+                    Even geduld terwijl we je e-mail bevestigen.
+                  </p>
+                </>
+              )}
 
-          {status === 'error' && (
-            <>
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
-                <svg
-                  className="h-6 w-6 text-red-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </div>
-              <CardTitle className="text-2xl font-bold">Bevestiging mislukt</CardTitle>
-              <CardDescription>
-                {error ?? 'De link kan verlopen of ongeldig zijn.'}
-              </CardDescription>
-            </>
-          )}
-        </CardHeader>
+              {status === 'success' && (
+                <>
+                  <div 
+                    style={{
+                      width: '60px',
+                      height: '60px',
+                      borderRadius: '50%',
+                      background: 'rgba(40, 167, 69, 0.2)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: '0 auto 16px'
+                    }}
+                  >
+                    <i className="far fa-check fa-lg c-green"></i>
+                  </div>
+                  <h3 className="c-green mb-2">E-mail bevestigd!</h3>
+                  <p className="c-grey" style={{ fontSize: '14px' }}>
+                    Je wordt doorgestuurd naar je dashboard...
+                  </p>
+                </>
+              )}
 
-        {status === 'error' && (
-          <CardContent>
-            <Link href="/verify-email">
-              <Button className="w-full">Vraag nieuwe link aan</Button>
-            </Link>
-          </CardContent>
-        )}
-      </Card>
-    </div>
+              {status === 'error' && (
+                <>
+                  <div 
+                    style={{
+                      width: '60px',
+                      height: '60px',
+                      borderRadius: '50%',
+                      background: 'rgba(220, 53, 69, 0.2)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: '0 auto 16px'
+                    }}
+                  >
+                    <i className="far fa-times fa-lg c-red"></i>
+                  </div>
+                  <h3 className="c-white mb-2">Bevestiging mislukt</h3>
+                  <p className="c-grey mb-4" style={{ fontSize: '14px' }}>
+                    {error ?? 'De link kan verlopen of ongeldig zijn.'}
+                  </p>
+                  
+                  <Link 
+                    href="/verify-email"
+                    className="crumina-button button--yellow button--xl"
+                    style={{ 
+                      borderRadius: '8px',
+                      padding: '14px 24px',
+                      fontSize: '16px',
+                      fontWeight: 600,
+                      display: 'inline-block',
+                      textDecoration: 'none'
+                    }}
+                  >
+                    Vraag nieuwe link aan
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
