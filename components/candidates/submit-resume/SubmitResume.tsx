@@ -246,9 +246,17 @@ const SubmitResume = () => {
                       >
                         {selectedSkillsCount} geselecteerd
                       </span>
-                      <div className="c-grey mt-1" style={{ fontSize: '12px' }}>
-                        {matchingSkillsCount} voor matching
+                      <div className="d-flex align-items-center justify-content-end mt-1" style={{ fontSize: '12px', color: '#6b7280' }}>
+                        <span>{matchingSkillsCount} voor matching</span>
+                        <i 
+                          className="far fa-question-circle ml-1" 
+                          style={{ cursor: 'help' }}
+                          title="Geselecteerd: aantal skills + interesses op je profiel. Voor matching: skills die meetellen voor jobsuggesties. Skills op 'interesse' tellen niet voor matching, maar helpen je om jobs in nieuwe vakgebieden aangeboden te krijgen."
+                        ></i>
                       </div>
+                      <p className="mb-0 mt-2" style={{ fontSize: '11px', color: '#9ca3af', maxWidth: '200px', marginLeft: 'auto' }}>
+                        Skills op &apos;interesse&apos; helpen je jobs in nieuwe vakgebieden te ontdekken.
+                      </p>
                     </div>
                   )}
                 </div>
