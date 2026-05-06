@@ -642,3 +642,12 @@ export interface CandidatesCountResponse {
   count: number;
   isFloor: boolean;
 }
+
+// ===========================================================================
+// Match breakdown types
+// ===========================================================================
+
+export interface MatchBreakdown {
+  isCareerSwitcher: boolean;
+  willingnessScore: number | null;
+}
