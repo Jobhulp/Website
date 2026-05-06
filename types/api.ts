@@ -75,6 +75,7 @@ export interface CandidateSkill {
   yearsExperience: number | null;
   testedAt: string | null;
   lastTestScore: number | null;
+  useForMatching: boolean;
 }
 
 export interface CandidateExperience {
@@ -106,12 +107,41 @@ export interface Sector {
   slug: string;
 }
 
+export interface SectorCategory {
+  id: string;
+  name: string;
+  slug: string;
+  icon: string;
+  color: string;
+  skillCount: number;
+}
+
 export interface Skill {
   id: string;
   sectorId: string;
   sectorName: string;
   name: string;
   slug: string;
+  description?: string;
+}
+
+export interface SkillsBySectorResponse {
+  skills: Skill[];
+}
+
+export interface SectorCategoriesResponse {
+  categories: SectorCategory[];
+}
+
+export interface CandidateSkillsResponse {
+  skills: CandidateSkill[];
+}
+
+export interface CandidateSkillsUpdatePayload {
+  skills: Array<{
+    skillId: string;
+    useForMatching: boolean;
+  }>;
 }
 
 // Personality test
