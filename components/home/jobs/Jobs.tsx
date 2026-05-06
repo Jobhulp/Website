@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Tabs from './Tabs';
 import { JobFeedSection } from '@/components/homepage/job-feed-section';
 import { CandidatesFeedSection } from '@/components/homepage/candidates-feed-section';
@@ -100,12 +101,12 @@ const Jobs: React.FC<JobsProps> = ({ workTypes = [], city, onClearFilters, onTab
                   style={{ display: activeTab === 'jobs' ? 'block' : 'none' }}
                 >
                   <div className="d-flex justify-content-between align-items-center flex-wrap mb60">
-                    <button type="button" className="crumina-button button--dark button--m button--with-icon button--icon-left my-2">
+                    <Link href="/candidates/submit-resume" className="crumina-button button--dark button--m button--with-icon button--icon-left my-2">
                       <i className="puzzle-icon far fa-pencil" />Maak je profiel aan
-                    </button>
-                    <button type="button" className="crumina-button button--dark button--m button--bordered button--with-icon button--icon-left my-2">
+                    </Link>
+                    <Link href="/register?type=candidate&subscribe=matches" className="crumina-button button--dark button--m button--bordered button--with-icon button--icon-left my-2">
                       <i className="puzzle-icon far fa-at" />Ontvang matches per e-mail
-                    </button>
+                    </Link>
                   </div>
 
                   <JobFeedSection 
@@ -126,12 +127,12 @@ const Jobs: React.FC<JobsProps> = ({ workTypes = [], city, onClearFilters, onTab
                   style={{ display: activeTab === 'candidates' ? 'block' : 'none' }}
                 >
                   <div className="d-flex justify-content-between align-items-center flex-wrap mb60">
-                    <button type="button" className="crumina-button button--dark button--m button--with-icon button--icon-left my-2">
+                    <Link href="/dashboard/employer/jobs/new" className="crumina-button button--dark button--m button--with-icon button--icon-left my-2">
                       <i className="puzzle-icon far fa-building" />Plaats een vacature
-                    </button>
-                    <button type="button" className="crumina-button button--dark button--m button--bordered button--with-icon button--icon-left my-2">
+                    </Link>
+                    <Link href="/candidates/candidate-lists" className="crumina-button button--dark button--m button--bordered button--with-icon button--icon-left my-2">
                       <i className="puzzle-icon far fa-search" />Zoek kandidaten
-                    </button>
+                    </Link>
                   </div>
 
                   <CandidatesFeedSection 
