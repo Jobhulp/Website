@@ -1,90 +1,193 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { skillCategories, getAllSkills } from '../../../data/candidate-skills-data';
+import { useRouter } from 'next/navigation';
+import { api, ApiError } from '@/lib/api-client';
+import { useAuth } from '@/lib/auth-context';
+import type { 
+  SectorCategory, 
+  Skill, 
+  CandidateSkill,
+  SectorCategoriesResponse,
+  SkillsBySectorResponse,
+  CandidateSkillsResponse,
+  ProficiencyLevel
+} from '@/types/api';
+import { PROFICIENCY_LABELS } from '@/lib/proficiency';
 
-interface Education {
-  id: number;
-  schoolName: string;
-  qualification: string;
-  startEndDate: string;
-}
-
-interface Experience {
-  id: number;
-  company: string;
-  title: string;
-  startEndDate: string;
-  description: string;
-}
-
-interface SelectedSkill {
-  skillId: string;
-  useForMatching: boolean; // Of deze skill gebruikt wordt voor job matching
+interface SelectedSkillData {
+  useForMatching: boolean;
+  proficiencyLevel: ProficiencyLevel | null;
 }
 
 const SubmitResume = () => {
-  const [selectedSkills, setSelectedSkills] = useState<SelectedSkill[]>([]);
-  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
-  const [education, setEducation] = useState<Education[]>([{ id: 1, schoolName: '', qualification: '', startEndDate: '' }]);
-  const [experience, setExperience] = useState<Experience[]>([]);
+  const router = useRouter();
+  const { user } = useAuth();
   
-  const allSkills = getAllSkills();
+  // API data state
+  const [categories, setCategories] = useState<SectorCategory[]>([]);
+  const [skillsByCategory, setSkillsByCategory] = useState<Map<string, Skill[]>>(new Map());
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loadingSkills, setLoadingSkills] = useState<Set<string>>(new Set());
+  
+  // Selected skills state
+  const [selectedSkills, setSelectedSkills] = useState<Map<string, SelectedSkillData>>(new Map());
+  const [expandedCategoryId, setExpandedCategoryId] = useState<string | null>(null);
+  
+  // Saving state
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
-  const toggleSkill = (skillId: string) => {
-    setSelectedSkills(prev => {
-      const exists = prev.find(s => s.skillId === skillId);
-      if (exists) {
-        return prev.filter(s => s.skillId !== skillId);
-      } else {
-        return [...prev, { skillId, useForMatching: true }]; // Default: gebruik voor matching
+  // Fetch categories on mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await api.get<SectorCategoriesResponse>('/skills/categories');
+        setCategories(response.categories);
+      } catch (err) {
+        console.error('[v0] Failed to fetch categories:', err);
+        setError('Kon skill categorieën niet laden.');
+      } finally {
+        setLoadingCategories(false);
       }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Fetch existing candidate skills if logged in
+  useEffect(() => {
+    const fetchCandidateSkills = async () => {
+      if (!user) return;
+      
+      try {
+        const response = await api.get<CandidateSkillsResponse>('/candidate/skills');
+        const newSelectedSkills = new Map<string, SelectedSkillData>();
+        
+        response.skills.forEach((skill) => {
+          newSelectedSkills.set(skill.skillId, {
+            useForMatching: skill.useForMatching ?? true,
+            proficiencyLevel: skill.proficiencyLevel ?? null,
+          });
+        });
+        
+        setSelectedSkills(newSelectedSkills);
+      } catch (err) {
+        // Silently fail - user might not have skills yet
+        console.error('[v0] Failed to fetch candidate skills:', err);
+      }
+    };
+
+    fetchCandidateSkills();
+  }, [user]);
+
+  // Lazy load skills when category is expanded
+  const loadSkillsForCategory = useCallback(async (categoryId: string) => {
+    if (skillsByCategory.has(categoryId) || loadingSkills.has(categoryId)) {
+      return;
+    }
+
+    setLoadingSkills(prev => new Set(prev).add(categoryId));
+
+    try {
+      const response = await api.get<SkillsBySectorResponse>(`/skills?categoryId=${categoryId}`);
+      setSkillsByCategory(prev => new Map(prev).set(categoryId, response.skills));
+    } catch (err) {
+      console.error(`[v0] Failed to fetch skills for category ${categoryId}:`, err);
+    } finally {
+      setLoadingSkills(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(categoryId);
+        return newSet;
+      });
+    }
+  }, [skillsByCategory, loadingSkills]);
+
+  // Toggle category expansion
+  const toggleCategory = useCallback((categoryId: string) => {
+    if (expandedCategoryId === categoryId) {
+      setExpandedCategoryId(null);
+    } else {
+      setExpandedCategoryId(categoryId);
+      loadSkillsForCategory(categoryId);
+    }
+  }, [expandedCategoryId, loadSkillsForCategory]);
+
+  // Toggle skill selection
+  const toggleSkill = useCallback((skillId: string) => {
+    setSelectedSkills(prev => {
+      const newMap = new Map(prev);
+      if (newMap.has(skillId)) {
+        newMap.delete(skillId);
+      } else {
+        newMap.set(skillId, { useForMatching: true, proficiencyLevel: null });
+      }
+      return newMap;
     });
+  }, []);
+
+  // Toggle matching for a skill
+  const toggleSkillMatching = useCallback((skillId: string) => {
+    setSelectedSkills(prev => {
+      const newMap = new Map(prev);
+      const current = newMap.get(skillId);
+      if (current) {
+        newMap.set(skillId, { 
+          useForMatching: !current.useForMatching,
+          proficiencyLevel: current.proficiencyLevel
+        });
+      }
+      return newMap;
+    });
+  }, []);
+
+  // Save skills to backend
+  const handleSave = async () => {
+    if (!user) {
+      router.push('/login?redirect=/candidates/submit-resume');
+      return;
+    }
+
+    setSaving(true);
+    setError(null);
+    setSaveSuccess(false);
+
+    try {
+      const payload = {
+        skills: Array.from(selectedSkills.entries()).map(([skillId, opts]) => ({
+          skillId,
+          useForMatching: opts.useForMatching,
+        })),
+      };
+
+      await api.put('/candidate/skills', payload);
+      setSaveSuccess(true);
+      
+      // Navigate to next step after short delay
+      setTimeout(() => {
+        router.push('/dashboard/candidate');
+      }, 1500);
+    } catch (err) {
+      if (err instanceof ApiError) {
+        setError(err.message);
+      } else {
+        setError('Er ging iets mis bij het opslaan van je skills.');
+      }
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const toggleSkillMatching = (skillId: string) => {
-    setSelectedSkills(prev => 
-      prev.map(s => 
-        s.skillId === skillId 
-          ? { ...s, useForMatching: !s.useForMatching }
-          : s
-      )
-    );
+  // Computed values
+  const selectedSkillsCount = selectedSkills.size;
+  const matchingSkillsCount = Array.from(selectedSkills.values()).filter(s => s.useForMatching).length;
+
+  // Get selected count per category
+  const getSelectedCountForCategory = (categoryId: string): number => {
+    const skills = skillsByCategory.get(categoryId) || [];
+    return skills.filter(s => selectedSkills.has(s.id)).length;
   };
-
-  const isSkillSelected = (skillId: string) => selectedSkills.some(s => s.skillId === skillId);
-  const isSkillForMatching = (skillId: string) => selectedSkills.find(s => s.skillId === skillId)?.useForMatching ?? false;
-
-  const toggleCategory = (categoryId: string) => {
-    setExpandedCategories(prev =>
-      prev.includes(categoryId)
-        ? prev.filter(id => id !== categoryId)
-        : [...prev, categoryId]
-    );
-  };
-
-  const addEducation = () => {
-    setEducation(prev => [...prev, { id: Date.now(), schoolName: '', qualification: '', startEndDate: '' }]);
-  };
-
-  const removeEducation = (id: number) => {
-    setEducation(prev => prev.filter(e => e.id !== id));
-  };
-
-  const addExperience = () => {
-    setExperience(prev => [...prev, { id: Date.now(), company: '', title: '', startEndDate: '', description: '' }]);
-  };
-
-  const removeExperience = (id: number) => {
-    setExperience(prev => prev.filter(e => e.id !== id));
-  };
-
-  const getSkillsByCategory = (categoryId: string) => {
-    return allSkills.filter(skill => skill.categoryId === categoryId);
-  };
-
-  const selectedSkillsCount = selectedSkills.length;
-  const matchingSkillsCount = selectedSkills.filter(s => s.useForMatching).length;
 
   return (
     <div className="main-content-wrapper">
@@ -100,13 +203,13 @@ const SubmitResume = () => {
                   <Link href="/candidates">Kandidaten<i className="puzzle-icon fal fa-angle-double-right"></i></Link>
                 </li>
                 <li className="breadcrumbs-item active">
-                  <span>Profiel Aanmaken</span>
+                  <span>Skills Selecteren</span>
                 </li>
               </ul>
 
-              <h1 className="page-title text-white">Maak Je Profiel</h1>
+              <h1 className="page-title text-white">Selecteer Je Skills</h1>
               <p className="text-white" style={{ opacity: 0.8 }}>
-                Vul je gegevens in en selecteer je skills. Je kunt daarna je niveau per skill testen.
+                Kies de vaardigheden die je hebt of wilt ontwikkelen. Je kunt daarna per skill een korte test doen om je niveau te bepalen.
               </p>
             </div>
           </div>
@@ -117,51 +220,7 @@ const SubmitResume = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-8">
-              {/* Basis gegevens */}
-              <div className="bg-white p-4 mb-4" style={{ borderRadius: '10px' }}>
-                <h4 className="mb-4">
-                  <i className="far fa-user mr-2 c-primary"></i>
-                  Persoonlijke Gegevens
-                </h4>
-                
-                <form className="form--resume">
-                  <div className="row">
-                    <div className="col-md-6">
-                      <label htmlFor="name">Volledige naam *</label>
-                      <input id="name" name="name" placeholder="Jan Jansen" type="text" />
-                    </div>
-                    <div className="col-md-6">
-                      <label htmlFor="email">E-mailadres *</label>
-                      <input id="email" name="email" placeholder="jan@voorbeeld.be" type="email" />
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-md-6">
-                      <label htmlFor="phone">Telefoonnummer</label>
-                      <input id="phone" name="phone" placeholder="+32 123 45 67 89" type="tel" />
-                    </div>
-                    <div className="col-md-6">
-                      <label htmlFor="location">Woonplaats *</label>
-                      <input id="location" name="location" placeholder="Antwerpen, België" type="text" />
-                    </div>
-                  </div>
-
-                  <label htmlFor="title">Gewenste functietitel *</label>
-                  <input id="title" name="title" placeholder='bv. "Frontend Developer" of "Marketing Manager"' type="text" />
-
-                  <label htmlFor="bio">Over jezelf</label>
-                  <textarea 
-                    id="bio" 
-                    name="bio" 
-                    placeholder="Beschrijf kort wie je bent en wat je zoekt..."
-                    rows={4}
-                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #e9ecef' }}
-                  ></textarea>
-                </form>
-              </div>
-
-              {/* Skills sectie - DE BELANGRIJKSTE */}
+              {/* Skills sectie */}
               <div className="bg-white p-4 mb-4" style={{ borderRadius: '10px' }}>
                 <div className="d-flex justify-content-between align-items-start mb-3">
                   <div>
@@ -170,7 +229,7 @@ const SubmitResume = () => {
                       Selecteer Je Skills & Interesses
                     </h4>
                     <p className="c-grey mb-0" style={{ fontSize: '14px' }}>
-                      Kies de vaardigheden die je hebt of wilt ontwikkelen. Je kunt daarna per skill een korte test doen om je niveau te bepalen.
+                      Kies de vaardigheden die je hebt of wilt ontwikkelen.
                     </p>
                   </div>
                   {selectedSkillsCount > 0 && (
@@ -187,14 +246,23 @@ const SubmitResume = () => {
                       >
                         {selectedSkillsCount} geselecteerd
                       </span>
-                      <div className="c-grey mt-1" style={{ fontSize: '12px' }}>
-                        {matchingSkillsCount} voor matching
+                      <div className="d-flex align-items-center justify-content-end mt-1" style={{ fontSize: '12px', color: '#6b7280' }}>
+                        <span>{matchingSkillsCount} voor matching</span>
+                        <i 
+                          className="far fa-question-circle ml-1" 
+                          style={{ cursor: 'help' }}
+                          title="Geselecteerd: aantal skills + interesses op je profiel. Voor matching: skills die meetellen voor jobsuggesties. Skills op 'interesse' tellen niet voor matching, maar helpen je om jobs in nieuwe vakgebieden aangeboden te krijgen."
+                        ></i>
                       </div>
+                      <p className="mb-0 mt-2" style={{ fontSize: '11px', color: '#9ca3af', maxWidth: '200px', marginLeft: 'auto' }}>
+                        Skills op &apos;interesse&apos; helpen je jobs in nieuwe vakgebieden te ontdekken.
+                      </p>
                     </div>
                   )}
                 </div>
 
-                <div className="alert mb-4" style={{ background: '#fef3c7', border: 'none', borderRadius: '8px', padding: '16px' }}>
+                {/* Info banner - Kennis boven diploma */}
+                <div className="alert mb-3" style={{ background: '#fef3c7', border: 'none', borderRadius: '8px', padding: '16px' }}>
                   <div className="d-flex align-items-start">
                     <i className="far fa-info-circle mr-3" style={{ color: '#f59e0b', fontSize: '18px', marginTop: '2px' }}></i>
                     <div>
@@ -207,457 +275,367 @@ const SubmitResume = () => {
                   </div>
                 </div>
 
-                {/* Skill categorieën */}
-                <div className="skill-categories">
-                  {skillCategories.map((category) => {
-                    const categorySkills = getSkillsByCategory(category.id);
-                    const selectedInCategory = categorySkills.filter(s => isSkillSelected(s.id)).length;
-                    const isExpanded = expandedCategories.includes(category.id);
-
-                    return (
-                      <div 
-                        key={category.id} 
-                        className="mb-3"
-                        style={{ 
-                          border: selectedInCategory > 0 ? `2px solid ${category.color}` : '1px solid #e9ecef',
-                          borderRadius: '10px',
-                          overflow: 'hidden'
-                        }}
-                      >
-                        <button
-                          onClick={() => toggleCategory(category.id)}
-                          className="w-100 d-flex align-items-center justify-content-between p-3"
-                          style={{ 
-                            background: selectedInCategory > 0 ? `${category.color}10` : '#f8f9fa',
-                            border: 'none',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          <div className="d-flex align-items-center">
-                            <div 
-                              style={{ 
-                                width: '40px', 
-                                height: '40px', 
-                                borderRadius: '8px', 
-                                background: category.color,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                marginRight: '12px'
-                              }}
-                            >
-                              <i className={`fas ${category.icon} text-white`}></i>
-                            </div>
-                            <div className="text-left">
-                              <strong>{category.name}</strong>
-                              <div className="c-grey" style={{ fontSize: '13px' }}>
-                                {categorySkills.length} skills
-                                {selectedInCategory > 0 && (
-                                  <span style={{ color: category.color, marginLeft: '8px' }}>
-                                    ({selectedInCategory} geselecteerd)
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                          <i className={`far fa-chevron-${isExpanded ? 'up' : 'down'} c-grey`}></i>
-                        </button>
-
-                        {isExpanded && (
-                          <div className="p-3" style={{ borderTop: '1px solid #e9ecef' }}>
-                            <div className="row">
-                              {categorySkills.map((skill) => {
-                                const isSelected = isSkillSelected(skill.id);
-                                const useForMatching = isSkillForMatching(skill.id);
-                                return (
-                                  <div key={skill.id} className="col-md-6 mb-2">
-                                    <div
-                                      style={{
-                                        border: isSelected ? `2px solid ${category.color}` : '1px solid #e9ecef',
-                                        borderRadius: '8px',
-                                        background: isSelected ? `${category.color}10` : '#fff',
-                                        overflow: 'hidden'
-                                      }}
-                                    >
-                                      <button
-                                        onClick={() => toggleSkill(skill.id)}
-                                        className="w-100 d-flex align-items-center p-3"
-                                        style={{
-                                          border: 'none',
-                                          background: 'transparent',
-                                          cursor: 'pointer',
-                                          textAlign: 'left'
-                                        }}
-                                      >
-                                        <div 
-                                          style={{ 
-                                            width: '24px', 
-                                            height: '24px', 
-                                            borderRadius: '6px', 
-                                            border: isSelected ? 'none' : '2px solid #dee2e6',
-                                            background: isSelected ? category.color : 'transparent',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            marginRight: '12px',
-                                            flexShrink: 0
-                                          }}
-                                        >
-                                          {isSelected && <i className="fas fa-check text-white" style={{ fontSize: '12px' }}></i>}
-                                        </div>
-                                        <div>
-                                          <strong style={{ fontSize: '14px' }}>{skill.name}</strong>
-                                          <div className="c-grey" style={{ fontSize: '12px' }}>{skill.description}</div>
-                                        </div>
-                                      </button>
-                                      
-                                      {/* Matching toggle - alleen zichtbaar wanneer skill geselecteerd is */}
-                                      {isSelected && (
-                                        <div 
-                                          className="d-flex align-items-center justify-content-between px-3 py-2"
-                                          style={{ 
-                                            borderTop: `1px solid ${category.color}30`,
-                                            background: useForMatching ? '#f0fdf4' : '#fef2f2'
-                                          }}
-                                        >
-                                          <span style={{ fontSize: '12px', color: useForMatching ? '#059669' : '#dc2626' }}>
-                                            <i className={`far fa-${useForMatching ? 'search' : 'eye-slash'} mr-1`}></i>
-                                            {useForMatching ? 'Wordt gebruikt voor matching' : 'Niet voor matching'}
-                                          </span>
-                                          <button
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              toggleSkillMatching(skill.id);
-                                            }}
-                                            className="d-flex align-items-center"
-                                            style={{
-                                              width: '40px',
-                                              height: '22px',
-                                              borderRadius: '11px',
-                                              border: 'none',
-                                              background: useForMatching ? '#059669' : '#d1d5db',
-                                              cursor: 'pointer',
-                                              padding: '2px',
-                                              transition: 'background 0.2s'
-                                            }}
-                                          >
-                                            <div
-                                              style={{
-                                                width: '18px',
-                                                height: '18px',
-                                                borderRadius: '50%',
-                                                background: '#fff',
-                                                transform: useForMatching ? 'translateX(18px)' : 'translateX(0)',
-                                                transition: 'transform 0.2s',
-                                                boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
-                                              }}
-                                            />
-                                          </button>
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                {/* Info banner - Interesse markeren */}
+                <div className="alert mb-4" style={{ background: '#fef3c7', border: 'none', borderRadius: '8px', padding: '16px' }}>
+                  <div className="d-flex align-items-start">
+                    <i className="far fa-lightbulb mr-3" style={{ color: '#f59e0b', fontSize: '18px', marginTop: '2px' }}></i>
+                    <div>
+                      <strong style={{ color: '#92400e' }}>Interesse markeren</strong>
+                      <p className="mb-0" style={{ color: '#92400e', fontSize: '14px' }}>
+                        Skills die je wil ontwikkelen kun je als &apos;interesse&apos; markeren — zo kom je
+                        in beeld voor jobs in nieuwe vakgebieden, ook als je er nog geen ervaring
+                        in hebt.
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Geselecteerde skills samenvatting */}
-                {selectedSkills.length > 0 && (
-                  <div className="mt-4 p-3" style={{ background: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
-                    <div className="d-flex align-items-center justify-content-between mb-3">
-                      <div className="d-flex align-items-center">
-                        <i className="far fa-check-circle mr-2" style={{ color: '#059669' }}></i>
-                        <strong style={{ color: '#059669' }}>{selectedSkills.length} skills geselecteerd</strong>
-                      </div>
-                      <span className="c-grey" style={{ fontSize: '13px' }}>
-                        <i className="far fa-search mr-1"></i>
-                        {matchingSkillsCount} voor job matching
-                      </span>
-                    </div>
-                    
-                    {/* Skills die WEL voor matching worden gebruikt */}
-                    {matchingSkillsCount > 0 && (
-                      <div className="mb-3">
-                        <div className="c-grey mb-2" style={{ fontSize: '12px', fontWeight: '600' }}>
-                          <i className="far fa-search mr-1"></i> Worden gebruikt voor job matching:
-                        </div>
-                        <div className="d-flex flex-wrap" style={{ gap: '8px' }}>
-                          {selectedSkills.filter(s => s.useForMatching).map(({ skillId }) => {
-                            const skill = allSkills.find(s => s.id === skillId);
-                            if (!skill) return null;
-                            return (
-                              <span 
-                                key={skillId}
-                                className="badge d-flex align-items-center"
-                                style={{ 
-                                  background: skill.categoryColor, 
-                                  color: '#fff', 
-                                  padding: '6px 12px',
-                                  borderRadius: '16px',
-                                  fontSize: '13px'
-                                }}
-                              >
-                                <i className="far fa-search mr-1" style={{ fontSize: '10px' }}></i>
-                                {skill.name}
-                                <button
-                                  onClick={() => toggleSkill(skillId)}
-                                  style={{ 
-                                    background: 'none', 
-                                    border: 'none', 
-                                    color: '#fff', 
-                                    marginLeft: '6px',
-                                    cursor: 'pointer',
-                                    padding: 0
-                                  }}
-                                >
-                                  <i className="far fa-times" style={{ fontSize: '11px' }}></i>
-                                </button>
-                              </span>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Skills die NIET voor matching worden gebruikt */}
-                    {selectedSkills.filter(s => !s.useForMatching).length > 0 && (
+                {/* Error message */}
+                {error && (
+                  <div className="alert mb-4" style={{ background: '#fee2e2', border: 'none', borderRadius: '8px', padding: '16px' }}>
+                    <div className="d-flex align-items-start">
+                      <i className="far fa-exclamation-circle mr-3" style={{ color: '#dc2626', fontSize: '18px', marginTop: '2px' }}></i>
                       <div>
-                        <div className="c-grey mb-2" style={{ fontSize: '12px', fontWeight: '600' }}>
-                          <i className="far fa-eye-slash mr-1"></i> Niet voor job matching (alleen profiel):
-                        </div>
-                        <div className="d-flex flex-wrap" style={{ gap: '8px' }}>
-                          {selectedSkills.filter(s => !s.useForMatching).map(({ skillId }) => {
-                            const skill = allSkills.find(s => s.id === skillId);
-                            if (!skill) return null;
-                            return (
-                              <span 
-                                key={skillId}
-                                className="badge d-flex align-items-center"
+                        <strong style={{ color: '#991b1b' }}>Fout</strong>
+                        <p className="mb-0" style={{ color: '#991b1b', fontSize: '14px' }}>{error}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Success message */}
+                {saveSuccess && (
+                  <div className="alert mb-4" style={{ background: '#d1fae5', border: 'none', borderRadius: '8px', padding: '16px' }}>
+                    <div className="d-flex align-items-start">
+                      <i className="far fa-check-circle mr-3" style={{ color: '#059669', fontSize: '18px', marginTop: '2px' }}></i>
+                      <div>
+                        <strong style={{ color: '#065f46' }}>Opgeslagen!</strong>
+                        <p className="mb-0" style={{ color: '#065f46', fontSize: '14px' }}>
+                          Je skills zijn opgeslagen. Je wordt doorgestuurd naar je dashboard...
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Loading state */}
+                {loadingCategories ? (
+                  <div className="text-center py-5">
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="sr-only">Laden...</span>
+                    </div>
+                    <p className="c-grey mt-3">Categorieën laden...</p>
+                  </div>
+                ) : (
+                  /* Skill categories */
+                  <div className="skill-categories">
+                    {categories.map((category) => {
+                      const categorySkills = skillsByCategory.get(category.id) || [];
+                      const selectedInCategory = getSelectedCountForCategory(category.id);
+                      const isExpanded = expandedCategoryId === category.id;
+                      const isLoadingSkills = loadingSkills.has(category.id);
+
+                      return (
+                        <div 
+                          key={category.id} 
+                          className="mb-3"
+                          style={{ 
+                            border: selectedInCategory > 0 ? `2px solid ${category.color}` : '1px solid #e9ecef',
+                            borderRadius: '10px',
+                            overflow: 'hidden'
+                          }}
+                        >
+                          <button
+                            onClick={() => toggleCategory(category.id)}
+                            className="w-100 d-flex align-items-center justify-content-between p-3"
+                            style={{ 
+                              background: selectedInCategory > 0 ? `${category.color}10` : '#f8f9fa',
+                              border: 'none',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            <div className="d-flex align-items-center">
+                              <div 
                                 style={{ 
-                                  background: '#9ca3af', 
-                                  color: '#fff', 
-                                  padding: '6px 12px',
-                                  borderRadius: '16px',
-                                  fontSize: '13px'
+                                  width: '40px', 
+                                  height: '40px', 
+                                  borderRadius: '8px', 
+                                  background: category.color,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  marginRight: '12px'
                                 }}
                               >
-                                {skill.name}
-                                <button
-                                  onClick={() => toggleSkill(skillId)}
-                                  style={{ 
-                                    background: 'none', 
-                                    border: 'none', 
-                                    color: '#fff', 
-                                    marginLeft: '6px',
-                                    cursor: 'pointer',
-                                    padding: 0
-                                  }}
-                                >
-                                  <i className="far fa-times" style={{ fontSize: '11px' }}></i>
-                                </button>
-                              </span>
-                            );
-                          })}
+                                <i className={`fas ${category.icon} text-white`}></i>
+                              </div>
+                              <div className="text-left">
+                                <strong>{category.name}</strong>
+                                <div className="c-grey" style={{ fontSize: '13px' }}>
+                                  {category.skillCount} skills
+                                  {selectedInCategory > 0 && (
+                                    <span style={{ color: category.color, marginLeft: '8px' }}>
+                                      ({selectedInCategory} geselecteerd)
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                            <i className={`far fa-chevron-${isExpanded ? 'up' : 'down'} c-grey`}></i>
+                          </button>
+
+                          {isExpanded && (
+                            <div className="p-3" style={{ borderTop: '1px solid #e9ecef' }}>
+                              {isLoadingSkills ? (
+                                <div className="text-center py-4">
+                                  <div className="spinner-border spinner-border-sm text-primary" role="status">
+                                    <span className="sr-only">Laden...</span>
+                                  </div>
+                                  <p className="c-grey mt-2 mb-0" style={{ fontSize: '13px' }}>Skills laden...</p>
+                                </div>
+                              ) : categorySkills.length === 0 ? (
+                                <p className="c-grey text-center py-3 mb-0">Geen skills beschikbaar in deze categorie.</p>
+                              ) : (
+                                <div className="row">
+                                  {categorySkills.map((skill) => {
+                                    const isSelected = selectedSkills.has(skill.id);
+                                    const skillData = selectedSkills.get(skill.id);
+                                    const useForMatching = skillData?.useForMatching ?? true;
+
+                                    return (
+                                      <div key={skill.id} className="col-md-6 mb-2">
+                                        <div
+                                          style={{
+                                            border: isSelected ? `2px solid ${category.color}` : '1px solid #e9ecef',
+                                            borderRadius: '8px',
+                                            background: isSelected ? `${category.color}10` : '#fff',
+                                            overflow: 'hidden'
+                                          }}
+                                        >
+                                          <button
+                                            onClick={() => toggleSkill(skill.id)}
+                                            className="w-100 d-flex align-items-center p-3"
+                                            style={{
+                                              border: 'none',
+                                              background: 'transparent',
+                                              cursor: 'pointer',
+                                              textAlign: 'left'
+                                            }}
+                                          >
+                                            <div 
+                                              style={{ 
+                                                width: '24px', 
+                                                height: '24px', 
+                                                borderRadius: '6px', 
+                                                border: isSelected ? 'none' : '2px solid #dee2e6',
+                                                background: isSelected ? category.color : 'transparent',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                marginRight: '12px',
+                                                flexShrink: 0
+                                              }}
+                                            >
+                                              {isSelected && <i className="fas fa-check text-white" style={{ fontSize: '12px' }}></i>}
+                                            </div>
+                                            <div>
+                                              <strong style={{ fontSize: '14px' }}>{skill.name}</strong>
+                                              {skill.description && (
+                                                <div className="c-grey" style={{ fontSize: '12px' }}>{skill.description}</div>
+                                              )}
+                                            </div>
+                                          </button>
+                                          
+                                          {/* Matching toggle - only visible when skill is selected */}
+                                          {isSelected && (
+                                            <>
+                                              <div 
+                                                className="d-flex align-items-center justify-content-between px-3 py-2"
+                                                style={{ 
+                                                  borderTop: `1px solid ${category.color}30`,
+                                                  background: useForMatching ? '#f0fdf4' : '#fffbeb'
+                                                }}
+                                              >
+                                                <span style={{ fontSize: '12px', color: useForMatching ? '#059669' : '#d97706' }}>
+                                                  <i className={`far fa-${useForMatching ? 'search' : 'star'} mr-1`}></i>
+                                                  {useForMatching ? 'Wordt gebruikt voor matching' : 'Interesse (niet voor matching)'}
+                                                </span>
+                                                <button
+                                                  onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    toggleSkillMatching(skill.id);
+                                                  }}
+                                                  className="d-flex align-items-center"
+                                                  style={{
+                                                    width: '40px',
+                                                    height: '22px',
+                                                    borderRadius: '11px',
+                                                    border: 'none',
+                                                    background: useForMatching ? '#059669' : '#d97706',
+                                                    cursor: 'pointer',
+                                                    padding: '2px',
+                                                    transition: 'background 0.2s'
+                                                  }}
+                                                >
+                                                  <div
+                                                    style={{
+                                                      width: '18px',
+                                                      height: '18px',
+                                                      borderRadius: '50%',
+                                                      background: '#fff',
+                                                      transform: useForMatching ? 'translateX(18px)' : 'translateX(0)',
+                                                      transition: 'transform 0.2s',
+                                                      boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
+                                                    }}
+                                                  />
+                                                </button>
+                                              </div>
+                                              
+                                              {/* Test button/badge section */}
+                                              <div 
+                                                className="px-3 py-2"
+                                                style={{ 
+                                                  borderTop: `1px solid ${category.color}20`,
+                                                  background: '#f8fafc'
+                                                }}
+                                              >
+                                                {!user ? (
+                                                  // Anonymous user - show account prompt
+                                                  <p className="mb-0 c-grey" style={{ fontSize: '12px' }}>
+                                                    <i className="far fa-lock mr-1"></i>
+                                                    <Link href="/register" style={{ color: '#6366f1' }}>
+                                                      Maak een account aan
+                                                    </Link>{' '}
+                                                    om je skills te testen.
+                                                  </p>
+                                                ) : !useForMatching ? (
+                                                  // Interest skill - no test available
+                                                  <p className="mb-0" style={{ fontSize: '12px', color: '#9ca3af' }}>
+                                                    <i className="far fa-info-circle mr-1"></i>
+                                                    Test pas mogelijk wanneer je deze skill voor matching gebruikt.
+                                                  </p>
+                                                ) : skillData?.proficiencyLevel ? (
+                                                  // Has proficiency - show badge and upgrade link
+                                                  <div className="d-flex align-items-center justify-content-between">
+                                                    <span 
+                                                      className="badge"
+                                                      style={{ 
+                                                        background: '#dbeafe', 
+                                                        color: '#1d4ed8',
+                                                        padding: '4px 10px',
+                                                        borderRadius: '6px',
+                                                        fontSize: '12px'
+                                                      }}
+                                                    >
+                                                      <i className="far fa-check-circle mr-1"></i>
+                                                      {PROFICIENCY_LABELS[skillData.proficiencyLevel]} getest
+                                                    </span>
+                                                    <Link 
+                                                      href={`/dashboard/profile/test/${skill.id}`}
+                                                      onClick={(e) => e.stopPropagation()}
+                                                      style={{ 
+                                                        fontSize: '12px', 
+                                                        color: '#6366f1',
+                                                        textDecoration: 'none'
+                                                      }}
+                                                    >
+                                                      Hoger niveau testen <i className="far fa-arrow-right ml-1"></i>
+                                                    </Link>
+                                                  </div>
+                                                ) : (
+                                                  // No proficiency yet - show test button
+                                                  <Link 
+                                                    href={`/dashboard/profile/test/${skill.id}`}
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    className="d-inline-flex align-items-center"
+                                                    style={{ 
+                                                      background: '#6366f1',
+                                                      color: '#fff',
+                                                      padding: '6px 12px',
+                                                      borderRadius: '6px',
+                                                      fontSize: '12px',
+                                                      textDecoration: 'none'
+                                                    }}
+                                                  >
+                                                    <i className="far fa-clipboard-check mr-2"></i>
+                                                    Test afleggen
+                                                  </Link>
+                                                )}
+                                              </div>
+                                            </>
+                                          )}
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    )}
+                      );
+                    })}
                   </div>
                 )}
-              </div>
 
-              {/* Werkervaring */}
-              <div className="bg-white p-4 mb-4" style={{ borderRadius: '10px' }}>
-                <h4 className="mb-3">
-                  <i className="far fa-briefcase mr-2 c-primary"></i>
-                  Werkervaring
-                  <small className="c-grey ml-2" style={{ fontSize: '14px' }}>(optioneel)</small>
-                </h4>
-
-                {experience.length === 0 ? (
-                  <p className="c-grey mb-3" style={{ fontSize: '14px' }}>
-                    Voeg je relevante werkervaring toe. Dit is optioneel - je skills zijn belangrijker.
-                  </p>
-                ) : (
-                  experience.map((exp, index) => (
-                    <div key={exp.id} className="p-3 mb-3" style={{ background: '#f8f9fa', borderRadius: '8px' }}>
-                      <div className="d-flex justify-content-between align-items-center mb-3">
-                        <strong>Ervaring {index + 1}</strong>
-                        <button 
-                          onClick={() => removeExperience(exp.id)}
-                          className="c-red"
-                          style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-                        >
-                          <i className="far fa-trash-alt mr-1"></i> Verwijder
-                        </button>
-                      </div>
-                      <form className="form--resume">
-                        <div className="row">
-                          <div className="col-md-6">
-                            <label>Bedrijf</label>
-                            <input type="text" placeholder="Bedrijfsnaam" />
-                          </div>
-                          <div className="col-md-6">
-                            <label>Functie</label>
-                            <input type="text" placeholder="Jouw functietitel" />
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <label>Periode</label>
-                            <input type="text" placeholder="Jan 2020 - Heden" />
-                          </div>
-                        </div>
-                        <label>Beschrijving</label>
-                        <textarea 
-                          placeholder="Beschrijf kort je taken en verantwoordelijkheden..."
-                          rows={3}
-                          style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #e9ecef' }}
-                        ></textarea>
-                      </form>
-                    </div>
-                  ))
-                )}
-
-                <button 
-                  onClick={addExperience}
-                  className="crumina-button button--dark button--s"
-                >
-                  <i className="far fa-plus mr-2"></i> Voeg ervaring toe
-                </button>
-              </div>
-
-              {/* Opleiding */}
-              <div className="bg-white p-4 mb-4" style={{ borderRadius: '10px' }}>
-                <h4 className="mb-3">
-                  <i className="far fa-graduation-cap mr-2 c-primary"></i>
-                  Opleiding
-                  <small className="c-grey ml-2" style={{ fontSize: '14px' }}>(optioneel)</small>
-                </h4>
-
-                <p className="c-grey mb-3" style={{ fontSize: '14px' }}>
-                  Je diploma is minder belangrijk dan je huidige vaardigheden. Voeg je opleiding toe als je wilt.
-                </p>
-
-                {education.map((edu, index) => (
-                  <div key={edu.id} className="p-3 mb-3" style={{ background: '#f8f9fa', borderRadius: '8px' }}>
-                    <div className="d-flex justify-content-between align-items-center mb-3">
-                      <strong>Opleiding {index + 1}</strong>
-                      {education.length > 1 && (
-                        <button 
-                          onClick={() => removeEducation(edu.id)}
-                          className="c-red"
-                          style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-                        >
-                          <i className="far fa-trash-alt mr-1"></i> Verwijder
-                        </button>
+                {/* Save button */}
+                {selectedSkillsCount > 0 && (
+                  <div className="mt-4 pt-4" style={{ borderTop: '1px solid #e9ecef' }}>
+                    <button
+                      onClick={handleSave}
+                      disabled={saving}
+                      className="crumina-button button--xl w-100"
+                      style={{ 
+                        background: saving ? '#9ca3af' : '#059669', 
+                        color: '#fff',
+                        cursor: saving ? 'not-allowed' : 'pointer'
+                      }}
+                    >
+                      {saving ? (
+                        <>
+                          <span className="spinner-border spinner-border-sm mr-2" role="status"></span>
+                          Opslaan...
+                        </>
+                      ) : (
+                        <>
+                          <i className="far fa-save mr-2"></i>
+                          Skills Opslaan ({selectedSkillsCount} geselecteerd, {matchingSkillsCount} voor matching)
+                        </>
                       )}
-                    </div>
-                    <form className="form--resume">
-                      <label>School / Instelling</label>
-                      <input type="text" placeholder="Naam van de school of instelling" />
-                      <div className="row">
-                        <div className="col-md-6">
-                          <label>Diploma / Certificaat</label>
-                          <input type="text" placeholder="bv. Bachelor ICT" />
-                        </div>
-                        <div className="col-md-6">
-                          <label>Periode</label>
-                          <input type="text" placeholder="2015 - 2019" />
-                        </div>
-                      </div>
-                    </form>
+                    </button>
                   </div>
-                ))}
-
-                <button 
-                  onClick={addEducation}
-                  className="crumina-button button--dark button--s"
-                >
-                  <i className="far fa-plus mr-2"></i> Voeg opleiding toe
-                </button>
+                )}
               </div>
             </div>
 
             {/* Sidebar */}
             <div className="col-lg-4">
               <div className="bg-white p-4 mb-4" style={{ borderRadius: '10px', position: 'sticky', top: '100px' }}>
-                <h5 className="mb-3">Profiel voortgang</h5>
-                
-                <div className="mb-4">
-                  <div className="d-flex justify-content-between mb-2" style={{ fontSize: '14px' }}>
-                    <span>Basis gegevens</span>
-                    <i className="far fa-check-circle c-green"></i>
-                  </div>
-                  <div className="d-flex justify-content-between mb-2" style={{ fontSize: '14px' }}>
-                    <span>Skills geselecteerd</span>
-                    {selectedSkills.length > 0 ? (
-                      <span className="c-green"><i className="far fa-check-circle"></i> {selectedSkills.length}</span>
-                    ) : (
-                      <span className="c-grey"><i className="far fa-circle"></i></span>
-                    )}
-                  </div>
-                  <div className="d-flex justify-content-between mb-2" style={{ fontSize: '14px' }}>
-                    <span>Skills getest</span>
-                    <span className="c-grey"><i className="far fa-circle"></i> 0/{selectedSkills.length}</span>
-                  </div>
-                </div>
-
-                <div className="alert mb-4" style={{ background: '#eff6ff', border: 'none', borderRadius: '8px', padding: '12px' }}>
-                  <div className="d-flex align-items-start">
-                    <i className="far fa-lightbulb mr-2" style={{ color: '#3b82f6', marginTop: '2px' }}></i>
-                    <small style={{ color: '#1e40af' }}>
-                      Na het opslaan kun je per geselecteerde skill een test doen om je niveau te bepalen.
-                    </small>
-                  </div>
-                </div>
-
-                <Link 
-                  href={selectedSkills.length > 0 ? "/tests/skills" : "#"}
-                  className={`crumina-button button--xl w-100 text-center mb-3 ${selectedSkills.length === 0 ? 'button--dark button--bordered' : ''}`}
-                  style={selectedSkills.length > 0 ? { background: '#059669', color: '#fff' } : { opacity: 0.5, pointerEvents: 'none' }}
-                >
-                  <i className="far fa-save mr-2"></i>
-                  Opslaan & Test Skills
-                </Link>
-
-                <Link 
-                  href="/candidates/resume-preview"
-                  className="crumina-button button--dark button--bordered button--xl w-100 text-center"
-                >
-                  Preview profiel
-                </Link>
-              </div>
-
-              {/* Waarom skills testen */}
-              <div className="bg-white p-4" style={{ borderRadius: '10px' }}>
-                <h6 className="mb-3">Waarom skills testen?</h6>
+                <h5 className="mb-3">Hoe werkt het?</h5>
                 
                 <div className="d-flex align-items-start mb-3">
                   <div 
                     style={{ 
-                      width: '32px', 
-                      height: '32px', 
+                      width: '28px', 
+                      height: '28px', 
                       borderRadius: '50%', 
-                      background: '#dcfce7',
+                      background: '#6366f1',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       marginRight: '12px',
-                      flexShrink: 0
+                      flexShrink: 0,
+                      color: '#fff',
+                      fontSize: '13px',
+                      fontWeight: '600'
                     }}
                   >
-                    <i className="fas fa-check" style={{ color: '#059669', fontSize: '12px' }}></i>
+                    1
                   </div>
                   <div>
-                    <strong style={{ fontSize: '14px' }}>Toon je echte niveau</strong>
+                    <strong style={{ fontSize: '14px' }}>Selecteer skills</strong>
                     <p className="c-grey mb-0" style={{ fontSize: '13px' }}>
-                      Bewijs je vaardigheden met objectieve tests
+                      Kies uit 13 categorieën de skills die je hebt of wilt leren
                     </p>
                   </div>
                 </div>
@@ -665,23 +643,26 @@ const SubmitResume = () => {
                 <div className="d-flex align-items-start mb-3">
                   <div 
                     style={{ 
-                      width: '32px', 
-                      height: '32px', 
+                      width: '28px', 
+                      height: '28px', 
                       borderRadius: '50%', 
-                      background: '#fef3c7',
+                      background: '#6366f1',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       marginRight: '12px',
-                      flexShrink: 0
+                      flexShrink: 0,
+                      color: '#fff',
+                      fontSize: '13px',
+                      fontWeight: '600'
                     }}
                   >
-                    <i className="fas fa-bullseye" style={{ color: '#f59e0b', fontSize: '12px' }}></i>
+                    2
                   </div>
                   <div>
-                    <strong style={{ fontSize: '14px' }}>Betere matches</strong>
+                    <strong style={{ fontSize: '14px' }}>Kies matching type</strong>
                     <p className="c-grey mb-0" style={{ fontSize: '13px' }}>
-                      Werkgevers vinden je op basis van vaardigheden, niet diploma
+                      Bepaal of een skill voor matching of als interesse wordt gebruikt
                     </p>
                   </div>
                 </div>
@@ -689,25 +670,48 @@ const SubmitResume = () => {
                 <div className="d-flex align-items-start">
                   <div 
                     style={{ 
-                      width: '32px', 
-                      height: '32px', 
+                      width: '28px', 
+                      height: '28px', 
                       borderRadius: '50%', 
-                      background: '#eff6ff',
+                      background: '#6366f1',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       marginRight: '12px',
-                      flexShrink: 0
+                      flexShrink: 0,
+                      color: '#fff',
+                      fontSize: '13px',
+                      fontWeight: '600'
                     }}
                   >
-                    <i className="fas fa-chart-line" style={{ color: '#3b82f6', fontSize: '12px' }}></i>
+                    3
                   </div>
                   <div>
-                    <strong style={{ fontSize: '14px' }}>Groei zichtbaar</strong>
+                    <strong style={{ fontSize: '14px' }}>Test je niveau</strong>
                     <p className="c-grey mb-0" style={{ fontSize: '13px' }}>
-                      Herhaal tests om je groei te tonen
+                      Na opslaan kun je per skill een korte test doen
                     </p>
                   </div>
+                </div>
+              </div>
+
+              {/* Counter summary */}
+              <div className="bg-white p-4" style={{ borderRadius: '10px' }}>
+                <h6 className="mb-3">Samenvatting</h6>
+                
+                <div className="d-flex justify-content-between mb-2">
+                  <span className="c-grey">Geselecteerd:</span>
+                  <strong>{selectedSkillsCount} skills</strong>
+                </div>
+                
+                <div className="d-flex justify-content-between mb-2">
+                  <span className="c-grey">Voor matching:</span>
+                  <strong style={{ color: '#059669' }}>{matchingSkillsCount} skills</strong>
+                </div>
+                
+                <div className="d-flex justify-content-between">
+                  <span className="c-grey">Als interesse:</span>
+                  <strong style={{ color: '#d97706' }}>{selectedSkillsCount - matchingSkillsCount} skills</strong>
                 </div>
               </div>
             </div>

@@ -1,20 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { api, ApiError } from '@/lib/api-client';
+import { useAuth } from '@/lib/auth-context';
+import { PROFICIENCY_LABELS } from '@/lib/proficiency';
 import type { CandidateSkill, Sector, Skill, ProficiencyLevel } from '@/types/api';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select-shadcn';
 import {
   Dialog,
   DialogContent,
@@ -23,47 +18,71 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { Info, Check, AlertTriangle, ChevronDown, ChevronRight, Trash2 } from 'lucide-react';
 
-// Proficiency level config
-const proficiencyConfig: Record<ProficiencyLevel, { label: string; color: string }> = {
-  informed: { label: 'Op de hoogte', color: 'bg-gray-100 text-gray-700' },
-  beginner: { label: 'Beginner', color: 'bg-blue-100 text-blue-700' },
-  advanced: { label: 'Gevorderd', color: 'bg-green-100 text-green-700' },
-  expert: { label: 'Expert', color: 'bg-purple-100 text-purple-700' },
-  master: { label: 'Meester', color: 'bg-amber-100 text-amber-700' },
+// Proficiency level colors
+const proficiencyColors: Record<ProficiencyLevel, string> = {
+  informed: 'bg-gray-100 text-gray-700',
+  beginner: 'bg-blue-100 text-blue-700',
+  advanced: 'bg-green-100 text-green-700',
+  expert: 'bg-purple-100 text-purple-700',
+  master: 'bg-amber-100 text-amber-700',
 };
 
-const proficiencyLevels: ProficiencyLevel[] = ['informed', 'beginner', 'advanced', 'expert', 'master'];
+interface SelectedSkillData {
+  useForMatching: boolean;
+  proficiencyLevel: ProficiencyLevel | null;
+  candidateSkillId: string | null; // ID from candidate_skills table for deletion
+}
 
 export default function SkillsPage() {
+  const { user } = useAuth();
+  
   // My skills state
-  const [mySkills, setMySkills] = useState<CandidateSkill[]>([]);
+  const [mySkills, setMySkills] = useState<Map<string, SelectedSkillData>>(new Map());
+  const [originalSkills, setOriginalSkills] = useState<CandidateSkill[]>([]);
   const [skillsLoading, setSkillsLoading] = useState(true);
   const [skillsError, setSkillsError] = useState<string | null>(null);
 
   // Sectors and available skills state
   const [sectors, setSectors] = useState<Sector[]>([]);
   const [sectorsLoading, setSectorsLoading] = useState(true);
-  const [activeSectorId, setActiveSectorId] = useState<string | null>(null);
-  const [sectorSkills, setSectorSkills] = useState<Skill[]>([]);
-  const [sectorSkillsLoading, setSectorSkillsLoading] = useState(false);
+  const [expandedSectorId, setExpandedSectorId] = useState<string | null>(null);
+  const [sectorSkillsMap, setSectorSkillsMap] = useState<Map<string, Skill[]>>(new Map());
+  const [loadingSectorId, setLoadingSectorId] = useState<string | null>(null);
 
-  // Adding skill state
-  const [addingSkillId, setAddingSkillId] = useState<string | null>(null);
+  // Save state
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Delete confirmation state
-  const [deleteSkill, setDeleteSkill] = useState<CandidateSkill | null>(null);
+  const [deleteSkillId, setDeleteSkillId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
-
-  // Updating level state
-  const [updatingLevelId, setUpdatingLevelId] = useState<string | null>(null);
 
   // Fetch my skills
   useEffect(() => {
     async function fetchMySkills() {
       try {
-        const res = await api.get<CandidateSkill[]>('/candidate/skills');
-        setMySkills(res);
+        const res = await api.get<{ skills: CandidateSkill[] }>('/candidate/skills');
+        const skills = res.skills || [];
+        setOriginalSkills(skills);
+        
+        const newMap = new Map<string, SelectedSkillData>();
+        skills.forEach((skill) => {
+          newMap.set(skill.skillId, {
+            useForMatching: skill.useForMatching ?? true,
+            proficiencyLevel: skill.proficiencyLevel ?? null,
+            candidateSkillId: skill.id,
+          });
+        });
+        setMySkills(newMap);
       } catch (err) {
         if (err instanceof ApiError) {
           setSkillsError(err.message);
@@ -83,9 +102,6 @@ export default function SkillsPage() {
       try {
         const res = await api.get<Sector[]>('/skills/sectors');
         setSectors(res);
-        if (res.length > 0) {
-          setActiveSectorId(res[0].id);
-        }
       } catch (err) {
         console.error('Failed to load sectors:', err);
       } finally {
@@ -95,50 +111,133 @@ export default function SkillsPage() {
     fetchSectors();
   }, []);
 
-  // Fetch skills for active sector
-  useEffect(() => {
-    if (!activeSectorId) return;
-
-    async function fetchSectorSkills() {
-      setSectorSkillsLoading(true);
-      try {
-        const res = await api.get<Skill[]>(`/skills?sectorId=${activeSectorId}`);
-        setSectorSkills(res);
-      } catch (err) {
-        console.error('Failed to load skills:', err);
-        setSectorSkills([]);
-      } finally {
-        setSectorSkillsLoading(false);
-      }
-    }
-    fetchSectorSkills();
-  }, [activeSectorId]);
-
-  // Add skill handler
-  async function handleAddSkill(skill: Skill) {
-    setAddingSkillId(skill.id);
+  // Load skills for a sector (lazy)
+  const loadSectorSkills = useCallback(async (sectorId: string) => {
+    if (sectorSkillsMap.has(sectorId)) return;
+    
+    setLoadingSectorId(sectorId);
     try {
-      const res = await api.post<CandidateSkill>('/candidate/skills', {
-        skillId: skill.id,
+      const res = await api.get<Skill[]>(`/skills?sectorId=${sectorId}`);
+      setSectorSkillsMap(prev => new Map(prev).set(sectorId, res));
+    } catch (err) {
+      console.error('Failed to load skills:', err);
+    } finally {
+      setLoadingSectorId(null);
+    }
+  }, [sectorSkillsMap]);
+
+  // Toggle sector expansion
+  const toggleSector = useCallback((sectorId: string) => {
+    if (expandedSectorId === sectorId) {
+      setExpandedSectorId(null);
+    } else {
+      setExpandedSectorId(sectorId);
+      loadSectorSkills(sectorId);
+    }
+  }, [expandedSectorId, loadSectorSkills]);
+
+  // Toggle skill selection
+  const toggleSkill = useCallback((skillId: string) => {
+    setMySkills(prev => {
+      const newMap = new Map(prev);
+      if (newMap.has(skillId)) {
+        newMap.delete(skillId);
+      } else {
+        newMap.set(skillId, { 
+          useForMatching: true, 
+          proficiencyLevel: null,
+          candidateSkillId: null 
+        });
+      }
+      return newMap;
+    });
+    setSaveSuccess(false);
+  }, []);
+
+  // Toggle matching for a skill (only if not tested)
+  const toggleSkillMatching = useCallback((skillId: string) => {
+    setMySkills(prev => {
+      const newMap = new Map(prev);
+      const current = newMap.get(skillId);
+      if (current && !current.proficiencyLevel) {
+        newMap.set(skillId, { 
+          ...current,
+          useForMatching: !current.useForMatching 
+        });
+      }
+      return newMap;
+    });
+    setSaveSuccess(false);
+  }, []);
+
+  // Save skills
+  const handleSave = useCallback(async () => {
+    setSaving(true);
+    setSaveError(null);
+    setSaveSuccess(false);
+
+    try {
+      const payload = {
+        skills: [...mySkills.entries()].map(([skillId, data]) => ({
+          skillId,
+          useForMatching: data.useForMatching,
+        })),
+      };
+
+      await api.put('/candidate/skills', payload);
+      setSaveSuccess(true);
+      
+      // Refresh skills to get updated candidateSkillIds
+      const res = await api.get<{ skills: CandidateSkill[] }>('/candidate/skills');
+      const skills = res.skills || [];
+      setOriginalSkills(skills);
+      
+      const newMap = new Map<string, SelectedSkillData>();
+      skills.forEach((skill) => {
+        newMap.set(skill.skillId, {
+          useForMatching: skill.useForMatching ?? true,
+          proficiencyLevel: skill.proficiencyLevel ?? null,
+          candidateSkillId: skill.id,
+        });
       });
-      setMySkills((prev) => [...prev, res]);
+      setMySkills(newMap);
     } catch (err) {
       if (err instanceof ApiError) {
-        alert(err.message);
+        setSaveError(err.message);
+      } else {
+        setSaveError('Er ging iets mis bij het opslaan.');
       }
     } finally {
-      setAddingSkillId(null);
+      setSaving(false);
     }
-  }
+  }, [mySkills]);
 
-  // Delete skill handler
-  async function handleDeleteSkill() {
-    if (!deleteSkill) return;
+  // Delete a skill
+  const handleDeleteSkill = useCallback(async () => {
+    if (!deleteSkillId) return;
+    
+    const skillData = mySkills.get(deleteSkillId);
+    if (!skillData?.candidateSkillId) {
+      // Not saved yet, just remove from local state
+      setMySkills(prev => {
+        const newMap = new Map(prev);
+        newMap.delete(deleteSkillId);
+        return newMap;
+      });
+      setDeleteSkillId(null);
+      return;
+    }
+
     setDeleting(true);
     try {
-      await api.delete(`/candidate/skills/${deleteSkill.id}`);
-      setMySkills((prev) => prev.filter((s) => s.id !== deleteSkill.id));
-      setDeleteSkill(null);
+      await api.delete(`/candidate/skills/${skillData.candidateSkillId}`);
+      setMySkills(prev => {
+        const newMap = new Map(prev);
+        newMap.delete(deleteSkillId);
+        return newMap;
+      });
+      setOriginalSkills(prev => prev.filter(s => s.skillId !== deleteSkillId));
+      setDeleteSkillId(null);
     } catch (err) {
       if (err instanceof ApiError) {
         alert(err.message);
@@ -146,274 +245,459 @@ export default function SkillsPage() {
     } finally {
       setDeleting(false);
     }
-  }
+  }, [deleteSkillId, mySkills]);
 
-  // Update proficiency level handler
-  async function handleUpdateLevel(skill: CandidateSkill, newLevel: ProficiencyLevel) {
-    setUpdatingLevelId(skill.id);
-    try {
-      await api.patch(`/candidate/skills/${skill.id}`, {
-        proficiencyLevel: newLevel,
-      });
-      setMySkills((prev) =>
-        prev.map((s) =>
-          s.id === skill.id ? { ...s, proficiencyLevel: newLevel } : s
-        )
-      );
-    } catch (err) {
-      if (err instanceof ApiError) {
-        alert(err.message);
+  // Computed values
+  const selectedSkillsCount = mySkills.size;
+  const matchingSkillsCount = useMemo(() => {
+    let count = 0;
+    mySkills.forEach(data => {
+      if (data.useForMatching) count++;
+    });
+    return count;
+  }, [mySkills]);
+
+  // Group skills by sector for display
+  const skillsBySector = useMemo(() => {
+    const grouped = new Map<string, { sectorName: string; skills: Array<{ skillId: string; data: SelectedSkillData; skillName: string }> }>();
+    
+    originalSkills.forEach(skill => {
+      const data = mySkills.get(skill.skillId);
+      if (data) {
+        const existing = grouped.get(skill.sectorId) || { 
+          sectorName: skill.sectorName, 
+          skills: [] 
+        };
+        existing.skills.push({ 
+          skillId: skill.skillId, 
+          data, 
+          skillName: skill.skillName 
+        });
+        grouped.set(skill.sectorId, existing);
       }
-    } finally {
-      setUpdatingLevelId(null);
-    }
-  }
+    });
+    
+    return grouped;
+  }, [mySkills, originalSkills]);
 
-  // Check if skill is already added
-  const isSkillAdded = (skillId: string) => mySkills.some((s) => s.skillId === skillId);
+  // Get skill name from original skills
+  const getSkillName = useCallback((skillId: string) => {
+    return originalSkills.find(s => s.skillId === skillId)?.skillName || '';
+  }, [originalSkills]);
 
   return (
-    <div className="container max-w-4xl mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="mb-6">
-        <Link
-          href="/dashboard/profile"
-          className="text-sm text-gray-500 hover:text-gray-700 mb-2 inline-block"
-        >
-          &larr; Terug naar profiel
-        </Link>
-        <h1 className="text-2xl font-bold">Mijn skills</h1>
-        <p className="text-gray-600 text-sm">
-          Beheer je vaardigheden en laat werkgevers zien wat je kunt.
-        </p>
-      </div>
+    <TooltipProvider>
+      <div className="container max-w-4xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="mb-6">
+          <Link
+            href="/dashboard/profile"
+            className="text-sm text-gray-500 hover:text-gray-700 mb-2 inline-block"
+          >
+            &larr; Terug naar profiel
+          </Link>
+          <h1 className="text-2xl font-bold">Mijn skills</h1>
+          <p className="text-gray-600 text-sm">
+            Beheer je vaardigheden en laat werkgevers zien wat je kunt.
+          </p>
+        </div>
 
-      {/* Section 1: My Skills */}
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Mijn vaardigheden</CardTitle>
-          <CardDescription>
-            Je hebt {mySkills.length} skill{mySkills.length !== 1 ? 's' : ''} toegevoegd.
-            {mySkills.length < 3 && ' Voeg er minstens 3 toe voor betere matches.'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {skillsLoading ? (
-            <div className="space-y-3">
-              <Skeleton className="h-16" />
-              <Skeleton className="h-16" />
-              <Skeleton className="h-16" />
+        {/* Counter + info */}
+        {selectedSkillsCount > 0 && (
+          <div className="mb-6 p-4 bg-white border rounded-lg flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Badge className="bg-green-600 text-white px-3 py-1">
+                {selectedSkillsCount} geselecteerd
+              </Badge>
+              <div className="flex items-center gap-1 text-sm text-gray-600">
+                <span>{matchingSkillsCount} voor matching</span>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Info className="w-4 h-4 text-gray-400" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p className="font-medium mb-1">Geselecteerd vs Matching</p>
+                    <p className="text-sm">
+                      Geselecteerd: aantal skills + interesses op je profiel.
+                      Voor matching: skills die meetellen voor jobsuggesties.
+                    </p>
+                    <p className="text-sm mt-1">
+                      Skills op &apos;interesse&apos; tellen niet voor matching, maar helpen je om jobs
+                      in nieuwe vakgebieden aangeboden te krijgen.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
             </div>
-          ) : skillsError ? (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-md">
-              <p className="text-sm text-red-600">{skillsError}</p>
-            </div>
-          ) : mySkills.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-500 mb-2">Nog geen skills toegevoegd.</p>
-              <p className="text-sm text-gray-400">
-                Voeg er minstens 3 toe voor goede matches.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {mySkills.map((skill) => (
-                <div
-                  key={skill.id}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border rounded-lg"
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-medium">{skill.skillName}</span>
-                      <Badge variant="secondary" className="text-xs">
-                        {skill.sectorName}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center gap-3 mt-1 text-sm text-gray-500">
-                      {skill.yearsExperience && (
-                        <span>{skill.yearsExperience} jaar ervaring</span>
-                      )}
-                      {skill.testedAt && skill.lastTestScore !== null && (
-                        <span>
-                          Getest op{' '}
-                          {new Date(skill.testedAt).toLocaleDateString('nl-BE', {
-                            day: 'numeric',
-                            month: 'long',
-                            year: 'numeric',
-                          })}
-                          , score {skill.lastTestScore}%
-                        </span>
-                      )}
+            <Button onClick={handleSave} disabled={saving}>
+              {saving ? 'Opslaan...' : 'Wijzigingen opslaan'}
+            </Button>
+          </div>
+        )}
+
+        {/* Save feedback */}
+        {saveError && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-red-600" />
+            <span className="text-sm text-red-600">{saveError}</span>
+          </div>
+        )}
+        {saveSuccess && (
+          <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-md flex items-center gap-2">
+            <Check className="w-4 h-4 text-green-600" />
+            <span className="text-sm text-green-600">Je skills zijn opgeslagen!</span>
+          </div>
+        )}
+
+        {/* Section 1: My Skills grouped by sector */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Mijn vaardigheden</CardTitle>
+            <CardDescription>
+              Je hebt {selectedSkillsCount} skill{selectedSkillsCount !== 1 ? 's' : ''} toegevoegd.
+              {selectedSkillsCount < 3 && ' Voeg er minstens 3 toe voor betere matches.'}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {skillsLoading ? (
+              <div className="space-y-3">
+                <Skeleton className="h-16" />
+                <Skeleton className="h-16" />
+                <Skeleton className="h-16" />
+              </div>
+            ) : skillsError ? (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-sm text-red-600">{skillsError}</p>
+              </div>
+            ) : selectedSkillsCount === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-500 mb-2">Nog geen skills toegevoegd.</p>
+                <p className="text-sm text-gray-400">
+                  Selecteer skills uit de sectoren hieronder.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {[...skillsBySector.entries()].map(([sectorId, { sectorName, skills }]) => (
+                  <div key={sectorId}>
+                    <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
+                      {sectorName}
+                    </h4>
+                    <div className="space-y-2">
+                      {skills.map(({ skillId, data, skillName }) => (
+                        <SkillRow
+                          key={skillId}
+                          skillId={skillId}
+                          skillName={skillName}
+                          data={data}
+                          onToggleMatching={() => toggleSkillMatching(skillId)}
+                          onDelete={() => setDeleteSkillId(skillId)}
+                        />
+                      ))}
                     </div>
                   </div>
-
-                  <div className="flex items-center gap-2">
-                    {/* Level dropdown */}
-                    <Select
-                      value={skill.proficiencyLevel}
-                      onValueChange={(value) =>
-                        handleUpdateLevel(skill, value as ProficiencyLevel)
-                      }
-                      disabled={updatingLevelId === skill.id}
-                    >
-                      <SelectTrigger className="w-[140px]">
-                        <SelectValue>
-                          <Badge
-                            className={`${proficiencyConfig[skill.proficiencyLevel].color} border-0`}
-                          >
-                            {proficiencyConfig[skill.proficiencyLevel].label}
-                          </Badge>
-                        </SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {proficiencyLevels.map((level) => (
-                          <SelectItem key={level} value={level}>
-                            <Badge
-                              className={`${proficiencyConfig[level].color} border-0`}
-                            >
-                              {proficiencyConfig[level].label}
-                            </Badge>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-
-                    {/* Test button */}
-                    <Button variant="outline" size="sm" asChild>
-                      <Link href={`/dashboard/profile/test/${skill.skillId}`}>
-                        Test afleggen
-                      </Link>
-                    </Button>
-
-                    {/* Delete button */}
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                      onClick={() => setDeleteSkill(skill)}
-                    >
-                      Verwijderen
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Section 2: Add Skills */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Skill toevoegen</CardTitle>
-          <CardDescription>
-            Selecteer een sector en voeg relevante skills toe aan je profiel.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {sectorsLoading ? (
-            <div className="space-y-3">
-              <Skeleton className="h-10" />
-              <Skeleton className="h-32" />
-            </div>
-          ) : (
-            <>
-              {/* Sector tabs */}
-              <div className="flex flex-wrap gap-2 mb-4 pb-4 border-b">
-                {sectors.map((sector) => (
-                  <button
-                    key={sector.id}
-                    onClick={() => setActiveSectorId(sector.id)}
-                    className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                      activeSectorId === sector.id
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    {sector.name}
-                  </button>
                 ))}
               </div>
+            )}
+          </CardContent>
+        </Card>
 
-              {/* Skills list */}
-              {sectorSkillsLoading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {Array.from({ length: 6 }).map((_, i) => (
-                    <Skeleton key={i} className="h-12" />
-                  ))}
-                </div>
-              ) : sectorSkills.length === 0 ? (
-                <div className="text-center py-8">
-                  <p className="text-gray-500">Geen skills gevonden voor deze sector.</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {sectorSkills.map((skill) => {
-                    const alreadyAdded = isSkillAdded(skill.id);
-                    const isAdding = addingSkillId === skill.id;
+        {/* Section 2: Add Skills by Sector */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Skill toevoegen</CardTitle>
+            <CardDescription>
+              Selecteer een sector om relevante skills toe te voegen.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {/* Info banner */}
+            <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+              <p className="text-sm text-amber-800">
+                <strong>Tip:</strong> Skills die je wil ontwikkelen kun je als &apos;interesse&apos; markeren — 
+                zo kom je in beeld voor jobs in nieuwe vakgebieden, ook als je er nog geen ervaring in hebt.
+              </p>
+            </div>
 
-                    return (
-                      <div
-                        key={skill.id}
-                        className={`flex items-center justify-between p-3 border rounded-lg ${
-                          alreadyAdded ? 'bg-gray-50 opacity-60' : ''
-                        }`}
+            {sectorsLoading ? (
+              <div className="space-y-2">
+                <Skeleton className="h-12" />
+                <Skeleton className="h-12" />
+                <Skeleton className="h-12" />
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {sectors.map((sector) => {
+                  const isExpanded = expandedSectorId === sector.id;
+                  const isLoading = loadingSectorId === sector.id;
+                  const skills = sectorSkillsMap.get(sector.id) || [];
+                  const selectedInSector = skills.filter(s => mySkills.has(s.id)).length;
+
+                  return (
+                    <div key={sector.id} className="border rounded-lg overflow-hidden">
+                      <button
+                        onClick={() => toggleSector(sector.id)}
+                        className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
                       >
-                        <span className={alreadyAdded ? 'text-gray-500' : ''}>
-                          {skill.name}
-                        </span>
-                        <Button
-                          size="sm"
-                          variant={alreadyAdded ? 'ghost' : 'default'}
-                          disabled={alreadyAdded || isAdding}
-                          onClick={() => handleAddSkill(skill)}
-                        >
-                          {alreadyAdded ? (
-                            'Toegevoegd'
-                          ) : isAdding ? (
-                            'Toevoegen...'
+                        <div className="flex items-center gap-3">
+                          {isExpanded ? (
+                            <ChevronDown className="w-4 h-4 text-gray-500" />
                           ) : (
-                            '+ Toevoegen'
+                            <ChevronRight className="w-4 h-4 text-gray-500" />
                           )}
-                        </Button>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </>
-          )}
-        </CardContent>
-      </Card>
+                          <span className="font-medium">{sector.name}</span>
+                        </div>
+                        {selectedInSector > 0 && (
+                          <Badge variant="secondary" className="text-xs">
+                            {selectedInSector} geselecteerd
+                          </Badge>
+                        )}
+                      </button>
 
-      {/* Delete confirmation dialog */}
-      <Dialog open={!!deleteSkill} onOpenChange={() => setDeleteSkill(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Skill verwijderen</DialogTitle>
-            <DialogDescription>
-              Weet je zeker dat je &quot;{deleteSkill?.skillName}&quot; wilt verwijderen?
-              Je testresultaten voor deze skill gaan verloren.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setDeleteSkill(null)}
-              disabled={deleting}
-            >
-              Annuleren
+                      {isExpanded && (
+                        <div className="p-4 bg-white border-t">
+                          {isLoading ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                              {Array.from({ length: 4 }).map((_, i) => (
+                                <Skeleton key={i} className="h-12" />
+                              ))}
+                            </div>
+                          ) : skills.length === 0 ? (
+                            <p className="text-sm text-gray-500 text-center py-4">
+                              Geen skills gevonden voor deze sector.
+                            </p>
+                          ) : (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                              {skills.map((skill) => {
+                                const isSelected = mySkills.has(skill.id);
+                                const skillData = mySkills.get(skill.id);
+
+                                return (
+                                  <div
+                                    key={skill.id}
+                                    className={`p-3 border rounded-lg cursor-pointer transition-all ${
+                                      isSelected
+                                        ? 'border-indigo-300 bg-indigo-50'
+                                        : 'hover:border-gray-300'
+                                    }`}
+                                    onClick={() => toggleSkill(skill.id)}
+                                  >
+                                    <div className="flex items-center justify-between">
+                                      <span className={isSelected ? 'text-indigo-700 font-medium' : ''}>
+                                        {skill.name}
+                                      </span>
+                                      {isSelected && (
+                                        <Check className="w-4 h-4 text-indigo-600" />
+                                      )}
+                                    </div>
+                                    {skill.description && (
+                                      <p className="text-xs text-gray-500 mt-1">{skill.description}</p>
+                                    )}
+                                    {isSelected && skillData && (
+                                      <div className="mt-2 pt-2 border-t border-indigo-200">
+                                        <MatchingToggleInline
+                                          useForMatching={skillData.useForMatching}
+                                          proficiencyLevel={skillData.proficiencyLevel}
+                                          onToggle={(e) => {
+                                            e.stopPropagation();
+                                            toggleSkillMatching(skill.id);
+                                          }}
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Save button at bottom */}
+        {selectedSkillsCount > 0 && (
+          <div className="mt-6 flex justify-end">
+            <Button onClick={handleSave} disabled={saving} size="lg">
+              {saving ? 'Opslaan...' : 'Wijzigingen opslaan'}
             </Button>
-            <Button
-              variant="destructive"
-              onClick={handleDeleteSkill}
-              disabled={deleting}
-            >
-              {deleting ? 'Verwijderen...' : 'Verwijderen'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          </div>
+        )}
+
+        {/* Delete confirmation dialog */}
+        <Dialog open={!!deleteSkillId} onOpenChange={() => setDeleteSkillId(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Skill verwijderen</DialogTitle>
+              <DialogDescription>
+                Weet je zeker dat je &quot;{getSkillName(deleteSkillId || '')}&quot; wilt verwijderen?
+                {mySkills.get(deleteSkillId || '')?.proficiencyLevel && (
+                  <span className="block mt-2 text-amber-600">
+                    Let op: Je testresultaten voor deze skill gaan verloren.
+                  </span>
+                )}
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setDeleteSkillId(null)}
+                disabled={deleting}
+              >
+                Annuleren
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleDeleteSkill}
+                disabled={deleting}
+              >
+                {deleting ? 'Verwijderen...' : 'Verwijderen'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </TooltipProvider>
+  );
+}
+
+// Skill row component for "My Skills" section
+function SkillRow({
+  skillId,
+  skillName,
+  data,
+  onToggleMatching,
+  onDelete,
+}: {
+  skillId: string;
+  skillName: string;
+  data: SelectedSkillData;
+  onToggleMatching: () => void;
+  onDelete: () => void;
+}) {
+  const isTested = !!data.proficiencyLevel;
+  const isDisabled = isTested;
+
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border rounded-lg bg-white">
+      <div className="flex-1 min-w-0">
+        <span className="font-medium">{skillName}</span>
+      </div>
+
+      <div className="flex items-center gap-3 flex-wrap">
+        {/* Test status badge */}
+        {isTested ? (
+          <Badge className={`${proficiencyColors[data.proficiencyLevel!]} border-0`}>
+            {PROFICIENCY_LABELS[data.proficiencyLevel!]} getest
+          </Badge>
+        ) : data.useForMatching ? (
+          <Badge variant="outline" className="text-gray-500">
+            Niet getest
+          </Badge>
+        ) : (
+          <Badge className="bg-amber-100 text-amber-700 border-0">
+            Interesse
+          </Badge>
+        )}
+
+        {/* Matching toggle */}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-500">
+                  {data.useForMatching ? 'Matching' : 'Interesse'}
+                </span>
+                <button
+                  onClick={onToggleMatching}
+                  disabled={isDisabled}
+                  className={`relative w-10 h-5 rounded-full transition-colors ${
+                    isDisabled
+                      ? 'bg-gray-200 cursor-not-allowed'
+                      : data.useForMatching
+                      ? 'bg-green-500'
+                      : 'bg-amber-500'
+                  }`}
+                >
+                  <div
+                    className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${
+                      data.useForMatching ? 'left-5' : 'left-0.5'
+                    }`}
+                  />
+                </button>
+              </div>
+            </TooltipTrigger>
+            {isDisabled && (
+              <TooltipContent className="max-w-xs">
+                <p>
+                  Deze skill is getest op {PROFICIENCY_LABELS[data.proficiencyLevel!]}. 
+                  Om hem als interesse te markeren, moet je hem eerst verwijderen en opnieuw toevoegen.
+                </p>
+              </TooltipContent>
+            )}
+          </Tooltip>
+        </TooltipProvider>
+
+        {/* Test button */}
+        {data.useForMatching && (
+          <Button variant="outline" size="sm" asChild>
+            <Link href={`/dashboard/profile/test/${skillId}`}>
+              {isTested ? 'Hoger testen' : 'Test afleggen'}
+            </Link>
+          </Button>
+        )}
+
+        {/* Delete button */}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-red-500 hover:text-red-700 hover:bg-red-50"
+          onClick={onDelete}
+        >
+          <Trash2 className="w-4 h-4" />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+// Inline matching toggle for skill selection
+function MatchingToggleInline({
+  useForMatching,
+  proficiencyLevel,
+  onToggle,
+}: {
+  useForMatching: boolean;
+  proficiencyLevel: ProficiencyLevel | null;
+  onToggle: (e: React.MouseEvent) => void;
+}) {
+  const isTested = !!proficiencyLevel;
+
+  return (
+    <div className="flex items-center justify-between text-xs">
+      <span className={useForMatching ? 'text-green-600' : 'text-amber-600'}>
+        {useForMatching ? 'Voor matching' : 'Interesse'}
+      </span>
+      {!isTested && (
+        <button
+          onClick={onToggle}
+          className={`relative w-8 h-4 rounded-full transition-colors ${
+            useForMatching ? 'bg-green-500' : 'bg-amber-500'
+          }`}
+        >
+          <div
+            className={`absolute top-0.5 w-3 h-3 rounded-full bg-white shadow transition-transform ${
+              useForMatching ? 'left-4' : 'left-0.5'
+            }`}
+          />
+        </button>
+      )}
     </div>
   );
 }
