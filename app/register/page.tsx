@@ -2,8 +2,8 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -42,12 +42,49 @@ type CandidateFormData = z.infer<typeof candidateSchema>;
 type EmployerFormData = z.infer<typeof employerSchema>;
 
 export default function RegisterPage() {
+  return (
+    <Suspense fallback={<RegisterPageLoading />}>
+      <RegisterPageContent />
+    </Suspense>
+  );
+}
+
+function RegisterPageLoading() {
+  return (
+    <>
+      <Header />
+      <div className="header--spacer" style={{ height: '80px' }} />
+      <section className="crumina-module bg-dark-themes" style={{ minHeight: '60vh', paddingTop: '80px', paddingBottom: '80px' }}>
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8 col-md-10 text-center">
+              <div className="c-white">Laden...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <Footer />
+    </>
+  );
+}
+
+function RegisterPageContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { setUser } = useAuth();
   const [step, setStep] = useState<1 | 2>(1);
   const [userType, setUserType] = useState<UserType | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  // Check URL parameter for user type on mount
+  useEffect(() => {
+    const typeParam = searchParams.get('type');
+    if (typeParam === 'candidate' || typeParam === 'employer') {
+      setUserType(typeParam);
+      setStep(2);
+    }
+  }, [searchParams]);
 
   const handleUserTypeSelect = (type: UserType) => {
     setUserType(type);
@@ -61,6 +98,8 @@ export default function RegisterPage() {
     setUserType(null);
     setApiError(null);
     setFieldErrors({});
+    // Clear the URL parameter when going back
+    router.replace('/register');
   };
 
   return (
