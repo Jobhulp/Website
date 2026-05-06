@@ -57,7 +57,7 @@ const Banner = () => (
               <h2 className="h1 main-slider-title">Geen CV nodig. Het platform leert je kennen.</h2>
               <h3 className="main-slider-sub-title title--small">Vul je skills, werkstijl en voorkeuren in. Jobhulp matcht je automatisch met passende jobs.</h3>
               <div className="universal-btn-wrapper">
-                <a href="/candidates/submit-resume" className="crumina-button button--blue button--xl button--hover-primary">Maak je profiel</a>
+                <a href="/register?type=candidate" className="crumina-button button--blue button--xl button--hover-primary">Start als kandidaat</a>
                 <a href="/how-it-works" className="arrow--white link--bold link--with-icon link--icon-right">Meer info<i className="puzzle-icon far fa-angle-right"></i></a>
               </div>
             </div>

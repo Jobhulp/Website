@@ -101,11 +101,11 @@ const Jobs: React.FC<JobsProps> = ({ workTypes = [], city, onClearFilters, onTab
                   style={{ display: activeTab === 'jobs' ? 'block' : 'none' }}
                 >
                   <div className="d-flex justify-content-between align-items-center flex-wrap mb60">
-                    <Link href="/candidates/submit-resume" className="crumina-button button--dark button--m button--with-icon button--icon-left my-2">
-                      <i className="puzzle-icon far fa-pencil" />Maak je profiel aan
+                    <Link href="/register?type=candidate" className="crumina-button button--dark button--m button--with-icon button--icon-left my-2">
+                      <i className="puzzle-icon far fa-pencil" />Start als kandidaat
                     </Link>
-                    <Link href="/register?type=candidate&subscribe=matches" className="crumina-button button--dark button--m button--bordered button--with-icon button--icon-left my-2">
-                      <i className="puzzle-icon far fa-at" />Ontvang matches per e-mail
+                    <Link href="/how-it-works" className="crumina-button button--dark button--m button--bordered button--with-icon button--icon-left my-2">
+                      <i className="puzzle-icon far fa-question-circle" />Hoe het werkt
                     </Link>
                   </div>
 
@@ -127,11 +127,11 @@ const Jobs: React.FC<JobsProps> = ({ workTypes = [], city, onClearFilters, onTab
                   style={{ display: activeTab === 'candidates' ? 'block' : 'none' }}
                 >
                   <div className="d-flex justify-content-between align-items-center flex-wrap mb60">
-                    <Link href="/dashboard/employer/jobs/new" className="crumina-button button--dark button--m button--with-icon button--icon-left my-2">
-                      <i className="puzzle-icon far fa-building" />Plaats een vacature
+                    <Link href="/register?type=employer" className="crumina-button button--dark button--m button--with-icon button--icon-left my-2">
+                      <i className="puzzle-icon far fa-building" />Start als werkgever
                     </Link>
-                    <Link href="/candidates/candidate-lists" className="crumina-button button--dark button--m button--bordered button--with-icon button--icon-left my-2">
-                      <i className="puzzle-icon far fa-search" />Zoek kandidaten
+                    <Link href="/how-it-works" className="crumina-button button--dark button--m button--bordered button--with-icon button--icon-left my-2">
+                      <i className="puzzle-icon far fa-question-circle" />Hoe het werkt
                     </Link>
                   </div>
 
