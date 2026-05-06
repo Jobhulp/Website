@@ -13,12 +13,18 @@ interface JobsProps {
   workTypes?: WorkType[];
   city?: string;
   onClearFilters?: () => void;
+  onTabChange?: (tab: 'jobs' | 'candidates') => void;
 }
 
-const Jobs: React.FC<JobsProps> = ({ workTypes = [], city, onClearFilters }) => {
+const Jobs: React.FC<JobsProps> = ({ workTypes = [], city, onClearFilters, onTabChange }) => {
   const [activeTab, setActiveTab] = useState<TabId>('jobs');
   const [jobsCount, setJobsCount] = useState<number | null>(null);
   const [candidatesCount, setCandidatesCount] = useState<{ count: number; isFloor: boolean } | null>(null);
+
+  // Notify parent of tab changes
+  useEffect(() => {
+    onTabChange?.(activeTab);
+  }, [activeTab, onTabChange]);
 
   // Fetch candidates count on mount
   useEffect(() => {

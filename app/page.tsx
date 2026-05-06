@@ -5,6 +5,7 @@ import Banner from '../components/home/banner/Banner';
 import { JobFilters } from '../components/home/jobs-filters/JobFilters';
 import Jobs from '../components/home/jobs/Jobs';
 import { SectorsGrid } from '../components/homepage/sectors-grid';
+import { CandidatesSectorsGrid } from '../components/homepage/candidates-sectors-grid';
 import Testimonial from '../components/common/testimonial/Testimonial';
 import SignupCta from '../components/signup-cta/SignupCta';
 import Footer from '../components/common/footer/Footer';
@@ -22,6 +23,7 @@ export default function Home() {
     city: '',
     keywords: '',
   });
+  const [activeTab, setActiveTab] = useState<'jobs' | 'candidates'>('jobs');
 
   const handleFiltersChange = useCallback((newFilters: Filters) => {
     setFilters(newFilters);
@@ -43,8 +45,15 @@ export default function Home() {
         workTypes={filters.workTypes.length > 0 ? filters.workTypes : undefined}
         city={filters.city || undefined}
         onClearFilters={handleClearFilters}
+        onTabChange={setActiveTab}
       />
-      <SectorsGrid />
+      {/* Render both grids but hide inactive one to prevent re-fetch on tab switch */}
+      <div style={{ display: activeTab === 'jobs' ? 'block' : 'none' }}>
+        <SectorsGrid />
+      </div>
+      <div style={{ display: activeTab === 'candidates' ? 'block' : 'none' }}>
+        <CandidatesSectorsGrid />
+      </div>
       <Testimonial />
       <SignupCta />
       <Footer />
