@@ -1,7 +1,7 @@
 import type { ApiErrorBody } from '@/types/api';
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? 'http://backend-jobhulp.railway.internal/api/v1';
+  process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
 
 export class ApiError extends Error {
   constructor(
