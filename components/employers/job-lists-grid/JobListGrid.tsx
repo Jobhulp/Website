@@ -71,9 +71,6 @@ const JobListGrid: React.FC<JobListGridProps> = ({ jobs, loading }) => (
                       <time className="published">{formatDate(job.createdAt)}</time>
                       <i className="far fa-map-marker-alt me-1"></i>
                       {job.city || 'België'}
-                      {job.remotePreference === 'remote' && (
-                        <span className="badge bg-success ms-2" style={{ fontSize: '10px' }}>Remote</span>
-                      )}
                     </div>
                   </div>
                   {job.employerLogoUrl ? (

@@ -65,7 +65,7 @@ const JobListResults: React.FC<JobListResultsProps> = ({
     return pages;
   };
 
-  const formatSalary = (min?: number, max?: number) => {
+  const formatSalary = (min: number | null, max: number | null) => {
     if (!min && !max) return null;
     if (min && max) return `€${min.toLocaleString()} - €${max.toLocaleString()}`;
     if (min) return `Vanaf €${min.toLocaleString()}`;
@@ -148,12 +148,6 @@ const JobListResults: React.FC<JobListResultsProps> = ({
                         <time className="published">{formatDate(job.createdAt)}</time>
                         <i className="far fa-map-marker-alt me-1"></i>
                         {job.city || 'België'}
-                        {job.remotePreference === 'remote' && (
-                          <span className="badge bg-success ms-2" style={{ fontSize: '10px' }}>Remote</span>
-                        )}
-                        {job.remotePreference === 'hybrid' && (
-                          <span className="badge bg-info ms-2" style={{ fontSize: '10px' }}>Hybride</span>
-                        )}
                       </div>
                       {salary && (
                         <div className="vacancies-salary mt-1">
