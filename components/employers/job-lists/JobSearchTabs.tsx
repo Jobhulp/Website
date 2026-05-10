@@ -49,7 +49,7 @@ const SALARY_RANGES = [
   { value: '5000+', label: '€5.000+' },
 ];
 
-interface Filters {
+export interface JobFilters {
   keyword: string;
   sectorId: string;
   province: string;
@@ -59,19 +59,16 @@ interface Filters {
   salaryRange: string;
 }
 
-const JobSearchTabs: React.FC = () => {
+interface JobSearchTabsProps {
+  filters: JobFilters;
+  onFiltersChange: (filters: JobFilters) => void;
+  totalCount: number;
+}
+
+const JobSearchTabs: React.FC<JobSearchTabsProps> = ({ filters, onFiltersChange, totalCount }) => {
   const [sectors, setSectors] = useState<SectorCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [filters, setFilters] = useState<Filters>({
-    keyword: '',
-    sectorId: '',
-    province: '',
-    workTypes: [],
-    experienceLevel: '',
-    remotePreference: 'all',
-    salaryRange: '',
-  });
 
   useEffect(() => {
     const fetchSectors = async () => {
@@ -87,33 +84,24 @@ const JobSearchTabs: React.FC = () => {
     fetchSectors();
   }, []);
 
+  const updateFilter = <K extends keyof JobFilters>(key: K, value: JobFilters[K]) => {
+    onFiltersChange({ ...filters, [key]: value });
+  };
+
   const handleWorkTypeToggle = (workType: WorkType) => {
-    setFilters(prev => ({
-      ...prev,
-      workTypes: prev.workTypes.includes(workType)
-        ? prev.workTypes.filter(t => t !== workType)
-        : [...prev.workTypes, workType],
-    }));
+    const newWorkTypes = filters.workTypes.includes(workType)
+      ? filters.workTypes.filter(t => t !== workType)
+      : [...filters.workTypes, workType];
+    updateFilter('workTypes', newWorkTypes);
   };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Build query params and update URL/fetch results
-    const params = new URLSearchParams();
-    if (filters.keyword) params.set('q', filters.keyword);
-    if (filters.sectorId) params.set('sector', filters.sectorId);
-    if (filters.province) params.set('province', filters.province);
-    if (filters.workTypes.length) params.set('workTypes', filters.workTypes.join(','));
-    if (filters.experienceLevel) params.set('experience', filters.experienceLevel);
-    if (filters.remotePreference !== 'all') params.set('remote', filters.remotePreference);
-    if (filters.salaryRange) params.set('salary', filters.salaryRange);
-    
-    // For now, just log - would normally update URL or call parent
-    console.log('Search filters:', Object.fromEntries(params));
+    // Filters are already applied reactively, this just prevents form submission
   };
 
   const handleReset = () => {
-    setFilters({
+    onFiltersChange({
       keyword: '',
       sectorId: '',
       province: '',
@@ -143,7 +131,7 @@ const JobSearchTabs: React.FC = () => {
                 <h2 className="h2 mb-0 c-dark">Vind je ideale job</h2>
                 <span className="c-grey fs-14">
                   <i className="far fa-briefcase mr-2"></i>
-                  150+ actieve vacatures
+                  {totalCount} actieve vacature{totalCount !== 1 ? 's' : ''}
                 </span>
               </div>
             </div>
@@ -171,7 +159,7 @@ const JobSearchTabs: React.FC = () => {
                           placeholder="Functie, skill of bedrijf..."
                           className="input input-bordered w-full"
                           value={filters.keyword}
-                          onChange={(e) => setFilters(prev => ({ ...prev, keyword: e.target.value }))}
+                          onChange={(e) => updateFilter('keyword', e.target.value)}
                         />
                       </div>
                       
@@ -183,7 +171,7 @@ const JobSearchTabs: React.FC = () => {
                         <select
                           className="puzzle--select w-full"
                           value={filters.sectorId}
-                          onChange={(e) => setFilters(prev => ({ ...prev, sectorId: e.target.value }))}
+                          onChange={(e) => updateFilter('sectorId', e.target.value)}
                           disabled={loading}
                         >
                           <option value="">Alle sectoren</option>
@@ -203,7 +191,7 @@ const JobSearchTabs: React.FC = () => {
                         <select
                           className="puzzle--select w-full"
                           value={filters.province}
-                          onChange={(e) => setFilters(prev => ({ ...prev, province: e.target.value }))}
+                          onChange={(e) => updateFilter('province', e.target.value)}
                         >
                           <option value="">Heel België</option>
                           {BELGIAN_PROVINCES.map(province => (
@@ -313,10 +301,7 @@ const JobSearchTabs: React.FC = () => {
                           <select
                             className="puzzle--select w-full"
                             value={filters.experienceLevel}
-                            onChange={(e) => setFilters(prev => ({ 
-                              ...prev, 
-                              experienceLevel: e.target.value as ExperienceLevel | '' 
-                            }))}
+                            onChange={(e) => updateFilter('experienceLevel', e.target.value as ExperienceLevel | '')}
                           >
                             <option value="">Alle niveaus</option>
                             {EXPERIENCE_LEVELS.map(level => (
@@ -333,10 +318,7 @@ const JobSearchTabs: React.FC = () => {
                           <select
                             className="puzzle--select w-full"
                             value={filters.remotePreference}
-                            onChange={(e) => setFilters(prev => ({ 
-                              ...prev, 
-                              remotePreference: e.target.value as RemotePreference | 'all' 
-                            }))}
+                            onChange={(e) => updateFilter('remotePreference', e.target.value as RemotePreference | 'all')}
                           >
                             {REMOTE_OPTIONS.map(option => (
                               <option key={option.value} value={option.value}>{option.label}</option>
@@ -352,7 +334,7 @@ const JobSearchTabs: React.FC = () => {
                           <select
                             className="puzzle--select w-full"
                             value={filters.salaryRange}
-                            onChange={(e) => setFilters(prev => ({ ...prev, salaryRange: e.target.value }))}
+                            onChange={(e) => updateFilter('salaryRange', e.target.value)}
                           >
                             {SALARY_RANGES.map(range => (
                               <option key={range.value} value={range.value}>{range.label}</option>
@@ -367,7 +349,7 @@ const JobSearchTabs: React.FC = () => {
                         <button
                           type="button"
                           className="crumina-button button--bordered button--xxs mr-2 mb-2"
-                          onClick={() => setFilters(prev => ({ ...prev, remotePreference: 'remote' }))}
+                          onClick={() => updateFilter('remotePreference', 'remote')}
                         >
                           <i className="far fa-laptop-house mr-1"></i>
                           Remote jobs
@@ -375,7 +357,7 @@ const JobSearchTabs: React.FC = () => {
                         <button
                           type="button"
                           className="crumina-button button--bordered button--xxs mr-2 mb-2"
-                          onClick={() => setFilters(prev => ({ ...prev, experienceLevel: 'junior' }))}
+                          onClick={() => updateFilter('experienceLevel', 'junior')}
                         >
                           <i className="far fa-seedling mr-1"></i>
                           Starter-friendly
@@ -383,7 +365,7 @@ const JobSearchTabs: React.FC = () => {
                         <button
                           type="button"
                           className="crumina-button button--bordered button--xxs mr-2 mb-2"
-                          onClick={() => setFilters(prev => ({ ...prev, salaryRange: '4000-5000' }))}
+                          onClick={() => updateFilter('salaryRange', '4000-5000')}
                         >
                           <i className="far fa-coins mr-1"></i>
                           €4k+ salaris
@@ -391,7 +373,7 @@ const JobSearchTabs: React.FC = () => {
                         <button
                           type="button"
                           className="crumina-button button--bordered button--xxs mr-2 mb-2"
-                          onClick={() => setFilters(prev => ({ ...prev, workTypes: ['parttime'] }))}
+                          onClick={() => updateFilter('workTypes', ['parttime'])}
                         >
                           <i className="far fa-hourglass-half mr-1"></i>
                           Deeltijds mogelijk
@@ -409,7 +391,7 @@ const JobSearchTabs: React.FC = () => {
                           <button 
                             type="button"
                             className="ml-2 p-0 border-0 bg-transparent"
-                            onClick={() => setFilters(prev => ({ ...prev, sectorId: '' }))}
+                            onClick={() => updateFilter('sectorId', '')}
                             style={{ lineHeight: 1 }}
                           >
                             <i className="far fa-times" style={{ color: '#4f46e5' }}></i>
@@ -422,7 +404,7 @@ const JobSearchTabs: React.FC = () => {
                           <button 
                             type="button"
                             className="ml-2 p-0 border-0 bg-transparent"
-                            onClick={() => setFilters(prev => ({ ...prev, province: '' }))}
+                            onClick={() => updateFilter('province', '')}
                             style={{ lineHeight: 1 }}
                           >
                             <i className="far fa-times" style={{ color: '#166534' }}></i>
@@ -448,7 +430,7 @@ const JobSearchTabs: React.FC = () => {
                           <button 
                             type="button"
                             className="ml-2 p-0 border-0 bg-transparent"
-                            onClick={() => setFilters(prev => ({ ...prev, experienceLevel: '' }))}
+                            onClick={() => updateFilter('experienceLevel', '')}
                             style={{ lineHeight: 1 }}
                           >
                             <i className="far fa-times" style={{ color: '#7c3aed' }}></i>
@@ -461,7 +443,7 @@ const JobSearchTabs: React.FC = () => {
                           <button 
                             type="button"
                             className="ml-2 p-0 border-0 bg-transparent"
-                            onClick={() => setFilters(prev => ({ ...prev, remotePreference: 'all' }))}
+                            onClick={() => updateFilter('remotePreference', 'all')}
                             style={{ lineHeight: 1 }}
                           >
                             <i className="far fa-times" style={{ color: '#0891b2' }}></i>
@@ -474,7 +456,7 @@ const JobSearchTabs: React.FC = () => {
                           <button 
                             type="button"
                             className="ml-2 p-0 border-0 bg-transparent"
-                            onClick={() => setFilters(prev => ({ ...prev, salaryRange: '' }))}
+                            onClick={() => updateFilter('salaryRange', '')}
                             style={{ lineHeight: 1 }}
                           >
                             <i className="far fa-times" style={{ color: '#dc2626' }}></i>
