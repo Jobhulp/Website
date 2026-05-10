@@ -5,7 +5,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import logo from '@/assets/img/svg/01_logo_white.svg';
-import { useMegaMenu } from './useMegaMenu';
+
 import { useAuth } from '@/lib/auth-context';
 import { User, LogOut, LayoutDashboard, Settings, Bell, ChevronDown } from 'lucide-react';
 
@@ -15,14 +15,9 @@ const Header = () => {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  const {
-    isMenuOpen,
-    activeSubmenu,
-    toggleMenu,
-    handleSubmenuClick,
-    handleMouseEnter,
-    handleMouseLeave
-  } = useMegaMenu();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   // Close user menu when clicking outside
   useEffect(() => {
@@ -94,93 +89,19 @@ const Header = () => {
 
               <ul className="primary-menu-menu">
                 <li>
-                  <Link href="/" onClick={handleLinkClick}>Home</Link>
+                  <Link href="/jobs/job-lists" onClick={handleLinkClick}>Vacatures</Link>
+                </li>
+
+                <li>
+                  <Link href="/candidates/candidate-lists" onClick={handleLinkClick}>Talent</Link>
                 </li>
 
                 <li>
                   <Link href="/how-it-works" onClick={handleLinkClick}>Hoe het werkt</Link>
                 </li>
 
-                <li
-                  className={`menu-item-has-children ${activeSubmenu === 'kandidaten' ? 'active' : ''}`}
-                  onMouseEnter={() => handleMouseEnter('kandidaten')}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <a href="#" onClick={(e) => {
-                    e.preventDefault();
-                    handleSubmenuClick('kandidaten');
-                  }}>
-                    Voor Kandidaten
-                    <span className="show indicator">
-                      <i className="puzzle-icon far fa-angle-down"></i>
-                    </span>
-                  </a>
-
-                  <ul className="sub-menu" style={{ display: activeSubmenu === 'kandidaten' ? 'block' : 'none' }}>
-                    <li>
-                      <Link href="/candidates/submit-resume" onClick={handleLinkClick}>Maak je profiel</Link>
-                    </li>
-                    <li>
-                      <Link href="/tests" onClick={handleLinkClick}>Doe de testen</Link>
-                    </li>
-                    <li>
-                      <Link href="/jobs/job-lists" onClick={handleLinkClick}>Bekijk matches</Link>
-                    </li>
-                    <li>
-                      <Link href="/dashboard" onClick={handleLinkClick}>Mijn dashboard</Link>
-                    </li>
-                  </ul>
-                </li>
-
-                <li
-                  className={`menu-item-has-children ${activeSubmenu === 'werkgevers' ? 'active' : ''}`}
-                  onMouseEnter={() => handleMouseEnter('werkgevers')}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <a href="#" onClick={(e) => {
-                    e.preventDefault();
-                    handleSubmenuClick('werkgevers');
-                  }}>
-                    Voor Werkgevers
-                    <span className="show indicator">
-                      <i className="puzzle-icon far fa-angle-down"></i>
-                    </span>
-                  </a>
-                  <ul className="sub-menu" style={{ display: activeSubmenu === 'werkgevers' ? 'block' : 'none' }}>
-                    <li>
-                      <Link href="/dashboard/employer" onClick={handleLinkClick}>Mijn dashboard</Link>
-                    </li>
-                    <li>
-                      <Link href="/candidates/candidate-lists" onClick={handleLinkClick}>Bekijk kandidaten</Link>
-                    </li>
-                    <li>
-                      <Link href="/dashboard/employer/profile" onClick={handleLinkClick}>Bedrijfsprofiel</Link>
-                    </li>
-                  </ul>
-                </li>
-
-                <li
-                  className={`menu-item-has-children ${activeSubmenu === 'nieuws' ? 'active' : ''}`}
-                  onMouseEnter={() => handleMouseEnter('nieuws')}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <a href="#" onClick={(e) => {
-                    e.preventDefault();
-                    handleSubmenuClick('nieuws');
-                  }}>
-                    Nieuws
-                    <span className="show indicator">
-                      <i className="puzzle-icon far fa-angle-down"></i>
-                    </span>
-                  </a>
-                  <ul className="sub-menu" style={{ display: activeSubmenu === 'nieuws' ? 'block' : 'none' }}>
-                    <li>
-                      <Link href="/news/news-page" onClick={handleLinkClick}>Alle artikelen</Link>
-                    </li>
-                    <li>
-                      <Link href="/news/news-details-standard" onClick={handleLinkClick}>Laatste nieuws</Link>
-                    </li>
-                  </ul>
+                <li>
+                  <Link href="/news/news-page" onClick={handleLinkClick}>Blog</Link>
                 </li>
               </ul>
             </nav>
