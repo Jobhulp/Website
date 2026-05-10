@@ -5,7 +5,7 @@ import type { NextConfig } from 'next';
 // =============================================================================
 
 const isProd = process.env.NODE_ENV === 'production';
-const apiHost = new URL(process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001').origin;
+const apiHost = new URL(process.env.NEXT_PUBLIC_API_URL ?? 'http://backend-jobhulp.railway.internal').origin;
 
 /**
  * CSP Gotchas:
